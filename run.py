@@ -5,4 +5,5 @@ Created on 02 Mar 2014
 '''
 
 from app import app
+from totti import totti
 app.run(debug = True)
