@@ -1,0 +1,117 @@
+__author__ = 'Nick'
+
+from app import app, db, lm, oid
+from flask import redirect, render_template, url_for, flash, request, g, session
+from forms import SigninForm, adduserform
+from flask_login import login_user, logout_user, current_user, login_required
+from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV
+from flask_googlelogin import GoogleLogin
+from datetime import datetime
+
+googlelogin = GoogleLogin(app)
+
+
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+
+@app.before_request
+def before_request():
+    g.user = current_user
+
+
+@app.route('/')
+@app.route('/index')
+def index():
+    return render_template('base.html', title='Home')
+
+@app.route('/showall')
+@login_required
+def showallusers():
+    if g.user.rights != RIGHT_ADMIN:
+        flash('Only Users with Administrator Rights can access this page')
+        return redirect(url_for('index'))
+    AllUsers = User.query.all()
+    return render_template('showall.html', title='All Users', Users = AllUsers)
+
+@app.route('/addusers', methods=['GET', 'POST'])
+@login_required
+def addusers():
+    if g.user.rights != RIGHT_ADMIN:
+        flash('Only Users with Administrator Rights can access this page')
+        return redirect(url_for('index'))
+    form = adduserform();
+    if form.validate_on_submit():
+        nickname = form.useremail.data.split('@')[0]
+        if form.userright.data == 'user':
+            right = RIGHT_USER
+        else:
+            right = RIGHT_ADMIN
+
+        if form.userrole.data == 'webdev':
+            usrole = ROLE_WEBDEV
+        else:
+            usrole = ROLE_SALESEXEC
+
+        user = User(nickname=nickname, email=form.useremail.data, role=usrole, rights=right)
+        db.session.add(user)
+        db.session.commit()
+        flash('Added User with Address: ' + form.useremail.data + ' with ' + form.userright.data + ' rights, as a ' + form.userrole.data)
+        return render_template('base.html', title='Home')
+
+    return render_template('addusrs.html', title="User Management", form=form)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+@oid.loginhandler
+def login():
+    if g.user is not None and g.user.is_authenticated():
+        return redirect(url_for('index'))
+    form = SigninForm()
+    if form.validate_on_submit():
+        session['remember_me'] = form.remember_me.data
+        return oid.try_login(app.config['GOOGLE_OPENID'], ask_for=['nickname', 'email'])
+    return render_template('signin.html',
+                           title='Sign In',
+                           form=form, )
+
+
+@oid.after_login
+def after_login(resp):
+    if resp.email is None or resp.email == "":
+        flash('Invalid login. Please try again.')
+        return redirect(url_for('login'))
+    user = User.query.filter_by(email=resp.email).first()
+    if user is None:
+        flash('Not A Registered UniBlue FM user')
+        return redirect(url_for('login'))
+
+    """
+    if user is None:
+        nickname = resp.nickname
+        if nickname is None or nickname == "":
+            nickname = resp.email.split('@')[0]
+        user = User(nickname = nickname, email = resp.email, rights = RIGHT_USER)
+        db.session.add(user)
+        db.session.commit()"""
+    remember_me = False
+    if 'remember_me' in session:
+        remember_me = session['remember_me']
+        session.pop('remember_me', None)
+    login_user(user, remember=remember_me)
+    return redirect(request.args.get('next') or url_for('index'))
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@app.route('/redirecting')
+def redirector():
+    return redirect(url_for('file:///C:/Users/Nick.Nick-PC/PycharmProjects/teamB/landingpages/pageA.html'), 302)
+
+
+

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Manage UniBlue FM Users</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Add User</h3>
+        </div>
+        <div class="panel-body">
+
+            <form class="form-horizontal" role="form" action="" method="post" name="adduser">
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    <div class="col-sm-offset-0.5 col-sm-5">
+                        <label for="exampleInputEmail1">Email Address</label>
+                        {{ form.useremail(placeholder='Enter Email', class = "form-control") }}
+                    </div>
+                </div>
+
+                <div class="control-group" id="radios1">
+                    <label class="control-label" for="radios1">User Role</label>
+
+                    <div class="radio">
+
+                        {% for subfield in form.userrole %}
+                        <label>
+                            {{ subfield() }}
+                            {{ subfield.label }}
+                        </label>
+                        <br>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="control-group" id="radios2">
+                    <label class="control-label" for="radios2">User Type</label>
+
+                    <div class="radio">
+
+                        {% for subfield in form.userright %}
+                        <label>
+                            {{ subfield() }}
+                            {{ subfield.label }}
+                        </label>
+                        <br>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+                <div class="control-group">
+                    <label class="control-label" for="singlebutton"></label>
+
+                    <div class="controls">
+                        <button id="singlebutton" name="singlebutton" class="btn btn-primary">Add User</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
