@@ -17,11 +17,9 @@ googlelogin = GoogleLogin(app)
 def load_user(id):
     return User.query.get(int(id))
 
-
 @app.before_request
 def before_request():
     g.user = current_user
-
 
 @app.route('/')
 @app.route('/index')
@@ -108,12 +106,9 @@ def login():
                            title='Sign In',
                            form=form, )
 
-
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
 
 @oid.after_login
 def after_login(resp):
@@ -140,18 +135,20 @@ def after_login(resp):
     login_user(user, remember=remember_me)
     return redirect(request.args.get('next') or url_for('index'))
 
-
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
-
-
 @app.route('/redirecting')
 def redirector():
     return redirect(url_for('file:///C:/Users/Nick.Nick-PC/PycharmProjects/teamB/landingpages/pageA.html'), 302)
+
+@app.route('/editpage')
+def editpg():
+    pgid = request.args.get('pageid')
+    landpage = LandingPage.query.filter_by(id=pgid).first()
+    return render_template('editpage.html', title='Edit Landing Page', f=landpage)
 
 
 

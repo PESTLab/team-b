@@ -22,6 +22,7 @@
                         <th>Page Type</th>
                         <th>Visibility</th>
                         <th>Uploader</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -39,15 +40,21 @@
                             {% endif %}
                         </td>
                         <td>
-                            {% if f.visibility == 0 %}
+                            {% if f.visibility == "visible" %}
                             Visible
-                            {% elif f.visibility == 1 %}
+                            {% elif f.visibility == "hidden" %}
                             Hidden
                             {% else %}
                             Not Set
                             {% endif %}
                         </td>
                         <td>{{f.uploader_id}}</td>
+                        <td>
+                            <form role="form" action="{{ url_for('editpg') }}" method="get" name="adduser">
+                            <input type="hidden" name="pageid" value="{{f.id}}">
+                            <button class="btn btn-primary" type="submit">Edit</button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                     </tbody>

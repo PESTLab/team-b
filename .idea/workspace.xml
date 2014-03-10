@@ -26,7 +26,7 @@
       <file leaf-file-name="uploadlandpg.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/templates/uploadlandpg.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="0" selection-start="2304" selection-end="2318" vertical-scroll-proportion="-17.807692" vertical-offset="642" max-vertical-offset="1207">
+            <state line="57" column="93" selection-start="0" selection-end="2318" vertical-scroll-proportion="-4.730769" vertical-offset="846" max-vertical-offset="1207">
               <folding />
             </state>
           </provider>
@@ -35,16 +35,7 @@
       <file leaf-file-name="addusrs.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/templates/addusrs.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="43" selection-start="0" selection-end="2172" vertical-scroll-proportion="-5.8846154" vertical-offset="153" max-vertical-offset="1224">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="showallusers.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/showallusers.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="37" selection-start="0" selection-end="1716" vertical-scroll-proportion="-4.576923" vertical-offset="0" max-vertical-offset="1037">
+            <state line="13" column="93" selection-start="295" selection-end="376" vertical-scroll-proportion="-8.5" vertical-offset="0" max-vertical-offset="1224">
               <folding />
             </state>
           </provider>
@@ -53,27 +44,44 @@
       <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="84" selection-start="3245" selection-end="3245" vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="2805">
+            <state line="149" column="59" selection-start="5162" selection-end="5162" vertical-scroll-proportion="0.0" vertical-offset="1105" max-vertical-offset="1479">
               <folding>
-                <element signature="e#20#29#0" expanded="true" />
+                <element signature="e#600#630#0" expanded="false" />
+                <element signature="e#678#699#0" expanded="false" />
+                <element signature="e#755#804#0" expanded="false" />
+                <element signature="e#869#1135#0" expanded="false" />
+                <element signature="e#1222#2157#0" expanded="false" />
+                <element signature="e#2226#3054#0" expanded="false" />
+                <element signature="e#3124#3243#0" expanded="false" />
+                <element signature="e#3326#3748#0" expanded="false" />
+                <element signature="e#3782#3870#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="navbar.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/navbar.html">
+      <file leaf-file-name="showallusers.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/templates/showallusers.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="99" selection-start="1316" selection-end="1316" vertical-scroll-proportion="-7.1923075" vertical-offset="204" max-vertical-offset="1122">
+            <state line="2" column="19" selection-start="46" selection-end="46" vertical-scroll-proportion="-1.3076923" vertical-offset="0" max-vertical-offset="1037">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="showallfiles.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="editpage.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/templates/editpage.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="63" selection-start="253" selection-end="253" vertical-scroll-proportion="0.2672414" vertical-offset="60" max-vertical-offset="408">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="showallfiles.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/templates/showallfiles.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="47" selection-start="1139" selection-end="1139" vertical-scroll-proportion="0.34195402" vertical-offset="459" max-vertical-offset="1088">
+            <state line="52" column="72" selection-start="1900" selection-end="1900" vertical-scroll-proportion="-2.6153846" vertical-offset="816" max-vertical-offset="1207">
               <folding />
             </state>
           </provider>
@@ -151,11 +159,12 @@
         <option value="$PROJECT_DIR$/app/templates/showall.html" />
         <option value="$PROJECT_DIR$/app/models.py" />
         <option value="$PROJECT_DIR$/app/forms.py" />
-        <option value="$PROJECT_DIR$/app/templates/uploadlandpg.html" />
         <option value="$PROJECT_DIR$/app/__init__.py" />
-        <option value="$PROJECT_DIR$/app/views.py" />
         <option value="$PROJECT_DIR$/app/templates/navbar.html" />
+        <option value="$PROJECT_DIR$/app/templates/uploadlandpg.html" />
         <option value="$PROJECT_DIR$/app/templates/showallfiles.html" />
+        <option value="$PROJECT_DIR$/app/views.py" />
+        <option value="$PROJECT_DIR$/app/templates/editpage.html" />
       </list>
     </option>
   </component>
@@ -544,7 +553,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -555,7 +564,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34012538" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34012538" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -582,13 +591,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="17" selection-start="1792" selection-end="1792" vertical-scroll-proportion="0.0" vertical-offset="776" max-vertical-offset="1343">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="0" selection-start="20" selection-end="20" vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="136" />
@@ -605,7 +607,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="49" column="47" selection-start="1607" selection-end="1607" vertical-scroll-proportion="0.0" vertical-offset="682" max-vertical-offset="1394">
           <folding>
-            <element signature="e#20#29#0" expanded="true" />
+            <element signature="e#600#630#0" expanded="false" />
+            <element signature="e#678#699#0" expanded="false" />
+            <element signature="e#755#804#0" expanded="false" />
+            <element signature="e#869#1135#0" expanded="false" />
+            <element signature="e#1222#2157#0" expanded="false" />
+            <element signature="e#2226#3054#0" expanded="false" />
+            <element signature="e#3124#3243#0" expanded="false" />
+            <element signature="e#3326#3748#0" expanded="false" />
+            <element signature="e#3782#3870#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -654,7 +664,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="105" selection-start="294" selection-end="294" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="340">
           <folding>
-            <element signature="e#20#29#0" expanded="true" />
+            <element signature="e#600#630#0" expanded="false" />
+            <element signature="e#678#699#0" expanded="false" />
+            <element signature="e#755#804#0" expanded="false" />
+            <element signature="e#869#1135#0" expanded="false" />
+            <element signature="e#1222#2157#0" expanded="false" />
+            <element signature="e#2226#3054#0" expanded="false" />
+            <element signature="e#3124#3243#0" expanded="false" />
+            <element signature="e#3326#3748#0" expanded="false" />
+            <element signature="e#3782#3870#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -799,20 +817,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/signin.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="34" selection-start="113" selection-end="161" vertical-scroll-proportion="-3.8846154" vertical-offset="35" max-vertical-offset="391">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/addusrs.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="43" selection-start="0" selection-end="2172" vertical-scroll-proportion="-5.8846154" vertical-offset="153" max-vertical-offset="1224">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="50" selection-start="232" selection-end="232" vertical-scroll-proportion="0.19101124" vertical-offset="0" max-vertical-offset="1989">
@@ -834,39 +838,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="29" selection-start="598" selection-end="598" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="544">
-          <folding>
-            <element signature="e#21#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="64" selection-start="242" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="323">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/showallusers.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="37" selection-start="0" selection-end="1716" vertical-scroll-proportion="-4.576923" vertical-offset="0" max-vertical-offset="1037">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/uploadlandpg.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="0" selection-start="2304" selection-end="2318" vertical-scroll-proportion="-17.807692" vertical-offset="642" max-vertical-offset="1207">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="33" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="799">
           <folding />
         </state>
       </provider>
@@ -880,25 +854,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views.py">
+    <entry file="file://$PROJECT_DIR$/app/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="84" selection-start="3245" selection-end="3245" vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="2805">
-          <folding>
-            <element signature="e#20#29#0" expanded="true" />
-          </folding>
+        <state line="19" column="33" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="799">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/navbar.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="99" selection-start="1316" selection-end="1316" vertical-scroll-proportion="-7.1923075" vertical-offset="204" max-vertical-offset="1122">
+        <state line="22" column="71" selection-start="1161" selection-end="1186" vertical-scroll-proportion="-0.5373563" vertical-offset="561" max-vertical-offset="1122">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/signin.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="75" selection-start="339" selection-end="402" vertical-scroll-proportion="-7.8461537" vertical-offset="17" max-vertical-offset="391">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/uploadlandpg.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="93" selection-start="0" selection-end="2318" vertical-scroll-proportion="-4.730769" vertical-offset="846" max-vertical-offset="1207">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/showallfiles.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="47" selection-start="1139" selection-end="1139" vertical-scroll-proportion="0.34195402" vertical-offset="459" max-vertical-offset="1088">
+        <state line="52" column="72" selection-start="1900" selection-end="1900" vertical-scroll-proportion="-2.6153846" vertical-offset="816" max-vertical-offset="1207">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/addusrs.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="93" selection-start="295" selection-end="376" vertical-scroll-proportion="-8.5" vertical-offset="0" max-vertical-offset="1224">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="29" selection-start="598" selection-end="598" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="544">
+          <folding>
+            <element signature="e#21#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="149" column="59" selection-start="5162" selection-end="5162" vertical-scroll-proportion="0.0" vertical-offset="1105" max-vertical-offset="1479">
+          <folding>
+            <element signature="e#600#630#0" expanded="false" />
+            <element signature="e#678#699#0" expanded="false" />
+            <element signature="e#755#804#0" expanded="false" />
+            <element signature="e#869#1135#0" expanded="false" />
+            <element signature="e#1222#2157#0" expanded="false" />
+            <element signature="e#2226#3054#0" expanded="false" />
+            <element signature="e#3124#3243#0" expanded="false" />
+            <element signature="e#3326#3748#0" expanded="false" />
+            <element signature="e#3782#3870#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/showallusers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="19" selection-start="46" selection-end="46" vertical-scroll-proportion="-1.3076923" vertical-offset="0" max-vertical-offset="1037">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/editpage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="63" selection-start="253" selection-end="253" vertical-scroll-proportion="0.2672414" vertical-offset="60" max-vertical-offset="408">
           <folding />
         </state>
       </provider>
