@@ -1,10 +1,12 @@
 __author__ = 'Nick'
+import os
 
-from app import app, db, lm, oid
+from werkzeug.utils import secure_filename
+from app import app, db, lm, oid, ALLOWED_EXTENSIONS
 from flask import redirect, render_template, url_for, flash, request, g, session
-from forms import SigninForm, adduserform
+from forms import SigninForm, adduserform, uploadlandingpg
 from flask_login import login_user, logout_user, current_user, login_required
-from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV
+from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage , VISIBILE, HIDDEN
 from flask_googlelogin import GoogleLogin
 from datetime import datetime
 
@@ -33,7 +35,7 @@ def showallusers():
         flash('Only Users with Administrator Rights can access this page')
         return redirect(url_for('index'))
     AllUsers = User.query.all()
-    return render_template('showall.html', title='All Users', Users = AllUsers)
+    return render_template('showallusers.html', title='All Users', Users = AllUsers)
 
 @app.route('/addusers', methods=['GET', 'POST'])
 @login_required
@@ -62,6 +64,36 @@ def addusers():
 
     return render_template('addusrs.html', title="User Management", form=form)
 
+@app.route('/upload', methods=['GET', 'POST'])
+def uploadpg():
+    form = uploadlandingpg();
+    if form.validate_on_submit():
+        file = request.files['file']
+
+        if form.visibility.data == 'visible':
+            vis = VISIBILE
+        else:
+            vis = HIDDEN
+
+        filerec= LandingPage(uploader_id=g.user.id, visibility=form.visibility.data, product=form.productname.data, page_name=file.filename, page_type=form.page_type.data)
+        db.session.add(filerec)
+        db.session.commit()
+        flash('Added File with Name: ' + file.filename)
+
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        return render_template('base.html', title='Home')
+
+    return render_template('uploadlandpg.html', title='Upload Landing Page', form = form)
+
+@app.route('/showallfiles')
+@login_required
+def showallpages():
+    AllFiles = LandingPage.query.all()
+    return render_template('showallfiles.html', title='All Files', Files = AllFiles)
 
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler
@@ -75,6 +107,12 @@ def login():
     return render_template('signin.html',
                            title='Sign In',
                            form=form, )
+
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @oid.after_login
@@ -109,9 +147,13 @@ def logout():
     return redirect(url_for('index'))
 
 
+
+
 @app.route('/redirecting')
 def redirector():
     return redirect(url_for('file:///C:/Users/Nick.Nick-PC/PycharmProjects/teamB/landingpages/pageA.html'), 302)
+
+
 
 
 

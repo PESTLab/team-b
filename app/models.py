@@ -8,6 +8,17 @@ RIGHT_ADMIN = 1
 ROLE_WEBDEV = 0
 ROLE_SALESEXEC = 1
 
+VISIBILE = 0
+HIDDEN = 1
+
+class LandingPage(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    uploader_id = db.Column(db.SmallInteger)
+    page_name = db.Column(db.String(64), index = True, unique = True)
+    page_type = db.Column(db.String(120))
+    visibility = db.Column(db.SmallInteger, default = VISIBILE)
+    product = db.Column(db.String(120))
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     nickname = db.Column(db.String(64), index = True, unique = True)

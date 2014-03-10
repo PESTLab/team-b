@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Manage Landing Page Templates</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Upload Landing Page</h3>
+        </div>
+        <div class="panel-body">
+
+            <form class="form-horizontal" role="form" action="" method="post" name="adduser" enctype=multipart/form-data>
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    <div class="col-sm-offset-0.5 col-sm-5">
+                        <label for="inputproductname">Product Name</label>
+                        {{ form.productname(placeholder='Enter Product Name', class = "form-control") }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-0.5 col-sm-5">
+                        <label for="inputpagetype">Page Type</label>
+                        {{ form.page_type(placeholder='Enter Page Type', class = "form-control") }}
+                    </div>
+                </div>
+
+                <div class="control-group" id="radios1">
+                    <label class="control-label" for="radios1">Visibility</label>
+
+                    <div class="radio">
+
+                        {% for subfield in form.visibility %}
+                        <label>
+                            {{ subfield() }}
+                            {{ subfield.label }}
+                        </label>
+                        <br>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <br>
+                <div class="form-group">
+                    <div class="col-sm-offset-0.5 col-sm-5">
+                        <label for="inputpagetype">Choose File</label>
+                        {{ form.file }}
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="singlebutton"></label>
+
+                    <div class="controls">
+                        <button id="singlebutton" name="singlebutton" class="btn btn-primary">Upload Page</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
