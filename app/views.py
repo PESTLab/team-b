@@ -78,7 +78,6 @@ def uploadpg():
         db.session.commit()
         flash('Added File with Name: ' + file.filename)
 
-
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -144,11 +143,19 @@ def logout():
 def redirector():
     return redirect(url_for('file:///C:/Users/Nick.Nick-PC/PycharmProjects/teamB/landingpages/pageA.html'), 302)
 
-@app.route('/editpage')
+@app.route('/editpage', methods=['GET', 'POST'])
 def editpg():
     pgid = request.args.get('pageid')
     landpage = LandingPage.query.filter_by(id=pgid).first()
-    return render_template('editpage.html', title='Edit Landing Page', f=landpage)
+    form = uploadlandingpg()
+    if form.validate_on_submit():
+        landpage.product = form.productname.data
+        landpage.page_type = form.page_type.data
+        landpage.visibility= form.visibility.data
+        db.session.commit()
+        flash('Landing Page attributes Saved')
+        return redirect(url_for('showallpages'))
+    return render_template('editpage.html', title='Edit Landing Page', f=landpage, form = form)
 
 
 

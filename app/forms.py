@@ -16,7 +16,7 @@ class adduserform(Form):
 class uploadlandingpg(Form):
     page_type = SelectField('page_type', choices=[('download', 'Download Page'), ('product', 'Product Page')])
     productname= TextField('productname')
-    visibility = RadioField('visibilty', choices=[('visible','Visible'), ('hidden','Hidden')], default='visible')
+    visibility = RadioField('visibilty', choices=[('visible','Visible'), ('hidden','Hidden'), ('notset','Not Set')], default='visible')
     file = FileField('filename')
 
 

@@ -11,6 +11,48 @@
         </div>
         <div class="panel-body">
 
+            <form class="form-horizontal" role="form" action="" method="post" name="adduser" enctype=multipart/form-data>
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    <div class="col-sm-offset-0.5 col-sm-5">
+                        <label for="inputproductname">Product Name</label>
+                        {{ form.productname(value=f.product, class = "form-control") }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-0.5 col-sm-5">
+                        <label for="inputpagetype">Page Type</label>
+                        {{ form.page_type(value=f.page_type, class = "form-control") }}
+                    </div>
+                </div>
+
+                <div class="control-group" id="radios1">
+                    <label class="control-label" for="radios1">Visibility</label>
+
+                    <div class="radio">
+
+                        {% for subfield in form.visibility %}
+                        <label>
+                            {{ subfield() }}
+                            {{ subfield.label }}
+                        </label>
+                        <br>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="singlebutton"></label>
+                    <br>
+                    <div class="controls">
+                        <button id="singlebutton" name="singlebutton" class="btn btn-primary">Save Changes</button>
+                    </div>
+                    Original Values will be kept if they are not altered
+                </div>
+            </form>
+
 
 
         </div>
