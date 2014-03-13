@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script>
+$('#myTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+
+
+
+</script>
+
+<div class="container">
+    <h1>Manage Campaigns</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><b>{{c.name}} Campaign</b></h3>
+        </div>
+        <div class="panel-body">
+
+            <div id="content">
+                <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+
+                    <li class="active"><a href="#red" data-toggle="tab">Details</a></li>
+                    {% for f in funnels %}
+                    <li><a href="#{{f.id}}" data-toggle="tab">{{f.name}}</a></li>
+                    {% endfor %}
+                    <li><a href="#newfunnel" data-toggle="tab">New Funnel</a></li>
+                </ul>
+                <div id="my-tab-content" class="tab-content">
+
+                    <div class="tab-pane active" id="red">
+                        <h1>Details</h1>
+                    </div>
+
+                    {% for f in funnels %}
+                    <div class="tab-pane" id="{{f.id}}">
+                        <h1>{{f.name}}</h1>
+                    </div>
+                    {% endfor %}
+
+                    <div class="tab-pane" id="newfunnel">
+                        <h1>New Funnel</h1>
+
+                        <form class="form-horizontal" role="form" action="" method="post" name="adduser"
+                              enctype="multipart/form-data">
+                            {{form.hidden_tag()}}
+                            <div class="form-group">
+                                <div class="col-sm-offset-0.5 col-sm-5">
+                                    <label>Funnel Name</label>
+                                    {{ form.funnel_name(placeholder='Enter Funnel Name', class="form-control")}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-0.5 col-sm-5">
+                                    <label>Product Name</label>
+                                    {{ form.product_name(placeholder='Enter Product Name', class="form-control")}}
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="singlebutton"></label>
+                                <br>
+
+                                <div class="controls">
+                                    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Add Funnel
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -15,7 +15,7 @@ class Campaign(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     creator_id = db.Column(db.SmallInteger)
     name = db.Column(db.String(64), index = True, unique = True)
-    funnel_ids = db.Column(db.String(500))
+    funnel_ids = db.Column(db.String(500), default="NONE")
 
 class Funnel(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -31,8 +31,6 @@ class LandingPage(db.Model):
     page_type = db.Column(db.String(120))
     visibility = db.Column(db.SmallInteger, default = VISIBILE)
     product = db.Column(db.String(120))
-
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -55,4 +53,3 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
-

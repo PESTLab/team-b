@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Manage UniBlue FM Users</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">All Campaigns</h3>
+        </div>
+        <div class="panel-body">
+
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Campaign Name</th>
+                        <th>No. of Funnels</th>
+                        <th>Creator</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in Camps %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{c.name}}</td>
+                        <td>{{c.funnel_ids}}</td>
+                        <td>{{c.creator_id}}</td>
+                        <td>
+                            <form role="form" action="{{ url_for('managecamp') }}" method="get" name="adduser">
+                            <input type="hidden" name="cid" value="{{c.id}}">
+                            <button class="btn btn-primary" type="submit">Manage Campaign</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

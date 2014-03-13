@@ -65,7 +65,6 @@ def addusers():
 @app.route('/upload', methods=['GET', 'POST'])
 def uploadpg():
     form = uploadlandingpg();
-
     if form.validate_on_submit():
         file = request.files['file']
 
@@ -162,21 +161,64 @@ def editpg():
 def newcamp():
     form = newcampaign()
     if form.validate_on_submit():
-        camp=Campaign(crea)
+        camp=Campaign(creator_id = g.user.id, name = form.campaignname.data)
         db.session.add(camp)
         db.session.commit()
-        flash('Added File with Name: ' + file.filename)
+        return redirect(url_for('managecamp', cid=camp.id ))
     return render_template('newcampaign1.html', title='Add New Campaign', form = form)
+
+@app.route('/managecampaign', methods=['GET', 'POST'])
+def managecamp():
+    camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
+    funnelform = funnelpg()
+
+    funnel_ids = []
+    funnel_ids = camp.funnel_ids.split(",")
+    funnels_arr = []
+
+    for f_id in funnel_ids:
+        f = Funnel.query.filter_by(id=f_id).first()
+        funnels_arr.append(f)
+
+    if funnelform.validate_on_submit():
+        funnelrec = Funnel(campaign_id=camp.id, name=funnelform.funnel_name.data, product=funnelform.product_name.data)
+        db.session.add(funnelrec)
+        db.session.commit()
+
+        if camp.funnel_ids == "NONE":
+            camp.funnel_ids = funnelrec.id
+        else:
+            camp.funnel_ids = camp.funnel_ids + "," + str(funnelrec.id)
+
+        db.session.commit()
+
+        return redirect(url_for('managecamp', cid=camp.id))
+
+    return render_template('managecampaign.html', c=camp, form = funnelform, funnels = funnels_arr)
 
 @app.route('/addfunnel', methods=['GET', 'POST'])
 def addfunnel():
+    camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
     form = funnelpg()
     if form.validate_on_submit():
         funnelrec = Funnel(campaign_id=form.campaign_id.data, name=form.funnel_name.data, product=form.product_name.data)
         db.session.add(funnelrec)
+
+        if camp.funnel_ids == "NONE":
+            camp.funnel_ids = funnelrec.id
+        else:
+            camp.funnel_ids = camp.funnel_ids+ " " + funnelrec.id
+
         db.session.commit()
         flash('Added Funnel with Name: ' + form.funnel_name.data)
         return render_template('base.html', title='Home')
-    return render_template('addfunnel.html', title='Add Funnel Page', form=form)
+    return render_template('addfunnel.html', title='Add Funnel Page', form=form, c = camp)
+
+@app.route('/showallcampaigns')
+@login_required
+def showallcamps():
+    AllCamps = Campaign.query.all()
+    return render_template('showallcamps.html', title='All Campaigns', Camps = AllCamps)
+
 
 

@@ -11,13 +11,23 @@
         </div>
         <div class="panel-body">
 
-            {{form.hidden_tag()}}
+            <form class="form-horizontal" role="form" action="" method="post" name="adduser">
+                {{form.hidden_tag()}}
                 <div class="form-group">
                     <div class="col-sm-offset-0.5 col-sm-5">
                         <label for="campname">Campaign Name</label>
                         {{ form.campaignname(placeholder='Enter Campaign Name', class = "form-control") }}
                     </div>
                 </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="singlebutton"></label>
+
+                    <div class="controls">
+                        <button id="singlebutton" name="singlebutton" class="btn btn-primary">Add Campaign</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
