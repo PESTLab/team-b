@@ -19,5 +19,7 @@ class uploadlandingpg(Form):
     visibility = RadioField('visibilty', choices=[('visible','Visible'), ('hidden','Hidden'), ('notset','Not Set')], default='visible')
     file = FileField('filename')
 
+class newcampaign(Form):
+    campaignname = TextField('campaignname')
 
 

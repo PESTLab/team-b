@@ -4,9 +4,9 @@ import os
 from werkzeug.utils import secure_filename
 from app import app, db, lm, oid, ALLOWED_EXTENSIONS
 from flask import redirect, render_template, url_for, flash, request, g, session
-from forms import SigninForm, adduserform, uploadlandingpg
+from forms import SigninForm, adduserform, uploadlandingpg, newcampaign
 from flask_login import login_user, logout_user, current_user, login_required
-from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage , VISIBILE, HIDDEN
+from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage , VISIBILE, HIDDEN, Campaign
 from flask_googlelogin import GoogleLogin
 from datetime import datetime
 
@@ -157,7 +157,20 @@ def editpg():
         return redirect(url_for('showallpages'))
     return render_template('editpage.html', title='Edit Landing Page', f=landpage, form = form)
 
+@app.route('/newcampaign', methods=['GET', 'POST'])
+def newcamp():
+    form = newcampaign()
+    if form.validate_on_submit():
+        camp=Campaign(crea)
+        db.session.add(camp)
+        db.session.commit()
+        flash('Added File with Name: ' + file.filename)
+    return render_template('newcampaign1.html', title='Add New Campaign', form = form)
 
 
 
-
+class Campaign(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    creator_id = db.Column(db.SmallInteger)
+    name = db.Column(db.String(64), index = True, unique = True)
+    funnel_ids = db.Column(db.String(500))
