@@ -22,4 +22,8 @@ class uploadlandingpg(Form):
 class newcampaign(Form):
     campaignname = TextField('campaignname')
 
+class funnelpg(Form):
+    funnel_name = TextField('funnel_name')
+    product_name = TextField('product_name')
+
 
