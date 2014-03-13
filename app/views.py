@@ -4,9 +4,9 @@ import os
 from werkzeug.utils import secure_filename
 from app import app, db, lm, oid, ALLOWED_EXTENSIONS
 from flask import redirect, render_template, url_for, flash, request, g, session
-from forms import SigninForm, adduserform, uploadlandingpg, newcampaign
+from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg
 from flask_login import login_user, logout_user, current_user, login_required
-from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage , VISIBILE, HIDDEN, Campaign
+from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage , VISIBILE, HIDDEN, Campaign, Funnel
 from flask_googlelogin import GoogleLogin
 from datetime import datetime
 
@@ -65,6 +65,7 @@ def addusers():
 @app.route('/upload', methods=['GET', 'POST'])
 def uploadpg():
     form = uploadlandingpg();
+
     if form.validate_on_submit():
         file = request.files['file']
 
@@ -167,10 +168,15 @@ def newcamp():
         flash('Added File with Name: ' + file.filename)
     return render_template('newcampaign1.html', title='Add New Campaign', form = form)
 
+@app.route('/addfunnel', methods=['GET', 'POST'])
+def addfunnel():
+    form = funnelpg()
+    if form.validate_on_submit():
+        funnelrec = Funnel(campaign_id=form.campaign_id.data, name=form.funnel_name.data, product=form.product_name.data)
+        db.session.add(funnelrec)
+        db.session.commit()
+        flash('Added Funnel with Name: ' + form.funnel_name.data)
+        return render_template('base.html', title='Home')
+    return render_template('addfunnel.html', title='Add Funnel Page', form=form)
 
 
-class Campaign(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    creator_id = db.Column(db.SmallInteger)
-    name = db.Column(db.String(64), index = True, unique = True)
-    funnel_ids = db.Column(db.String(500))
