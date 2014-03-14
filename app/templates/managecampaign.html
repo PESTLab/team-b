@@ -40,6 +40,18 @@ $('#myTab a').click(function (e) {
                     {% for f in funnels %}
                     <div class="tab-pane" id="{{f.id}}">
                         <h1>{{f.name}}</h1>
+                        <div class="control-group">
+                                <label class="control-label" for="addbutton"></label>
+                                <br>
+                                <label class="control-label" for="deletebutton"></label>
+                                <br>
+                                <div class="controls">
+                                    <button id="addbutton" name="addbutton" class="btn btn-primary" style="float: left">Add New Element
+                                    </button>
+                                    <button id="deletebutton" name="deletebutton" class="btn btn-primary" style="float: right">Delete Funnel
+                                    </button>
+                                </div>
+                        </div>
                     </div>
                     {% endfor %}
 
