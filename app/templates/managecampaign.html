@@ -15,10 +15,20 @@ $('#myTab a').click(function (e) {
 <script>
   $(function() {
     $( "#sortable" ).sortable({
-      cancel: ".ui-state-disabled"
+      cancel: ".ui-state-disabled",
+        revert:300
     });
     $( "#sortable" ).disableSelection();
   });
+
+  function remove(){
+      $("#deletepagebtn").click(function(e){
+        e.preventDefault();
+
+        $("#sortable").remove();
+    });
+  }
+
 </script>
 
 <script type="text/javascript">
@@ -37,6 +47,15 @@ function addtext(pgname, id){
     var newpnlhead = document.createElement('div')
     newpnlhead.setAttribute('class', 'panel-heading')
 
+    var newbtn = document.createElement('button')
+    newbtn.setAttribute('class', 'btn btn-default btn-lg')
+    newbtn.setAttribute('style', 'float: right;')
+    newbtn.setAttribute('id', 'deletepagebtn')
+    newbtn.setAttribute('onclick', 'remove();')
+
+    var newspan = document.createElement('span')
+    newspan.setAttribute('class', 'glyphicon glyphicon-remove-circle')
+
     var newh3 = document.createElement('h3')
     newh3.setAttribute('class', 'panel-title')
 
@@ -49,6 +68,9 @@ function addtext(pgname, id){
     newpnlbod.setAttribute('class', 'panel-body')
     newpnlbod.appendChild(newpgid)
 
+    newbtn.appendChild(newspan)
+
+    newpnlhead.appendChild(newbtn)
     newpnlhead.appendChild(newh3)
     newpnl.appendChild(newpnlhead)
     newpnl.appendChild(newpnlbod)
@@ -89,6 +111,9 @@ function addtext(pgname, id){
 
                     {% for f in funnels %}
                     <div class="tab-pane" id="{{f.id}}">
+                        <div class="controls">
+                            <button id="deletebutton2" name="deletebutton" class="btn btn-primary" style="float: right;">Delete Funnel</button>
+                        </div>
                         <h1>{{f.name}}</h1>
 
                         <div class="panel panel-default">
@@ -102,57 +127,63 @@ function addtext(pgname, id){
                             </div>
                         </div>
 
+                        <div style="margin-bottom: 2%">
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"
+                                style="display: block; position: static; margin-bottom: 2%; *width: 180px;">
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">Add New Element</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a href="#">Landing Page</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-submenu">
+                                                    <a href="#">Download Page</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for f in allfiles %}
+                                                        {% if f.page_type == "download" %}
+                                                        <li onClick="{% set pgids = pgids ~ ',' ~ f.id %} addtext('{{f.page_name}}', {{f.id}})"><a href="#">{{f.page_name}}</a></li>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#">Purchase Page</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for f in allfiles %}
+                                                        {% if f.page_type == "purchase" %}
+                                                        <li onClick="addtext('{{f.page_name}}', {{f.id}})"><a href="#">{{f.page_name}}</a></li>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#">Product Page</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for f in allfiles %}
+                                                        {% if f.page_type == "product" %}
+                                                        <li onClick="addtext('{{f.page_name}}', {{f.id}})"><a href="#">{{f.page_name}}</a></li>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="clear: left">
 
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"
-                            style="display: block; position: static; margin-bottom: 5px; *width: 180px;">
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="#">Add New Element</a>
-                                <ul class="dropdown-menu">
-                                    <li class="dropdown-submenu">
-                                        <a href="#">Landing Page</a>
-                                        <ul class="dropdown-menu">
-                                            <li class="dropdown-submenu">
-                                                <a href="#">Download Page</a>
-                                                <ul class="dropdown-menu">
-                                                    {% for f in allfiles %}
-                                                    {% if f.page_type == "download" %}
-                                                    <li onClick="{% set pgids = pgids ~ ',' ~ f.id %} addtext('{{f.page_name}}', {{f.id}})"><a href="#">{{f.page_name}}</a></li>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown-submenu">
-                                                <a href="#">Purchase Page</a>
-                                                <ul class="dropdown-menu">
-                                                    {% for f in allfiles %}
-                                                    {% if f.page_type == "purchase" %}
-                                                    <li onClick="addtext('{{f.page_name}}', {{f.id}})"><a href="#">{{f.page_name}}</a></li>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown-submenu">
-                                                <a href="#">Product Page</a>
-                                                <ul class="dropdown-menu">
-                                                    {% for f in allfiles %}
-                                                    {% if f.page_type == "product" %}
-                                                    <li onClick="addtext('{{f.page_name}}', {{f.id}})"><a href="#">{{f.page_name}}</a></li>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                            {% set pgids =  "hello"  %}
+                            <form role="form" action="{{ url_for('checkme') }}" method="get" name="adduser">
+                                <input type="hidden" name="pgids" value="{{pgids}}">
+                                <button class="btn btn-primary" type="submit">Save Changes</button>
+                            </form>
 
-                        {% set pgids = "hello" %}
-                        <form role="form" action="{{ url_for('checkme') }}" method="get" name="adduser">
-                            <input type="hidden" name="pgids" value="{{pgids}}">
-                            <button class="btn btn-primary" type="submit">Save Changes</button>
-                        </form>
+                        </div>
+
                     </div>
+
 
                     {% endfor %}
 
