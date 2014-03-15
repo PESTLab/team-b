@@ -6,7 +6,8 @@ from app import app, db, lm, oid, ALLOWED_EXTENSIONS
 from flask import redirect, render_template, url_for, flash, request, g, session
 from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg
 from flask_login import login_user, logout_user, current_user, login_required
-from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage , VISIBILE, HIDDEN, Campaign, Funnel
+from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage, VISIBILE, HIDDEN, Campaign, \
+    Funnel
 from flask_googlelogin import GoogleLogin
 from datetime import datetime
 
@@ -17,14 +18,17 @@ googlelogin = GoogleLogin(app)
 def load_user(id):
     return User.query.get(int(id))
 
+
 @app.before_request
 def before_request():
     g.user = current_user
+
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('base.html', title='Home')
+
 
 @app.route('/showall')
 @login_required
@@ -33,7 +37,8 @@ def showallusers():
         flash('Only Users with Administrator Rights can access this page')
         return redirect(url_for('index'))
     AllUsers = User.query.all()
-    return render_template('showallusers.html', title='All Users', Users = AllUsers)
+    return render_template('showallusers.html', title='All Users', Users=AllUsers)
+
 
 @app.route('/addusers', methods=['GET', 'POST'])
 @login_required
@@ -57,10 +62,12 @@ def addusers():
         user = User(nickname=nickname, email=form.useremail.data, role=usrole, rights=right)
         db.session.add(user)
         db.session.commit()
-        flash('Added User with Address: ' + form.useremail.data + ' with ' + form.userright.data + ' rights, as a ' + form.userrole.data)
+        flash(
+            'Added User with Address: ' + form.useremail.data + ' with ' + form.userright.data + ' rights, as a ' + form.userrole.data)
         return render_template('base.html', title='Home')
 
     return render_template('addusrs.html', title="User Management", form=form)
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 def uploadpg():
@@ -73,7 +80,8 @@ def uploadpg():
         else:
             vis = HIDDEN
 
-        filerec= LandingPage(uploader_id=g.user.id, visibility=form.visibility.data, product=form.productname.data, page_name=file.filename, page_type=form.page_type.data)
+        filerec = LandingPage(uploader_id=g.user.id, visibility=form.visibility.data, product=form.productname.data,
+                              page_name=file.filename, page_type=form.page_type.data)
         db.session.add(filerec)
         db.session.commit()
         flash('Added File with Name: ' + file.filename)
@@ -84,13 +92,15 @@ def uploadpg():
 
         return render_template('base.html', title='Home')
 
-    return render_template('uploadlandpg.html', title='Upload Landing Page', form = form)
+    return render_template('uploadlandpg.html', title='Upload Landing Page', form=form)
+
 
 @app.route('/showallfiles')
 @login_required
 def showallpages():
     AllFiles = LandingPage.query.all()
-    return render_template('showallfiles.html', title='All Files', Files = AllFiles)
+    return render_template('showallfiles.html', title='All Files', Files=AllFiles)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler
@@ -105,9 +115,11 @@ def login():
                            title='Sign In',
                            form=form, )
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 @oid.after_login
 def after_login(resp):
@@ -134,14 +146,17 @@ def after_login(resp):
     login_user(user, remember=remember_me)
     return redirect(request.args.get('next') or url_for('index'))
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
+
 @app.route('/redirecting')
 def redirector():
     return redirect(url_for('file:///C:/Users/Nick.Nick-PC/PycharmProjects/teamB/landingpages/pageA.html'), 302)
+
 
 @app.route('/editpage', methods=['GET', 'POST'])
 def editpg():
@@ -151,21 +166,23 @@ def editpg():
     if form.validate_on_submit():
         landpage.product = form.productname.data
         landpage.page_type = form.page_type.data
-        landpage.visibility= form.visibility.data
+        landpage.visibility = form.visibility.data
         db.session.commit()
         flash('Landing Page attributes Saved')
         return redirect(url_for('showallpages'))
-    return render_template('editpage.html', title='Edit Landing Page', f=landpage, form = form)
+    return render_template('editpage.html', title='Edit Landing Page', f=landpage, form=form)
+
 
 @app.route('/newcampaign', methods=['GET', 'POST'])
 def newcamp():
     form = newcampaign()
     if form.validate_on_submit():
-        camp=Campaign(creator_id = g.user.id, name = form.campaignname.data)
+        camp = Campaign(creator_id=g.user.id, name=form.campaignname.data)
         db.session.add(camp)
         db.session.commit()
-        return redirect(url_for('managecamp', cid=camp.id ))
-    return render_template('newcampaign1.html', title='Add New Campaign', form = form)
+        return redirect(url_for('managecamp', cid=camp.id))
+    return render_template('newcampaign1.html', title='Add New Campaign', form=form)
+
 
 @app.route('/managecampaign', methods=['GET', 'POST'])
 def managecamp():
@@ -179,6 +196,8 @@ def managecamp():
     for f_id in funnel_ids:
         f = Funnel.query.filter_by(id=f_id).first()
         funnels_arr.append(f)
+
+        AllFiles = LandingPage.query.all()
 
     if funnelform.validate_on_submit():
         funnelrec = Funnel(campaign_id=camp.id, name=funnelform.funnel_name.data, product=funnelform.product_name.data)
@@ -194,31 +213,39 @@ def managecamp():
 
         return redirect(url_for('managecamp', cid=camp.id))
 
-    return render_template('managecampaign.html', c=camp, form = funnelform, funnels = funnels_arr)
+    return render_template('managecampaign.html', c=camp, form=funnelform, funnels=funnels_arr, allfiles = AllFiles)
+
 
 @app.route('/addfunnel', methods=['GET', 'POST'])
 def addfunnel():
     camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
     form = funnelpg()
     if form.validate_on_submit():
-        funnelrec = Funnel(campaign_id=form.campaign_id.data, name=form.funnel_name.data, product=form.product_name.data)
+        funnelrec = Funnel(campaign_id=form.campaign_id.data, name=form.funnel_name.data,
+                           product=form.product_name.data)
         db.session.add(funnelrec)
 
         if camp.funnel_ids == "NONE":
             camp.funnel_ids = funnelrec.id
         else:
-            camp.funnel_ids = camp.funnel_ids+ " " + funnelrec.id
+            camp.funnel_ids = camp.funnel_ids + " " + funnelrec.id
 
         db.session.commit()
         flash('Added Funnel with Name: ' + form.funnel_name.data)
         return render_template('base.html', title='Home')
-    return render_template('addfunnel.html', title='Add Funnel Page', form=form, c = camp)
+    return render_template('addfunnel.html', title='Add Funnel Page', form=form, c=camp)
+
 
 @app.route('/showallcampaigns')
 @login_required
 def showallcamps():
     AllCamps = Campaign.query.all()
-    return render_template('showallcamps.html', title='All Campaigns', Camps = AllCamps)
+    return render_template('showallcamps.html', title='All Campaigns', Camps=AllCamps)
 
+
+@app.route('/cekcek')
+def checkme():
+    x = request.args.get('pgids')
+    return x
 
 
