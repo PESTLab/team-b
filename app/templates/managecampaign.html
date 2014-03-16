@@ -21,13 +21,22 @@ $('#myTab a').click(function (e) {
     $( "#sortable" ).disableSelection();
   });
 
-  function remove(){
-      $("#deletepagebtn").click(function(e){
-        e.preventDefault();
 
-        $("#sortable").remove();
+  $(function() {
+      $('#deletepagebtn').live('click', function(){
+        $(this).closest('li').remove();
     });
-  }
+  });
+
+$(function() {
+      $('#deletefunnelbtn').live('click', function(){
+        $(this).closest('li.active').remove();
+    });
+  });
+
+
+
+
 
 </script>
 
@@ -51,7 +60,6 @@ function addtext(pgname, id){
     newbtn.setAttribute('class', 'btn btn-default btn-lg')
     newbtn.setAttribute('style', 'float: right;')
     newbtn.setAttribute('id', 'deletepagebtn')
-    newbtn.setAttribute('onclick', 'remove();')
 
     var newspan = document.createElement('span')
     newspan.setAttribute('class', 'glyphicon glyphicon-remove-circle')
@@ -70,10 +78,10 @@ function addtext(pgname, id){
 
     newbtn.appendChild(newspan)
 
-    newpnlhead.appendChild(newbtn)
     newpnlhead.appendChild(newh3)
     newpnl.appendChild(newpnlhead)
     newpnl.appendChild(newpnlbod)
+    newpg.appendChild(newbtn)
     newpg.appendChild(newpnl)
     document.getElementById("sortable").appendChild(newpg)
     }
@@ -112,7 +120,7 @@ function addtext(pgname, id){
                     {% for f in funnels %}
                     <div class="tab-pane" id="{{f.id}}">
                         <div class="controls">
-                            <button id="deletebutton2" name="deletebutton" class="btn btn-primary" style="float: right;">Delete Funnel</button>
+                            <button id="deletefunnelbtn" name="deletebutton" class="btn btn-primary" style="float: right;">Delete Funnel</button>
                         </div>
                         <h1>{{f.name}}</h1>
 
