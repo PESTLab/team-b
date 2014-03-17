@@ -35,7 +35,7 @@
       <file leaf-file-name="showallcamps.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/templates/showallcamps.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="81" selection-start="1068" selection-end="1095" vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="884">
+            <state line="42" column="80" selection-start="1702" selection-end="1702" vertical-scroll-proportion="-15.769231" vertical-offset="304" max-vertical-offset="1003">
               <folding />
             </state>
           </provider>
@@ -50,10 +50,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="223" column="89" selection-start="7419" selection-end="7419" vertical-scroll-proportion="0.0" vertical-offset="3771" max-vertical-offset="4284">
+            <state line="257" column="31" selection-start="8584" selection-end="8584" vertical-scroll-proportion="0.23380281" vertical-offset="4116" max-vertical-offset="4522">
               <folding />
             </state>
           </provider>
@@ -71,16 +71,16 @@
       <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="10" selection-start="132" selection-end="132" vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="1020">
+            <state line="11" column="10" selection-start="132" selection-end="132" vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="1020">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="managecampaign.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="managecampaign.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/templates/managecampaign.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="43" selection-start="789" selection-end="789" vertical-scroll-proportion="0.42494714" vertical-offset="530" max-vertical-offset="4675">
+            <state line="43" column="43" selection-start="789" selection-end="789" vertical-scroll-proportion="126.03846" vertical-offset="4008" max-vertical-offset="4675">
               <folding />
             </state>
           </provider>
@@ -98,7 +98,7 @@
       <file leaf-file-name="forms.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="0" selection-start="1041" selection-end="1041" vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="612">
+            <state line="24" column="0" selection-start="1041" selection-end="1041" vertical-scroll-proportion="0.0" vertical-offset="62" max-vertical-offset="561">
               <folding />
             </state>
           </provider>
@@ -145,13 +145,13 @@
         <option value="$USER_HOME$/teamBvirtualenv/Lib/site-packages/flask/helpers.py" />
         <option value="$PROJECT_DIR$/app/models.py" />
         <option value="$PROJECT_DIR$/app/templates/showallfiles.html" />
-        <option value="$PROJECT_DIR$/app/templates/showallcamps.html" />
         <option value="$PROJECT_DIR$/app/forms.py" />
         <option value="$PROJECT_DIR$/app/templates/addfunnel.html" />
         <option value="$PROJECT_DIR$/app/static/bootstrap.css" />
-        <option value="$PROJECT_DIR$/app/views.py" />
         <option value="$PROJECT_DIR$/app/templates/base.html" />
         <option value="$PROJECT_DIR$/app/templates/managecampaign.html" />
+        <option value="$PROJECT_DIR$/app/templates/showallcamps.html" />
+        <option value="$PROJECT_DIR$/app/views.py" />
       </list>
     </option>
   </component>
@@ -519,7 +519,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.09105691" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32520324" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -781,30 +781,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/showallcamps.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="81" selection-start="1068" selection-end="1095" vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="884">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/editpage.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="47" column="24" selection-start="1770" selection-end="1770" vertical-scroll-proportion="0.0" vertical-offset="482" max-vertical-offset="1122">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="0" selection-start="1041" selection-end="1041" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="10" selection-start="132" selection-end="132" vertical-scroll-proportion="0.0" vertical-offset="186" max-vertical-offset="1020">
           <folding />
         </state>
       </provider>
@@ -816,16 +795,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views.py">
+    <entry file="file://$PROJECT_DIR$/app/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="223" column="89" selection-start="7419" selection-end="7419" vertical-scroll-proportion="0.0" vertical-offset="3648" max-vertical-offset="4284">
+        <state line="24" column="0" selection-start="1041" selection-end="1041" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/managecampaign.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="43" selection-start="789" selection-end="789" vertical-scroll-proportion="0.42494714" vertical-offset="530" max-vertical-offset="4675">
+        <state line="43" column="43" selection-start="789" selection-end="789" vertical-scroll-proportion="126.03846" vertical-offset="4008" max-vertical-offset="4675">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/showallcamps.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="80" selection-start="1702" selection-end="1702" vertical-scroll-proportion="-15.769231" vertical-offset="304" max-vertical-offset="1003">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="10" selection-start="132" selection-end="132" vertical-scroll-proportion="0.0" vertical-offset="186" max-vertical-offset="1020">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="257" column="31" selection-start="8584" selection-end="8584" vertical-scroll-proportion="0.23380281" vertical-offset="4116" max-vertical-offset="4522">
           <folding />
         </state>
       </provider>

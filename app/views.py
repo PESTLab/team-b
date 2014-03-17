@@ -252,5 +252,19 @@ def setfunids():
     db.session.commit()
     return redirect(url_for('managecamp', cid=c_id))
 
+@app.route('/deletecampaign')
+def deletecamp():
+    camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
+    if not (camp.funnel_ids in("NONE")):
+        funnel_ids = camp.funnel_ids.split(",")
+        for f_id in funnel_ids:
+            f = Funnel.query.filter_by(id=f_id).first()
+            db.session.delete(f)
+
+    db.session.delete(camp)
+    db.session.commit()
+
+    return redirect(url_for('showallcamps'))
+
 
 
