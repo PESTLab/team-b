@@ -34,10 +34,6 @@ $(function() {
     });
   });
 
-
-
-
-
 </script>
 
 <script type="text/javascript">
@@ -81,20 +77,27 @@ function addtext(pgname, id, fid){
     }
 }
 
-
 </script>
 
 <script>
-function setpgids(){
+function setpgids(fid){
 var ids = "";
-var searchEles = document.getElementById("sortable").children;
+
+var str1 = "funnel";
+var str2 = String(fid)
+var res = str1.concat(str2);
+
+var searchEles = document.getElementById(res).children;
 for(var i = 0; i < searchEles.length; i++)
 {
     ids += searchEles[i].id
     ids += ","
 }
 
-document.getElementById("idsinput").value = ids;
+var str3 = "idsinput";
+var res = str3.concat(str2);
+
+document.getElementById(res).value = ids;
 }
 
 
@@ -176,9 +179,9 @@ document.getElementById("idsinput").value = ids;
                                                 <li class="dropdown-submenu">
                                                     <a href="#">Download Page</a>
                                                     <ul class="dropdown-menu">
-                                                        {% for f in allfiles %}
-                                                        {% if f.page_type == "download" %}
-                                                        <li onClick="{% set pgids = pgids ~ ',' ~ f.id %} addtext('{{f.page_name}}', {{f.id}})"><a href="#">{{f.page_name}}</a></li>
+                                                        {% for fi in allfiles %}
+                                                        {% if fi.page_type == "download" %}
+                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})"><a href="#">{{fi.page_name}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
                                                     </ul>
@@ -186,9 +189,9 @@ document.getElementById("idsinput").value = ids;
                                                 <li class="dropdown-submenu">
                                                     <a href="#">Purchase Page</a>
                                                     <ul class="dropdown-menu">
-                                                        {% for f in allfiles %}
-                                                        {% if f.page_type == "purchase" %}
-                                                        <li onClick="addtext('{{f.page_name}}', {{f.id}})"><a href="#">{{f.page_name}}</a></li>
+                                                        {% for fi in allfiles %}
+                                                        {% if fi.page_type == "purchase" %}
+                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})"><a href="#">{{fi.page_name}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
                                                     </ul>
@@ -196,9 +199,9 @@ document.getElementById("idsinput").value = ids;
                                                 <li class="dropdown-submenu">
                                                     <a href="#">Product Page</a>
                                                     <ul class="dropdown-menu">
-                                                        {% for f in allfiles %}
-                                                        {% if f.page_type == "product" %}
-                                                        <li onClick="addtext('{{f.page_name}}', {{f.id}})"><a href="#">{{f.page_name}}</a></li>
+                                                        {% for fi in allfiles %}
+                                                        {% if fi.page_type == "product" %}
+                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})"><a href="#">{{fi.page_name}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
                                                     </ul>
@@ -212,10 +215,10 @@ document.getElementById("idsinput").value = ids;
                         <div style="clear: left">
 
 							<form role="form" action="{{ url_for('setfunids') }}" method="get" name="adduser">
-								<input id="idsinput" type="hidden" name="pgids" value="">
+								<input id="idsinput{{f.id}}" type="hidden" name="pgids" value="">
 								<input id="fid" type="hidden" name="fun_id" value="{{f.id}}">
 								<input id="cid" type="hidden" name="cid" value="{{c.id}}">
-								<button class="btn btn-primary" type="submit" onclick="setpgids()">Save Changes</button>
+								<button class="btn btn-primary" type="submit" onclick="setpgids({{f.id}})">Save Changes</button>
 							</form>
 
                         </div>
