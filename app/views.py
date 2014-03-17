@@ -242,10 +242,15 @@ def showallcamps():
     AllCamps = Campaign.query.all()
     return render_template('showallcamps.html', title='All Campaigns', Camps=AllCamps)
 
+@app.route('/savechanges')
+def setfunids():
+    pgids = request.args.get('pgids')
+    c_id = request.args.get('cid')
+    fun_id = request.args.get('fun_id')
+    funnel = Funnel.query.filter_by(id=fun_id).first()
+    funnel.content_ids = pgids
+    db.session.commit()
+    return redirect(url_for('managecamp', cid=c_id))
 
-@app.route('/cekcek')
-def checkme():
-    x = request.args.get('pgids')
-    return x
 
 

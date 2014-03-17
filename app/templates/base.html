@@ -1,5 +1,7 @@
 <html>
 <head>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <!-- Latest compiled and minified Bootstrap CSS -->
     <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">!-->
     <link rel="stylesheet" href="{{url_for('static', filename='bootstrap.css')}}">
@@ -16,11 +18,9 @@
 
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
     <style>
-        #sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
-        #sortable li.t { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 200px; height: 140px; text-align:
+        .sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+        .sortable li.t { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 200px; height: 140px; text-align:
         center;}
     </style>
 
