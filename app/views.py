@@ -242,6 +242,7 @@ def showallcamps():
     AllCamps = Campaign.query.all()
     return render_template('showallcamps.html', title='All Campaigns', Camps=AllCamps)
 
+
 @app.route('/savechanges')
 def setfunids():
     pgids = request.args.get('pgids')
@@ -251,6 +252,5 @@ def setfunids():
     funnel.content_ids = pgids
     db.session.commit()
     return redirect(url_for('managecamp', cid=c_id))
-
 
 
