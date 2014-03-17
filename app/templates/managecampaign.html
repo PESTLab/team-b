@@ -57,6 +57,14 @@ function addtext(pgname, id, fid){
     var newpnlhead = document.createElement('div')
     newpnlhead.setAttribute('class', 'panel-heading')
 
+    var newbtn = document.createElement('button')
+    newbtn.setAttribute('class', 'btn btn-default btn-lg')
+    newbtn.setAttribute('style', 'float: right;')
+    newbtn.setAttribute('id', 'deletepagebtn')
+
+    var newspan = document.createElement('span')
+    newspan.setAttribute('class', 'glyphicon glyphicon-remove-circle')
+
     var newh3 = document.createElement('h3')
     newh3.setAttribute('class', 'panel-title')
 
@@ -69,9 +77,12 @@ function addtext(pgname, id, fid){
     newpnlbod.setAttribute('class', 'panel-body')
     newpnlbod.appendChild(newpgid)
 
+    newbtn.appendChild(newspan)
+
     newpnlhead.appendChild(newh3)
     newpnl.appendChild(newpnlhead)
     newpnl.appendChild(newpnlbod)
+    newpg.appendChild(newbtn)
     newpg.appendChild(newpnl)
     document.getElementById(res).appendChild(newpg)
     }
@@ -142,6 +153,7 @@ document.getElementById(res).value = ids;
                             <div class="panel-body">
 								{{f.content_ids}}
                                 <ul class="sortable" id ="funnel{{f.id}}">
+
 								{% if f.content_ids != none %}
                                     {% for c in f.content_ids | list %}
                                         {% if c != ',' %}
@@ -149,6 +161,7 @@ document.getElementById(res).value = ids;
 
                                                 {% if p.id == c|int %}
                                                     <li class="ui-state-default t" id="{{c}}">
+                                                        <button class="btn btn-default btn-lg" style="float: right;" id="deletepagebtn"><span class="glyphicon glyphicon-remove-circle"></span></button>
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading"><h3 class="panel-title"><b>{{p.page_name}}</b></h3>
                                                             </div>
