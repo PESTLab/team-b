@@ -30,9 +30,16 @@ $('#myTab a').click(function (e) {
 
 $(function() {
       $('#deletefunnelbtn').live('click', function(){
-        $(this).closest('li.active').remove();
+        $('ul#tabs li.active a').closest('li.active').remove();
+        $(this).closest('div.active').remove();
     });
   });
+
+$(function(){
+   $('#deleteall').on('click', function(){
+      $(this).closest('ul').empty();
+   });
+});
 
 </script>
 
@@ -57,13 +64,15 @@ function addtext(pgname, id, fid){
     var newpnlhead = document.createElement('div')
     newpnlhead.setAttribute('class', 'panel-heading')
 
-    var newbtn = document.createElement('button')
-    newbtn.setAttribute('class', 'btn btn-default btn-lg')
-    newbtn.setAttribute('style', 'float: right;')
+    var newbtn = document.createElement('a')
+    newbtn.setAttribute('href', '#')
+    newbtn.setAttribute('style', 'float: right; margin-right:4px;')
     newbtn.setAttribute('id', 'deletepagebtn')
 
+    newbtn.innerHTML = "x";
+
     var newspan = document.createElement('span')
-    newspan.setAttribute('class', 'glyphicon glyphicon-remove-circle')
+    newspan.setAttribute('class', 'ui-icon ui-icon-circle-close')
 
     var newh3 = document.createElement('h3')
     newh3.setAttribute('class', 'panel-title')
@@ -153,7 +162,7 @@ document.getElementById(res).value = ids;
                             <div class="panel-body">
 								{{f.content_ids}}
                                 <ul class="sortable" id ="funnel{{f.id}}">
-
+                                <a href="#" id="deleteall" style="float:right;">Delete All</a>
 								{% if f.content_ids != none %}
                                     {% for c in f.content_ids | list %}
                                         {% if c != ',' %}
@@ -161,7 +170,7 @@ document.getElementById(res).value = ids;
 
                                                 {% if p.id == c|int %}
                                                     <li class="ui-state-default t" id="{{c}}">
-                                                        <button class="btn btn-default btn-lg" style="float: right;" id="deletepagebtn"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                                                        <a href="#" style="float: right; margin-right:5px;" id="deletepagebtn"><span class="ui-icon ui-icon-circle-close">x</span></a>
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading"><h3 class="panel-title"><b>{{p.page_name}}</b></h3>
                                                             </div>
