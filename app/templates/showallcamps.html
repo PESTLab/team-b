@@ -16,7 +16,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>No.</th>
+                        <th>Campaign ID</th>
                         <th>Campaign Name</th>
                         <th>No. of Funnels</th>
                         <th>Creator</th>
@@ -27,7 +27,7 @@
                     <tbody>
                     {% for c in Camps %}
                     <tr>
-                        <td>{{loop.index}}</td>
+                        <td>{{c.id}}</td>
                         <td>{{c.name}}</td>
                         <td>{{c.funnel_ids}}</td>
                         <td>{{c.creator_id}}</td>

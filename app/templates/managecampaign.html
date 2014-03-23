@@ -10,6 +10,7 @@ $('#myTab a').click(function (e) {
 
 
 
+
 </script>
 
 <script>
@@ -35,11 +36,6 @@ $(function() {
     });
   });
 
-$(function(){
-   $('#deleteall').on('click', function(){
-      $(this).closest('ul').empty();
-   });
-});
 
 </script>
 
@@ -97,6 +93,7 @@ function addtext(pgname, id, fid){
     }
 }
 
+
 </script>
 
 <script>
@@ -110,8 +107,12 @@ var res = str1.concat(str2);
 var searchEles = document.getElementById(res).children;
 for(var i = 0; i < searchEles.length; i++)
 {
-    ids += searchEles[i].id
-    ids += ","
+
+    if (searchEles[i].className=="ui-state-default t")
+    {
+        ids += searchEles[i].id
+        ids += ","
+    }
 }
 
 var str3 = "idsinput";
@@ -122,9 +123,9 @@ document.getElementById(res).value = ids;
 
 
 
+
 </script>
 
-        
 
 <div class="container">
     <h1>Manage Campaigns</h1>
@@ -148,41 +149,49 @@ document.getElementById(res).value = ids;
 
                     <div class="tab-pane active" id="red">
                         <h1>Details</h1>
-
                     </div>
 
                     {% for f in funnels %}
                     <div class="tab-pane" id="{{f.id}}">
-                        <div class="controls">
-                            <button id="deletefunnelbtn" name="deletebutton" class="btn btn-primary" style="float: right;">Delete Funnel</button>
-                        </div>
                         <h1>{{f.name}}</h1>
 
                         <div class="panel panel-default">
                             <div class="panel-body">
-								{{f.content_ids}}
-                                <ul class="sortable" id ="funnel{{f.id}}">
-                                <a href="#" id="deleteall" style="float:right;">Delete All</a>
-								{% if f.content_ids != none %}
-                                    {% for c in f.content_ids | list %}
-                                        {% if c != ',' %}
-                                            {% for p in allfiles%}
+                                {{f.content_ids}}
+                                <ul class="sortable" id="funnel{{f.id}}">
 
-                                                {% if p.id == c|int %}
-                                                    <li class="ui-state-default t" id="{{c}}">
-                                                        <a href="#" style="float: right; margin-right:5px;" id="deletepagebtn"><span class="ui-icon ui-icon-circle-close">x</span></a>
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading"><h3 class="panel-title"><b>{{p.page_name}}</b></h3>
-                                                            </div>
-                                                            <div class="panel-body">{{p.id}}</div>
-                                                        </div>
-                                                    </li>
-                                                {%endif%}
-                                            {%endfor%}
-                                        {%endif%}
+
+                                    {% if f.content_ids != none %}
+                                    {% set x = '' %}
+                                    {% for c in f.content_ids | list %}
+
+                                    {% if c != ',' %}
+                                    {% set x = x + c %}
+
+                                    {% elif c == ',' %}
+
+                                    {% for p in allfiles%}
+
+                                    {% if p.id == x|int %}
+                                    <li class="ui-state-default t" id="{{x}}">
+                                        <a href="#" style="float: right; margin-right:5px;" id="deletepagebtn"><span
+                                                class="ui-icon ui-icon-circle-close">x</span></a>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><h3 class="panel-title"><b>{{p.page_name}}</b>
+                                            </h3>
+                                            </div>
+                                            <div class="panel-body">{{p.id}}</div>
+                                        </div>
+                                    </li>
+
+                                    {%endif%}
+                                    {%endfor%}
+                                    {% set x = '' %}
+                                    {%endif%}
 
                                     {% endfor %}
-                                {% endif %}
+                                    {% endif %}
 
                                 </ul>
 
@@ -203,7 +212,8 @@ document.getElementById(res).value = ids;
                                                     <ul class="dropdown-menu">
                                                         {% for fi in allfiles %}
                                                         {% if fi.page_type == "download" %}
-                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})"><a href="#">{{fi.page_name}}</a></li>
+                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
+                                                            <a href="#">{{fi.page_name}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
                                                     </ul>
@@ -213,7 +223,8 @@ document.getElementById(res).value = ids;
                                                     <ul class="dropdown-menu">
                                                         {% for fi in allfiles %}
                                                         {% if fi.page_type == "purchase" %}
-                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})"><a href="#">{{fi.page_name}}</a></li>
+                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
+                                                            <a href="#">{{fi.page_name}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
                                                     </ul>
@@ -223,7 +234,8 @@ document.getElementById(res).value = ids;
                                                     <ul class="dropdown-menu">
                                                         {% for fi in allfiles %}
                                                         {% if fi.page_type == "product" %}
-                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})"><a href="#">{{fi.page_name}}</a></li>
+                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
+                                                            <a href="#">{{fi.page_name}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
                                                     </ul>
@@ -236,12 +248,14 @@ document.getElementById(res).value = ids;
                         </div>
                         <div style="clear: left">
 
-							<form role="form" action="{{ url_for('setfunids') }}" method="get" name="adduser">
-								<input id="idsinput{{f.id}}" type="hidden" name="pgids" value="">
-								<input id="fid" type="hidden" name="fun_id" value="{{f.id}}">
-								<input id="cid" type="hidden" name="cid" value="{{c.id}}">
-								<button class="btn btn-primary" type="submit" onclick="setpgids({{f.id}})">Save Changes</button>
-							</form>
+                            <form role="form" action="{{ url_for('setfunids') }}" method="get" name="adduser">
+                                <input id="idsinput{{f.id}}" type="hidden" name="pgids" value="">
+                                <input id="fid" type="hidden" name="fun_id" value="{{f.id}}">
+                                <input id="cid" type="hidden" name="cid" value="{{c.id}}">
+                                <button class="btn btn-primary" type="submit" onclick="setpgids({{f.id}})">Save
+                                    Changes
+                                </button>
+                            </form>
 
                         </div>
 

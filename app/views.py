@@ -1,8 +1,10 @@
 __author__ = 'Nick'
 import os
+import shutil
 
+from BeautifulSoup import BeautifulSoup
 from werkzeug.utils import secure_filename
-from app import app, db, lm, oid, ALLOWED_EXTENSIONS
+from app import app, db, lm, oid, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 from flask import redirect, render_template, url_for, flash, request, g, session
 from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg
 from flask_login import login_user, logout_user, current_user, login_required
@@ -82,13 +84,14 @@ def uploadpg():
 
         filerec = LandingPage(uploader_id=g.user.id, visibility=form.visibility.data, product=form.productname.data,
                               page_name=file.filename, page_type=form.page_type.data)
-        db.session.add(filerec)
-        db.session.commit()
-        flash('Added File with Name: ' + file.filename)
+
 
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            db.session.add(filerec)
+            db.session.commit()
+            flash('Added File with Name: ' + file.filename)
 
         return render_template('base.html', title='Home')
 
@@ -96,7 +99,6 @@ def uploadpg():
 
 
 @app.route('/showallfiles')
-@login_required
 def showallpages():
     AllFiles = LandingPage.query.all()
     return render_template('showallfiles.html', title='All Files', Files=AllFiles)
@@ -177,10 +179,13 @@ def editpg():
 def newcamp():
     form = newcampaign()
     if form.validate_on_submit():
-        camp = Campaign(creator_id=g.user.id, name=form.campaignname.data)
+        camp = Campaign(creator_id=5, name=form.campaignname.data)
         db.session.add(camp)
         db.session.commit()
+        newdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+        os.makedirs(newdir)
         return redirect(url_for('managecamp', cid=camp.id))
+
     return render_template('newcampaign1.html', title='Add New Campaign', form=form)
 
 
@@ -205,39 +210,20 @@ def managecamp():
         db.session.commit()
 
         if camp.funnel_ids == "NONE":
-            camp.funnel_ids = funnelrec.id
+            camp.funnel_ids = str(funnelrec.id) + ","
         else:
-            camp.funnel_ids = camp.funnel_ids + "," + str(funnelrec.id)
+            camp.funnel_ids = camp.funnel_ids + str(funnelrec.id) + ","
 
         db.session.commit()
+        newdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+        newdir = os.path.join(newdir, str(funnelrec.name))
+        os.makedirs(newdir)
 
         return redirect(url_for('managecamp', cid=camp.id))
 
     return render_template('managecampaign.html', c=camp, form=funnelform, funnels=funnels_arr, allfiles = AllFiles)
 
-
-@app.route('/addfunnel', methods=['GET', 'POST'])
-def addfunnel():
-    camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
-    form = funnelpg()
-    if form.validate_on_submit():
-        funnelrec = Funnel(campaign_id=form.campaign_id.data, name=form.funnel_name.data,
-                           product=form.product_name.data)
-        db.session.add(funnelrec)
-
-        if camp.funnel_ids == "NONE":
-            camp.funnel_ids = funnelrec.id
-        else:
-            camp.funnel_ids = camp.funnel_ids + " " + funnelrec.id
-
-        db.session.commit()
-        flash('Added Funnel with Name: ' + form.funnel_name.data)
-        return render_template('base.html', title='Home')
-    return render_template('addfunnel.html', title='Add Funnel Page', form=form, c=camp)
-
-
 @app.route('/showallcampaigns')
-@login_required
 def showallcamps():
     AllCamps = Campaign.query.all()
     return render_template('showallcamps.html', title='All Campaigns', Camps=AllCamps)
@@ -249,22 +235,126 @@ def setfunids():
     fun_id = request.args.get('fun_id')
     funnel = Funnel.query.filter_by(id=fun_id).first()
     funnel.content_ids = pgids
+    camp = Campaign.query.filter_by(id=c_id).first()
+
+    pg_ids = funnel.content_ids.split(",")
+
+    for pgid in pg_ids:
+        pg = LandingPage.query.filter_by(id=pgid).first()
+        if pg:
+            pgname = pg.page_name
+
+            f = open(os.path.join(app.config['UPLOAD_FOLDER'], pgname))
+            page = f.read()
+            soup = BeautifulSoup(page)
+            f.close()
+            html = soup.prettify("utf-8")
+
+            newdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+            newdir = os.path.join(newdir, str(funnel.name))
+
+            with open(os.path.join(newdir, pgname), "w+") as file:
+                file.write(html)
+
+
     db.session.commit()
     return redirect(url_for('managecamp', cid=c_id))
 
 @app.route('/deletecampaign')
 def deletecamp():
     camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
-    if not (camp.funnel_ids in("NONE")):
+    if not (camp.funnel_ids in("NONE", None)):
         funnel_ids = camp.funnel_ids.split(",")
         for f_id in funnel_ids:
-            f = Funnel.query.filter_by(id=f_id).first()
-            db.session.delete(f)
+            if not (f_id in ('')):
+                f = Funnel.query.filter_by(id=f_id).first()
+                db.session.delete(f)
 
     db.session.delete(camp)
     db.session.commit()
 
+    dir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+    shutil.rmtree(dir)
+
     return redirect(url_for('showallcamps'))
+
+@app.route('/editlandingpages')
+def showallhtmls():
+    allcamps = Campaign.query.all()
+    allfiles = LandingPage.query.all()
+    htmlpgs=[]
+    for h in allfiles:
+        if h.page_name.split('.')[1] == "html":
+            htmlpgs.append(h)
+    return render_template('showhtml.html', title='All Landing Pages', pages = htmlpgs, camps = allcamps)
+
+
+@app.route('/editlinks')
+def editlinks():
+    pgid = request.args.get('pg_id')
+    landpage = LandingPage.query.filter_by(id=pgid).first()
+    f = open(os.path.join(app.config['UPLOAD_FOLDER'], landpage.page_name))
+    page = f.read()
+    soup = BeautifulSoup(page)
+    links = soup.findAll('a', {'href': True}, id='nextpage')
+    f.close()
+
+    return render_template('editlink.html', title='Edit Links', p = landpage, link = links[0])
+
+
+@app.route('/updatelinks', methods=['GET', 'POST'])
+def changelinks():
+    pgid = request.args.get('pageid')
+    landpage = LandingPage.query.filter_by(id=pgid).first()
+    funnel = Funnel.query.filter_by(id=request.args.get('fid')).first()
+    camp = Campaign.query.filter_by(id=funnel.campaign_id).first()
+    fdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+    fdir = os.path.join(fdir, str(funnel.name))
+    f = open(os.path.join(fdir, landpage.page_name))
+    page = f.read()
+    soup = BeautifulSoup(page)
+    links = soup.findAll('a', {'href': True}, id='nextpage')
+    link = links[0]
+    link['href'] = request.args.get('newlink')
+    f.close()
+    html = soup.prettify("utf-8")
+    with open(os.path.join(fdir, landpage.page_name), "wb") as file:
+        file.write(html)
+    flash('Link Changed')
+    return redirect(url_for('showfunlinks', funid=funnel.id))
+
+@app.route('/funnellinks', methods=['GET', 'POST'])
+def showfunlinks():
+    fid = request.args.get('funid')
+    funnel = Funnel.query.filter_by(id=fid).first()
+    pg_ids = funnel.content_ids.split(",")
+    pages = []
+    for p_id in pg_ids:
+        if not (p_id in ('')):
+            p = LandingPage.query.filter_by(id=p_id).first()
+            pages.append(p)
+
+    camp = Campaign.query.filter_by(id=funnel.campaign_id).first()
+    fdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+    fdir = os.path.join(fdir, str(funnel.name))
+    files = os.listdir(fdir)
+    mylinks = []
+    for f in files:
+        z = f
+        f = open(os.path.join(fdir, f))
+        page = f.read()
+        soup = BeautifulSoup(page)
+        links = soup.findAll('a', {'href': True}, id='nextpage')
+        link = links[0]
+        link['myfile'] = z
+        mylinks.append(link)
+
+
+    return render_template('funnellinks.html', title='Funnel Links', pages = pages, f = funnel, files = files, nextlinks = mylinks)
+
+
+
+
 
 
 
