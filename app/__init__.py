@@ -9,7 +9,7 @@ from flask_login import LoginManager
 from config import basedir
 
 UPLOAD_FOLDER = os.path.join(basedir, 'uploadfolder')
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'html'])
+ALLOWED_EXTENSIONS = set(['html'])
 
 app = Flask(__name__)
 

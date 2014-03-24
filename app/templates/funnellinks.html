@@ -7,9 +7,10 @@
     <h1>Funnel {{f.name}} Pages</h1>
 
     <div class="well">
-
+        {% if pages != 'No Pages'%}
         Pages of this funnel should be linked in the following manner:<br>
         <font size="5">
+
             {% for p in pages %}
             {% if loop.last %}
             {{p.page_name}}
@@ -17,11 +18,14 @@
             {{p.page_name}} >
             {% endif %}
             {% endfor %}
+            {%else%}
+            This Funnel has no pages yet
+            {%endif%}
         </font>
 
 
     </div>
-
+    {% if pages != 'No Pages'%}
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="table-responsive">
@@ -36,6 +40,8 @@
                     </tr>
                     </thead>
                     <tbody>
+
+
                     {% for p in pages %}
 
 
@@ -47,6 +53,7 @@
                             {% endif %}
                             {% endfor %}
                         </td>
+
                         <td></td>
                         <td>
                             <form class="form-horizontal" role="form" action="{{ url_for('changelinks') }}"
@@ -57,6 +64,7 @@
                                 <option>{{x.page_name}}</option>
                                 {% endif %}
                                 {% endfor %}
+                                <option>No Link</option>
                                 </select>
 
 
@@ -75,6 +83,7 @@
                         </td>
                     </tr>
                     {% endfor %}
+
                     </tbody>
                 </table>
             </div>
@@ -82,6 +91,7 @@
         </div>
 
     </div>
+    {%endif%}
 </div>
 
 {% endblock %}

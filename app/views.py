@@ -92,8 +92,11 @@ def uploadpg():
             db.session.add(filerec)
             db.session.commit()
             flash('Added File with Name: ' + file.filename)
-
-        return render_template('base.html', title='Home')
+            AllFiles = LandingPage.query.all()
+            return render_template('showallfiles.html', title='All Files', Files=AllFiles)
+        else:
+            flash('Cannot Add a File with this Extension')
+            return render_template('uploadlandpg.html', title='Upload Landing Page', form=form)
 
     return render_template('uploadlandpg.html', title='Upload Landing Page', form=form)
 
@@ -335,7 +338,11 @@ def changelinks():
     soup = BeautifulSoup(page)
     links = soup.findAll('a', {'href': True}, id='nextpage')
     link = links[0]
-    link['href'] = request.args.get('newlink')
+    newlink = request.args.get('newlink')
+    if newlink == "No Link":
+        link['href'] = '#'
+    else:
+        link['href'] = request.args.get('newlink')
     f.close()
     html = soup.prettify("utf-8")
     with open(os.path.join(fdir, landpage.page_name), "wb") as file:
@@ -347,27 +354,32 @@ def changelinks():
 def showfunlinks():
     fid = request.args.get('funid')
     funnel = Funnel.query.filter_by(id=fid).first()
-    pg_ids = funnel.content_ids.split(",")
-    pages = []
-    for p_id in pg_ids:
-        if not (p_id in ('')):
-            p = LandingPage.query.filter_by(id=p_id).first()
-            pages.append(p)
+    if not (funnel.content_ids in 'none'):
+        pg_ids = funnel.content_ids.split(",")
+        pages = []
+        for p_id in pg_ids:
+            if not (p_id in ('')):
+                p = LandingPage.query.filter_by(id=p_id).first()
+                pages.append(p)
 
-    camp = Campaign.query.filter_by(id=funnel.campaign_id).first()
-    fdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
-    fdir = os.path.join(fdir, str(funnel.name))
-    files = os.listdir(fdir)
-    mylinks = []
-    for f in files:
-        z = f
-        f = open(os.path.join(fdir, f))
-        page = f.read()
-        soup = BeautifulSoup(page)
-        links = soup.findAll('a', {'href': True}, id='nextpage')
-        link = links[0]
-        link['myfile'] = z
-        mylinks.append(link)
+        camp = Campaign.query.filter_by(id=funnel.campaign_id).first()
+        fdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+        fdir = os.path.join(fdir, str(funnel.name))
+        files = os.listdir(fdir)
+        mylinks = []
+        for f in files:
+            z = f
+            f = open(os.path.join(fdir, f))
+            page = f.read()
+            soup = BeautifulSoup(page)
+            links = soup.findAll('a', {'href': True}, id='nextpage')
+            link = links[0]
+            link['myfile'] = z
+            mylinks.append(link)
+    else:
+        pages="No Pages"
+        files=""
+        mylinks=""
 
 
     return render_template('funnellinks.html', title='Funnel Links', pages = pages, f = funnel, files = files, nextlinks = mylinks)
