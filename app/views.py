@@ -174,6 +174,17 @@ def editpg():
         return redirect(url_for('showallpages'))
     return render_template('editpage.html', title='Edit Landing Page', f=landpage, form=form)
 
+@app.route('/deletepage', methods=['GET', 'POST'])
+def deletepg():
+    pgid = request.args.get('pageid')
+    landpage = LandingPage.query.filter_by(id=pgid).first()
+    db.session.delete(landpage)
+    db.session.commit()
+    dir = os.path.join(app.config['UPLOAD_FOLDER'], str(landpage.page_name))
+    os.remove(dir)
+    flash('Template Deleted from Main Folder. If Template is used in a Funnel it will not be deleted.')
+    return redirect(url_for('showallpages'))
+
 
 @app.route('/newcampaign', methods=['GET', 'POST'])
 def newcamp():
@@ -202,7 +213,8 @@ def managecamp():
         f = Funnel.query.filter_by(id=f_id).first()
         funnels_arr.append(f)
 
-        AllFiles = LandingPage.query.all()
+    AllFiles = LandingPage.query.all()
+
 
     if funnelform.validate_on_submit():
         funnelrec = Funnel(campaign_id=camp.id, name=funnelform.funnel_name.data, product=funnelform.product_name.data)
@@ -237,6 +249,9 @@ def setfunids():
     funnel.content_ids = pgids
     camp = Campaign.query.filter_by(id=c_id).first()
 
+    newdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+    newdir = os.path.join(newdir, str(funnel.name))
+
     pg_ids = funnel.content_ids.split(",")
 
     for pgid in pg_ids:
@@ -250,12 +265,18 @@ def setfunids():
             f.close()
             html = soup.prettify("utf-8")
 
-            newdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
-            newdir = os.path.join(newdir, str(funnel.name))
+
 
             with open(os.path.join(newdir, pgname), "w+") as file:
                 file.write(html)
 
+    files = os.listdir(newdir)
+    for fi in files:
+        myfi = LandingPage.query.filter_by(page_name=fi).first()
+
+        if not (str(myfi.id) in pg_ids):
+            filedir = os.path.join(newdir, str(fi))
+            os.remove(filedir)
 
     db.session.commit()
     return redirect(url_for('managecamp', cid=c_id))
@@ -300,7 +321,6 @@ def editlinks():
     f.close()
 
     return render_template('editlink.html', title='Edit Links', p = landpage, link = links[0])
-
 
 @app.route('/updatelinks', methods=['GET', 'POST'])
 def changelinks():

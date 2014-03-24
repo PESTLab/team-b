@@ -11,6 +11,7 @@ $('#myTab a').click(function (e) {
 
 
 
+
 </script>
 
 <script>
@@ -37,12 +38,12 @@ $(function() {
   });
 
 
+
 </script>
 
 <script type="text/javascript">
 function addtext(pgname, id, fid){
-    if (document.createTextNode)
-    {
+
     var newpgname=document.createTextNode(pgname)
     var newpgid=document.createTextNode(id)
 
@@ -90,13 +91,15 @@ function addtext(pgname, id, fid){
     newpg.appendChild(newbtn)
     newpg.appendChild(newpnl)
     document.getElementById(res).appendChild(newpg)
-    }
+
 }
+
 
 
 </script>
 
 <script>
+
 function setpgids(fid){
 var ids = "";
 
@@ -123,6 +126,49 @@ document.getElementById(res).value = ids;
 
 
 
+
+
+</script>
+
+<script>
+
+function deletemenu(pid, fid){
+
+var str1 = "menu";
+var str2 = String(pid)
+var str3 = str1.concat(str2)
+var str4 = String(fid)
+var res = str4.concat(str3)
+    todel = document.getElementById(res)
+    todel.parentElement.removeChild(todel)
+    }
+
+</script>
+
+<script>
+function checkifused(pgname, id, fid){
+
+var str1 = "funnel";
+var str2 = String(fid)
+var res = str1.concat(str2);
+
+var check = "No"
+
+
+var searchEles = document.getElementById(res).children;
+for(var i = 0; i < searchEles.length; i++)
+{
+
+    if (searchEles[i].id == id)
+    {
+    check = "Yes"
+    }
+}
+
+if (check == "No")
+{ addtext(pgname, id, fid)}
+
+}
 
 </script>
 
@@ -211,8 +257,9 @@ document.getElementById(res).value = ids;
                                                     <a href="#">Download Page</a>
                                                     <ul class="dropdown-menu">
                                                         {% for fi in allfiles %}
-                                                        {% if fi.page_type == "download" %}
-                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
+                                                        {% if fi.page_type == "download"%}
+                                                        <li id="{{f.id}}menu{{fi.id}}"
+                                                            onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
                                                             <a href="#">{{fi.page_name}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
@@ -223,7 +270,8 @@ document.getElementById(res).value = ids;
                                                     <ul class="dropdown-menu">
                                                         {% for fi in allfiles %}
                                                         {% if fi.page_type == "purchase" %}
-                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
+                                                        <li id="{{f.id}}menu{{fi.id}}"
+                                                            onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
                                                             <a href="#">{{fi.page_name}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
@@ -234,7 +282,8 @@ document.getElementById(res).value = ids;
                                                     <ul class="dropdown-menu">
                                                         {% for fi in allfiles %}
                                                         {% if fi.page_type == "product" %}
-                                                        <li onClick="addtext('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
+                                                        <li id="{{f.id}}menu{{fi.id}}"
+                                                            onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
                                                             <a href="#">{{fi.page_name}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
