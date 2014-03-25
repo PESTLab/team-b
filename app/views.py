@@ -193,12 +193,17 @@ def deletepg():
 def newcamp():
     form = newcampaign()
     if form.validate_on_submit():
-        camp = Campaign(creator_id=5, name=form.campaignname.data)
-        db.session.add(camp)
-        db.session.commit()
-        newdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
-        os.makedirs(newdir)
-        return redirect(url_for('managecamp', cid=camp.id))
+        camp = Campaign(creator_id=g.user.id, name=form.campaignname.data)
+        checkcamp = Campaign.query.filter_by(name = camp.name).first()
+        if not checkcamp:
+            db.session.add(camp)
+            db.session.commit()
+            newdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+            os.makedirs(newdir)
+            return redirect(url_for('managecamp', cid=camp.id))
+        else:
+            flash('A campaign with the same name already exists, please chose another name')
+            return render_template('newcampaign1.html', title='Add New Campaign', form=form)
 
     return render_template('newcampaign1.html', title='Add New Campaign', form=form)
 
@@ -214,27 +219,38 @@ def managecamp():
 
     for f_id in funnel_ids:
         f = Funnel.query.filter_by(id=f_id).first()
-        funnels_arr.append(f)
+        if f:
+            funnels_arr.append(f)
 
     AllFiles = LandingPage.query.all()
 
 
     if funnelform.validate_on_submit():
-        funnelrec = Funnel(campaign_id=camp.id, name=funnelform.funnel_name.data, product=funnelform.product_name.data)
-        db.session.add(funnelrec)
-        db.session.commit()
+        match = False
+        for fun in funnels_arr:
+            if fun.name == funnelform.funnel_name.data:
+                match = True
+                StopIteration
 
-        if camp.funnel_ids == "NONE":
-            camp.funnel_ids = str(funnelrec.id) + ","
+        if not match:
+            funnelrec = Funnel(campaign_id=camp.id, name=funnelform.funnel_name.data, product=funnelform.product_name.data)
+            db.session.add(funnelrec)
+            db.session.commit()
+
+            if camp.funnel_ids == "NONE":
+                camp.funnel_ids = str(funnelrec.id) + ","
+            else:
+                camp.funnel_ids = camp.funnel_ids + str(funnelrec.id) + ","
+
+            db.session.commit()
+            newdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
+            newdir = os.path.join(newdir, str(funnelrec.name))
+            os.makedirs(newdir)
+
+            return redirect(url_for('managecamp', cid=camp.id))
         else:
-            camp.funnel_ids = camp.funnel_ids + str(funnelrec.id) + ","
-
-        db.session.commit()
-        newdir = os.path.join(app.config['UPLOAD_FOLDER'], str(camp.name))
-        newdir = os.path.join(newdir, str(funnelrec.name))
-        os.makedirs(newdir)
-
-        return redirect(url_for('managecamp', cid=camp.id))
+            flash('Funnel with same name already exists in this Campaign, please enter another name')
+            redirect(url_for('managecamp', cid=camp.id))
 
     return render_template('managecampaign.html', c=camp, form=funnelform, funnels=funnels_arr, allfiles = AllFiles)
 
