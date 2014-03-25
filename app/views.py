@@ -72,7 +72,12 @@ def addusers():
 
 
 @app.route('/upload', methods=['GET', 'POST'])
+@login_required
 def uploadpg():
+    if g.user.role != ROLE_WEBDEV:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     form = uploadlandingpg();
     if form.validate_on_submit():
         file = request.files['file']
@@ -106,7 +111,12 @@ def uploadpg():
 
 
 @app.route('/showallfiles')
+@login_required
 def showallpages():
+    if g.user.role != ROLE_WEBDEV:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     AllFiles = LandingPage.query.all()
     return render_template('showallfiles.html', title='All Files', Files=AllFiles)
 
@@ -140,14 +150,6 @@ def after_login(resp):
         flash('Not A Registered UniBlue FM user')
         return redirect(url_for('login'))
 
-    """
-    if user is None:
-        nickname = resp.nickname
-        if nickname is None or nickname == "":
-            nickname = resp.email.split('@')[0]
-        user = User(nickname = nickname, email = resp.email, rights = RIGHT_USER)
-        db.session.add(user)
-        db.session.commit()"""
     remember_me = False
     if 'remember_me' in session:
         remember_me = session['remember_me']
@@ -161,14 +163,12 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
-@app.route('/redirecting')
-def redirector():
-    return redirect(url_for('file:///C:/Users/Nick.Nick-PC/PycharmProjects/teamB/landingpages/pageA.html'), 302)
-
-
 @app.route('/editpage', methods=['GET', 'POST'])
+@login_required
 def editpg():
+    if g.user.role != ROLE_WEBDEV:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
     pgid = request.args.get('pageid')
     landpage = LandingPage.query.filter_by(id=pgid).first()
     form = uploadlandingpg()
@@ -182,7 +182,12 @@ def editpg():
     return render_template('editpage.html', title='Edit Landing Page', f=landpage, form=form)
 
 @app.route('/deletepage', methods=['GET', 'POST'])
+@login_required
 def deletepg():
+    if g.user.role != ROLE_WEBDEV:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     pgid = request.args.get('pageid')
     landpage = LandingPage.query.filter_by(id=pgid).first()
     db.session.delete(landpage)
@@ -194,7 +199,12 @@ def deletepg():
 
 
 @app.route('/newcampaign', methods=['GET', 'POST'])
+@login_required
 def newcamp():
+    if g.user.role != ROLE_SALESEXEC:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     form = newcampaign()
     if form.validate_on_submit():
         camp = Campaign(creator_id=g.user.id, name=form.campaignname.data)
@@ -213,7 +223,13 @@ def newcamp():
 
 
 @app.route('/managecampaign', methods=['GET', 'POST'])
+@login_required
 def managecamp():
+
+    if g.user.role != ROLE_SALESEXEC:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
     funnelform = funnelpg()
 
@@ -259,12 +275,24 @@ def managecamp():
     return render_template('managecampaign.html', c=camp, form=funnelform, funnels=funnels_arr, allfiles = AllFiles)
 
 @app.route('/showallcampaigns')
+@login_required
 def showallcamps():
+
+    if g.user.role != ROLE_SALESEXEC:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     AllCamps = Campaign.query.all()
     return render_template('showallcamps.html', title='All Campaigns', Camps=AllCamps)
 
 @app.route('/savechanges')
+@login_required
 def setfunids():
+
+    if g.user.role != ROLE_SALESEXEC:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     pgids = request.args.get('pgids')
     c_id = request.args.get('cid')
     fun_id = request.args.get('fun_id')
@@ -305,7 +333,13 @@ def setfunids():
     return redirect(url_for('managecamp', cid=c_id))
 
 @app.route('/deletecampaign')
+@login_required
 def deletecamp():
+
+    if g.user.role != ROLE_SALESEXEC:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
     if not (camp.funnel_ids in("NONE", None)):
         funnel_ids = camp.funnel_ids.split(",")
@@ -323,7 +357,13 @@ def deletecamp():
     return redirect(url_for('showallcamps'))
 
 @app.route('/editlandingpages')
+@login_required
 def showallhtmls():
+
+    if g.user.role != ROLE_WEBDEV:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     allcamps = Campaign.query.all()
     allfiles = LandingPage.query.all()
     htmlpgs=[]
@@ -334,7 +374,13 @@ def showallhtmls():
 
 
 @app.route('/editlinks')
+@login_required
 def editlinks():
+
+    if g.user.role != ROLE_WEBDEV:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     pgid = request.args.get('pg_id')
     landpage = LandingPage.query.filter_by(id=pgid).first()
     f = open(os.path.join(app.config['UPLOAD_FOLDER'], landpage.page_name))
@@ -346,7 +392,13 @@ def editlinks():
     return render_template('editlink.html', title='Edit Links', p = landpage, link = links[0])
 
 @app.route('/updatelinks', methods=['GET', 'POST'])
+@login_required
 def changelinks():
+
+    if g.user.role != ROLE_WEBDEV:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     pgid = request.args.get('pageid')
     landpage = LandingPage.query.filter_by(id=pgid).first()
     funnel = Funnel.query.filter_by(id=request.args.get('fid')).first()
@@ -371,7 +423,13 @@ def changelinks():
     return redirect(url_for('showfunlinks', funid=funnel.id))
 
 @app.route('/funnellinks', methods=['GET', 'POST'])
+@login_required
 def showfunlinks():
+
+    if g.user.role != ROLE_WEBDEV:
+        flash('Only Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
     fid = request.args.get('funid')
     funnel = Funnel.query.filter_by(id=fid).first()
     if not (funnel.content_ids in 'none'):
