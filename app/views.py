@@ -85,17 +85,21 @@ def uploadpg():
         filerec = LandingPage(uploader_id=g.user.id, visibility=form.visibility.data, product=form.productname.data,
                               page_name=file.filename, page_type=form.page_type.data)
 
-
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            db.session.add(filerec)
-            db.session.commit()
-            flash('Added File with Name: ' + file.filename)
-            AllFiles = LandingPage.query.all()
-            return render_template('showallfiles.html', title='All Files', Files=AllFiles)
+        checkpg = LandingPage.query.filter_by(page_name = file.filename).first()
+        if not checkpg:
+            if file and allowed_file(file.filename) and (filerec.product != ''):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                db.session.add(filerec)
+                db.session.commit()
+                flash('Added File with Name: ' + file.filename)
+                AllFiles = LandingPage.query.all()
+                return render_template('showallfiles.html', title='All Files', Files=AllFiles)
+            else:
+                flash('Either the Extension is not allowed or you left the Product Name Empty')
+                return render_template('uploadlandpg.html', title='Upload Landing Page', form=form)
         else:
-            flash('Cannot Add a File with this Extension')
+            flash('A Filename with the same name already exists. Please rename your file before Uploading')
             return render_template('uploadlandpg.html', title='Upload Landing Page', form=form)
 
     return render_template('uploadlandpg.html', title='Upload Landing Page', form=form)
