@@ -11,6 +11,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage, VISIBILE, HIDDEN, Campaign, \
     Funnel
 from flask_googlelogin import GoogleLogin
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
 from datetime import datetime
 
 googlelogin = GoogleLogin(app)
@@ -51,6 +53,7 @@ def addusers():
     form = adduserform();
     if form.validate_on_submit():
         nickname = form.useremail.data.split('@')[0]
+
         if form.userright.data == 'user':
             right = RIGHT_USER
         else:
@@ -94,11 +97,19 @@ def uploadpg():
         if not checkpg:
             if file and allowed_file(file.filename) and (filerec.product != ''):
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 db.session.add(filerec)
                 db.session.commit()
                 flash('Added File with Name: ' + file.filename)
                 AllFiles = LandingPage.query.all()
+
+                conn = S3Connection('AKIAIX5Y7RRWI35K2ZQA', 'E0wYJByLLoFFe/oCLRNclsFWDwQeOBGoMkYq08k6')
+                b = conn.get_bucket('broadcast.uniblue')
+
+                k = Key(b)
+
+                k.key = filename
+                k.set_contents_from_file(file)
+
                 return render_template('showallfiles.html', title='All Files', Files=AllFiles)
             else:
                 flash('Either the Extension is not allowed or you left the Product Name Empty')
