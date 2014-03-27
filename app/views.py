@@ -13,6 +13,7 @@ from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, L
 from flask_googlelogin import GoogleLogin
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+from config import basedir
 from datetime import datetime
 
 googlelogin = GoogleLogin(app)
@@ -101,8 +102,11 @@ def uploadpg():
                 db.session.commit()
                 flash('Added File with Name: ' + file.filename)
                 AllFiles = LandingPage.query.all()
-
-                conn = S3Connection('AKIAIX5Y7RRWI35K2ZQA', 'E0wYJByLLoFFe/oCLRNclsFWDwQeOBGoMkYq08k6')
+                keysfile = os.path.join(basedir, 'app')
+                keysfile = os.path.join(keysfile, 'amakeys.txt')
+                text_file = open(keysfile, "r")
+                keys = text_file.read().split(',')
+                conn = S3Connection(keys[0], keys[1])
                 b = conn.get_bucket('broadcast.uniblue')
 
                 k = Key(b)
@@ -201,11 +205,21 @@ def deletepg():
 
     pgid = request.args.get('pageid')
     landpage = LandingPage.query.filter_by(id=pgid).first()
+
+    keysfile = os.path.join(basedir, 'app')
+    keysfile = os.path.join(keysfile, 'amakeys.txt')
+    text_file = open(keysfile, "r")
+    keys = text_file.read().split(',')
+    conn = S3Connection(keys[0], keys[1])
+
+    b = conn.get_bucket('broadcast.uniblue')
+    k = Key(b)
+    k.key = landpage.page_name
+    b.delete_key(k)
+
     db.session.delete(landpage)
     db.session.commit()
-    dir = os.path.join(app.config['UPLOAD_FOLDER'], str(landpage.page_name))
-    os.remove(dir)
-    flash('Template Deleted from Main Folder. If Template is used in a Funnel it will not be deleted.')
+    flash('Template Deleted from S3 Bucket')
     return redirect(url_for('showallpages'))
 
 
