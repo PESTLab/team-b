@@ -1,0 +1,355 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script>
+$('#myTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+
+
+
+
+</script>
+
+<script>
+  $(function() {
+    $( ".sortable" ).sortable({
+      cancel: ".ui-state-disabled",
+        revert:300
+    });
+    $( ".sortable" ).disableSelection();
+  });
+
+
+  $(function() {
+      $('#deletepagebtn').live('click', function(){
+        $(this).closest('li').remove();
+    });
+  });
+
+$(function() {
+      $('#deletefunnelbtn').live('click', function(){
+        $('ul#tabs li.active a').closest('li.active').remove();
+        $(this).closest('div.active').remove();
+    });
+  });
+
+
+
+</script>
+
+<script type="text/javascript">
+function addtext(pgname, id, fid){
+
+    var newpgname=document.createTextNode(pgname)
+    var newpgid=document.createTextNode(id)
+
+    var str1 = "funnel";
+    var str2 = String(fid)
+    var res = str1.concat(str2);
+
+    var newpg=document.createElement('li')
+    newpg.setAttribute('class', 'ui-state-default t')
+    newpg.setAttribute('id', id)
+
+    var newpnl = document.createElement('div')
+    newpnl.setAttribute('class', 'panel panel-default')
+
+    var newpnlhead = document.createElement('div')
+    newpnlhead.setAttribute('class', 'panel-heading')
+
+    var newbtn = document.createElement('a')
+    newbtn.setAttribute('href', '#')
+    newbtn.setAttribute('style', 'float: right; margin-right:4px;')
+    newbtn.setAttribute('id', 'deletepagebtn')
+
+    newbtn.innerHTML = "x";
+
+    var newspan = document.createElement('span')
+    newspan.setAttribute('class', 'ui-icon ui-icon-circle-close')
+
+    var newh3 = document.createElement('h3')
+    newh3.setAttribute('class', 'panel-title')
+
+    var newb = document.createElement('b')
+    newb.appendChild(newpgname)
+
+    newh3.appendChild(newb)
+
+    var newpnlbod = document.createElement('div')
+    newpnlbod.setAttribute('class', 'panel-body')
+    newpnlbod.appendChild(newpgid)
+
+    newbtn.appendChild(newspan)
+
+    newpnlhead.appendChild(newh3)
+    newpnl.appendChild(newpnlhead)
+    newpnl.appendChild(newpnlbod)
+    newpg.appendChild(newbtn)
+    newpg.appendChild(newpnl)
+    document.getElementById(res).appendChild(newpg)
+
+}
+
+
+
+</script>
+
+<script>
+
+function setpgids(fid){
+var ids = "";
+
+var str1 = "funnel";
+var str2 = String(fid)
+var res = str1.concat(str2);
+
+var searchEles = document.getElementById(res).children;
+for(var i = 0; i < searchEles.length; i++)
+{
+
+    if (searchEles[i].className=="ui-state-default t")
+    {
+        ids += searchEles[i].id
+        ids += ","
+    }
+}
+
+var str3 = "idsinput";
+var res = str3.concat(str2);
+
+document.getElementById(res).value = ids;
+}
+
+
+
+
+
+</script>
+
+<script>
+
+function deletemenu(pid, fid){
+
+var str1 = "menu";
+var str2 = String(pid)
+var str3 = str1.concat(str2)
+var str4 = String(fid)
+var res = str4.concat(str3)
+    todel = document.getElementById(res)
+    todel.parentElement.removeChild(todel)
+    }
+
+</script>
+
+<script>
+function checkifused(pgname, id, fid){
+
+var str1 = "funnel";
+var str2 = String(fid)
+var res = str1.concat(str2);
+
+var check = "No"
+
+
+var searchEles = document.getElementById(res).children;
+for(var i = 0; i < searchEles.length; i++)
+{
+
+    if (searchEles[i].id == id)
+    {
+    check = "Yes"
+    }
+}
+
+if (check == "No")
+{ addtext(pgname, id, fid)}
+
+}
+
+</script>
+
+
+<div class="container">
+    <h1>Manage Campaigns</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><b>{{c.name}} Campaign</b></h3>
+        </div>
+        <div class="panel-body">
+
+            <div id="content">
+                <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+
+                    <li class="active"><a href="#red" data-toggle="tab">Details</a></li>
+                    {% for f in funnels %}
+                    <li><a href="#{{f.id}}" data-toggle="tab">{{f.name}}</a></li>
+                    {% endfor %}
+                    <li><a href="#newfunnel" data-toggle="tab">New Funnel</a></li>
+                </ul>
+                <div id="my-tab-content" class="tab-content">
+
+                    <div class="tab-pane active" id="red">
+                        <h1>Details</h1>
+                    </div>
+
+                    {% for f in funnels %}
+                    <div class="tab-pane" id="{{f.id}}">
+                        <h1>{{f.name}}</h1>
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {{f.content_ids}}
+                                <ul class="sortable" id="funnel{{f.id}}">
+
+
+                                    {% if f.content_ids != none %}
+                                    {% set x = '' %}
+                                    {% for c in f.content_ids | list %}
+
+                                    {% if c != ',' %}
+                                    {% set x = x + c %}
+
+                                    {% elif c == ',' %}
+
+                                    {% for p in allfiles%}
+
+                                    {% if p.id == x|int %}
+                                    <li class="ui-state-default t" id="{{x}}">
+                                        <a href="#" style="float: right; margin-right:5px;" id="deletepagebtn"><span
+                                                class="ui-icon ui-icon-circle-close">x</span></a>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><h3 class="panel-title"><b>{{p.page_name}}</b>
+                                            </h3>
+                                            </div>
+                                            <div class="panel-body">ID:{{p.id}}, {{p.page_type}}</div>
+                                        </div>
+                                    </li>
+
+                                    {%endif%}
+                                    {%endfor%}
+                                    {% set x = '' %}
+                                    {%endif%}
+
+                                    {% endfor %}
+                                    {% endif %}
+
+                                </ul>
+
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2%">
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"
+                                style="display: block; position: static; margin-bottom: 2%; *width: 180px;">
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">Add New Element</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a href="#">Landing Page</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-submenu">
+                                                    <a href="#">Download Page</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for fi in allfiles %}
+                                                        {% if fi.page_type == "download"%}
+                                                        <li id="{{f.id}}menu{{fi.id}}"
+                                                            onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
+                                                            <a href="#">{{fi.page_name}}</a></li>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#">Purchase Page</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for fi in allfiles %}
+                                                        {% if fi.page_type == "purchase" %}
+                                                        <li id="{{f.id}}menu{{fi.id}}"
+                                                            onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
+                                                            <a href="#">{{fi.page_name}}</a></li>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#">Product Page</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for fi in allfiles %}
+                                                        {% if fi.page_type == "product" %}
+                                                        <li id="{{f.id}}menu{{fi.id}}"
+                                                            onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
+                                                            <a href="#">{{fi.page_name}}</a></li>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="clear: left">
+
+                            <form role="form" action="{{ url_for('setfunids') }}" method="get" name="adduser">
+                                <input id="idsinput{{f.id}}" type="hidden" name="pgids" value="">
+                                <input id="fid" type="hidden" name="fun_id" value="{{f.id}}">
+                                <input id="cid" type="hidden" name="cid" value="{{c.id}}">
+                                <button class="btn btn-primary" type="submit" onclick="setpgids({{f.id}})">Save
+                                    Changes
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+
+                    {% endfor %}
+
+                    <div class="tab-pane" id="newfunnel">
+                        <h1>New Funnel</h1>
+
+                        <form class="form-horizontal" role="form" action="" method="post" name="adduser"
+                              enctype="multipart/form-data">
+                            {{form.hidden_tag()}}
+                            <div class="form-group">
+                                <div class="col-sm-offset-0.5 col-sm-5">
+                                    <label>Funnel Name</label>
+                                    {{ form.funnel_name(placeholder='Enter Funnel Name', class="form-control")}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-0.5 col-sm-5">
+                                    <label>Product Name</label>
+                                    {{ form.product_name(placeholder='Enter Product Name', class="form-control")}}
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="singlebutton"></label>
+                                <br>
+
+                                <div class="controls">
+                                    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Add Funnel
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}
