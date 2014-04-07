@@ -9,7 +9,7 @@ from flask import redirect, render_template, url_for, flash, request, g, session
 from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg
 from flask_login import login_user, logout_user, current_user, login_required
 from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage, VISIBILE, HIDDEN, Campaign, \
-    Funnel
+    Funnel, ROLE_ADMIN
 from flask_googlelogin import GoogleLogin
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
@@ -20,6 +20,39 @@ import json
 from flask_httpauth import HTTPBasicAuth
 
 googlelogin = GoogleLogin(app)
+
+def findcamp_byname(campname):
+    campaign = Campaign.query.filter_by(name=campname).first()
+    return campaign
+
+def findcamp_byid(campid):
+    campaign = Campaign.query.filter_by(id=campid).first()
+    return campaign
+
+def findfunnel_byname(funname):
+    funnel = Funnel.query.filter_by(name=funname).first()
+    return funnel
+
+def findfunnel_byid(funid):
+    funnel = Funnel.query.filter_by(id=funid).first()
+    return funnel
+
+def connect_to_bucket():
+    keysfile = os.path.join(basedir, 'app')
+    keysfile = os.path.join(keysfile, 'amakeys.txt')
+    text_file = open(keysfile, "r")
+    keys = text_file.read().split(',')
+    conn = S3Connection(keys[0], keys[1])
+    b = conn.get_bucket('broadcast.uniblue')
+    return b
+
+
+def upload_to_bucket(file_toupload):
+    filename = secure_filename(file_toupload.filename)
+    k = Key(connect_to_bucket())
+    k.key = filename
+    k.set_contents_from_file(file_toupload, {"Content-Type": "text/html"})
+    k.set_acl('public-read')
 
 
 @app.route('/<campname>/<productname>/<funnelname>/<pagetype>')
@@ -64,7 +97,6 @@ def login():
     return render_template('signin.html',
                            title='Sign In',
                            form=form, )
-
 
 @oid.after_login
 def after_login(resp):
@@ -130,16 +162,15 @@ def addusers():
     form = adduserform();
     if form.validate_on_submit():
         nickname = form.useremail.data.split('@')[0]
-
         if form.userright.data == 'user':
             right = RIGHT_USER
+            if form.userrole.data == 'webdev':
+                usrole = ROLE_WEBDEV
+            else:
+                usrole = ROLE_SALESEXEC
         else:
             right = RIGHT_ADMIN
-
-        if form.userrole.data == 'webdev':
-            usrole = ROLE_WEBDEV
-        else:
-            usrole = ROLE_SALESEXEC
+            usrole = ROLE_ADMIN
 
         user = User(nickname=nickname, email=form.useremail.data, role=usrole, rights=right)
         db.session.add(user)
@@ -157,11 +188,13 @@ def addusers():
 @app.route('/fm/upload', methods=['GET', 'POST'])
 @login_required
 def uploadpg():
-    if g.user.role != ROLE_WEBDEV:
-        flash('Only Users with Web Developer Roles can access this page')
+
+    if ((g.user.role != ROLE_WEBDEV) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
-    form = uploadlandingpg();
+    form = uploadlandingpg()
+
     if form.validate_on_submit():
         file = request.files['file']
 
@@ -174,34 +207,24 @@ def uploadpg():
                               page_name=file.filename, page_type=form.page_type.data)
 
         checkpg = LandingPage.query.filter_by(page_name=file.filename).first()
+
         if not checkpg:
             if file and allowed_file(file.filename) and (filerec.product != ''):
-                filename = secure_filename(file.filename)
+
                 db.session.add(filerec)
                 db.session.commit()
 
-                AllFiles = LandingPage.query.all()
-                keysfile = os.path.join(basedir, 'app')
-                keysfile = os.path.join(keysfile, 'amakeys.txt')
-                text_file = open(keysfile, "r")
-                keys = text_file.read().split(',')
-                conn = S3Connection(keys[0], keys[1])
-                b = conn.get_bucket('broadcast.uniblue')
-
-                k = Key(b)
-
-                k.key = filename
-                k.set_contents_from_file(file, {"Content-Type": "text/html"})
-                k.set_acl('public-read')
+                upload_to_bucket(file)
 
                 url = 'http://127.0.0.1:5001/fmapi/addpg'
                 data = {'id': filerec.id, 'name': filerec.page_name, 'pgtype': filerec.page_type, 'prod': filerec.product, 'vis': filerec.visibility}
                 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
                 r = requests.post(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
 
+                AllFiles = LandingPage.query.all()
+
                 msg =  r.json['msg']
                 flash(msg)
-
 
                 return render_template('showallfiles.html', title='All Files', Files=AllFiles)
             else:
@@ -222,23 +245,30 @@ def allowed_file(filename):
 @app.route('/fm/showallfiles')
 @login_required
 def showallpages():
-    if g.user.role != ROLE_WEBDEV:
-        flash('Only Users with Web Developer Roles can access this page')
+
+    if ((g.user.role != ROLE_WEBDEV) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
     AllFiles = LandingPage.query.all()
+
     return render_template('showallfiles.html', title='All Files', Files=AllFiles)
 
 
 @app.route('/fm/editpage', methods=['GET', 'POST'])
 @login_required
 def editpg():
-    if g.user.role != ROLE_WEBDEV:
-        flash('Only Users with Web Developer Roles can access this page')
+
+    if ((g.user.role != ROLE_WEBDEV) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
+
     pgid = request.args.get('pageid')
+
     landpage = LandingPage.query.filter_by(id=pgid).first()
+
     form = uploadlandingpg()
+
     if form.validate_on_submit():
         landpage.product = form.productname.data
         landpage.page_type = form.page_type.data
@@ -254,35 +284,34 @@ def editpg():
         flash(msg)
 
         return redirect(url_for('showallpages'))
+
     return render_template('editpage.html', title='Edit Landing Page', f=landpage, form=form)
 
 
-'''Delete Page option removed since if a page is deleted, funnels using this page will be affected.'''
+'''Delete Page option should be removed since if a page is deleted, funnels using this page will be affected.'''
 
 @app.route('/fm/deletepage', methods=['GET', 'POST'])
 @login_required
 def deletepg():
-    if g.user.role != ROLE_WEBDEV:
-        flash('Only Users with Web Developer Roles can access this page')
+    if ((g.user.role != ROLE_WEBDEV) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
     pgid = request.args.get('pageid')
     landpage = LandingPage.query.filter_by(id=pgid).first()
 
-    keysfile = os.path.join(basedir, 'app')
-    keysfile = os.path.join(keysfile, 'amakeys.txt')
-    text_file = open(keysfile, "r")
-    keys = text_file.read().split(',')
-    conn = S3Connection(keys[0], keys[1])
 
-    b = conn.get_bucket('broadcast.uniblue')
+
+    b = connect_to_bucket()
     k = Key(b)
     k.key = landpage.page_name
     b.delete_key(k)
 
     db.session.delete(landpage)
     db.session.commit()
+
     flash('Template Deleted from S3 Bucket')
+
     return redirect(url_for('showallpages'))
 
 
@@ -292,15 +321,20 @@ def deletepg():
 @app.route('/fm/newcampaign', methods=['GET', 'POST'])
 @login_required
 def newcamp():
-    if g.user.role != ROLE_SALESEXEC:
-        flash('Only Users with Web Developer Roles can access this page')
+    if ((g.user.role != ROLE_SALESEXEC) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
     form = newcampaign()
+
     if form.validate_on_submit():
+
         camp = Campaign(creator_id=g.user.id, name=form.campaignname.data)
+
         checkcamp = Campaign.query.filter_by(name=camp.name).first()
+
         if not checkcamp:
+
             db.session.add(camp)
             db.session.commit()
 
@@ -311,6 +345,7 @@ def newcamp():
 
             msg =  r.json['msg']
             flash(msg)
+
             return redirect(url_for('managecamp', cid=camp.id))
         else:
             flash('A campaign with the same name already exists, please chose another name')
@@ -322,14 +357,13 @@ def newcamp():
 @app.route('/fm/managecampaign', methods=['GET', 'POST'])
 @login_required
 def managecamp():
-    if g.user.role != ROLE_SALESEXEC:
-        flash('Only Users with Web Developer Roles can access this page')
+    if ((g.user.role != ROLE_SALESEXEC) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
     camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
     funnelform = funnelpg()
 
-    funnel_ids = []
     funnel_ids = camp.funnel_ids.split(",")
     funnels_arr = []
 
@@ -381,25 +415,28 @@ def managecamp():
 @app.route('/fm/showallcampaigns')
 @login_required
 def showallcamps():
-    if g.user.role != ROLE_SALESEXEC:
-        flash('Only Users with Web Developer Roles can access this page')
+    if ((g.user.role != ROLE_SALESEXEC) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
     AllCamps = Campaign.query.all()
+
     return render_template('showallcamps.html', title='All Campaigns', Camps=AllCamps)
 
 
 @app.route('/fm/savechanges')
 @login_required
 def setfunids():
-    if g.user.role != ROLE_SALESEXEC:
-        flash('Only Users with Web Developer Roles can access this page')
+    if ((g.user.role != ROLE_SALESEXEC) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
     pgids = request.args.get('pgids')
     c_id = request.args.get('cid')
     fun_id = request.args.get('fun_id')
+
     funnel = Funnel.query.filter_by(id=fun_id).first()
+
     funnel.content_ids = pgids
 
     db.session.commit()
@@ -418,8 +455,8 @@ def setfunids():
 @app.route('/fm/deletecampaign')
 @login_required
 def deletecamp():
-    if g.user.role != ROLE_SALESEXEC:
-        flash('Only Users with Web Developer Roles can access this page')
+    if ((g.user.role != ROLE_SALESEXEC) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
     camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
@@ -439,7 +476,6 @@ def deletecamp():
 
     msg =  r.json['msg']
     flash(msg)
-
 
     return redirect(url_for('showallcamps'))
 
