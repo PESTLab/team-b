@@ -58,7 +58,7 @@ def connect_to_bucket():
 
 def upload_to_bucket(file_toupload):
     k = Key(connect_to_bucket())
-    k.key = file_toupload.name
+    k.key = 'test.html'
     k.set_contents_from_file(file_toupload, {"Content-Type": "text/html"})
     k.set_acl('public-read')
 
