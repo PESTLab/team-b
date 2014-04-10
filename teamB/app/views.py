@@ -56,9 +56,9 @@ def connect_to_bucket():
     b = conn.get_bucket('broadcast.uniblue')
     return b
 
-def upload_to_bucket(file_toupload):
+def upload_to_bucket(file_toupload, filename):
     k = Key(connect_to_bucket())
-    k.key = 'test.html'
+    k.key = filename
     k.set_contents_from_file(file_toupload, {"Content-Type": "text/html"})
     k.set_acl('public-read')
 
@@ -224,7 +224,9 @@ def uploadpg():
                 db.session.add(filerec)
                 db.session.commit()
 
-                upload_to_bucket(file)
+                myname = str(file.filename)
+
+                upload_to_bucket(file, myname)
 
                 url = api_url + '/fmapi/addpg'
                 data = {'id': filerec.id, 'name': filerec.page_name, 'pgtype': filerec.page_type, 'prod': filerec.product, 'vis': filerec.visibility}
