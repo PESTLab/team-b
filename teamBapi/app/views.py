@@ -7,7 +7,7 @@ from models import Campaign, Funnel, LandingPage
 
 auth = HTTPBasicAuth()
 
-Base_URL = 'http://127.0.0.1:5000/'
+Allowed_Origins = ['http://54.228.201.142', 'http://127.0.0.1']
 
 '''API Authorization'''
 
@@ -26,34 +26,40 @@ def unauthorized():
 @app.route('/fmapi/getnext/<int:funid>/<int:pgid>', methods=['GET'])
 def getnexturl(funid,pgid):
 
-    url = 'EndOfFunnel'
+    source_origin = str(request.remote_addr)
+    source_origin = "http://" + source_origin
 
-    page = LandingPage.query.filter_by(id=pgid).first()
-    funnel = Funnel.query.filter_by(id=funid).first()
-    camp = Campaign.query.filter_by(id=funnel.campaign_id).first()
+    if source_origin in Allowed_Origins:
 
-    pg_ids = funnel.content_ids.split(",")
-    pgs_arr = []
+        url = 'EndOfFunnel'
 
-    for p_id in pg_ids:
-        p = LandingPage.query.filter_by(id=p_id).first()
-        if p:
-            pgs_arr.append(p)
+        page = LandingPage.query.filter_by(id=pgid).first()
+        funnel = Funnel.query.filter_by(id=funid).first()
+        camp = Campaign.query.filter_by(id=funnel.campaign_id).first()
 
-    x = pgs_arr.index(page)
+        pg_ids = funnel.content_ids.split(",")
+        pgs_arr = []
 
-    if x == (len(pgs_arr)-1):
+        for p_id in pg_ids:
+            p = LandingPage.query.filter_by(id=p_id).first()
+            if p:
+                pgs_arr.append(p)
+
+        x = pgs_arr.index(page)
+
+        if x == (len(pgs_arr)-1):
+            resp = make_response(jsonify(nextpg = url))
+            resp.headers['Access-Control-Allow-Origin'] = source_origin
+            return resp
+        else:
+            nextpage = pgs_arr[x+1]
+
+        Base_URL = source_origin
+
+        url = Base_URL + '/' + camp.name + '/' + funnel.product + '/' + funnel.name + '/' + nextpage.page_type
         resp = make_response(jsonify(nextpg = url))
-        resp. headers['Access-Control-Allow-Origin'] = "http://127.0.0.1:5000"
+        resp.headers['Access-Control-Allow-Origin'] = source_origin
         return resp
-    else:
-        nextpage = pgs_arr[x+1]
-
-
-    url = Base_URL + camp.name + '/' + funnel.product + '/' + funnel.name + '/' + nextpage.page_type
-    resp = make_response(jsonify(nextpg = url))
-    resp. headers['Access-Control-Allow-Origin'] = "http://127.0.0.1:5000"
-    return resp
 
 '''add records to db using POST Method'''
 
