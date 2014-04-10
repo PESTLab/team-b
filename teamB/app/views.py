@@ -322,6 +322,10 @@ def deletepg():
     db.session.delete(landpage)
     db.session.commit()
 
+    url = api_url + '/fmapi/deletepage/' + str(landpage.id)
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    r = requests.delete(url, headers=headers, auth=('unibluefm', '123456789'))
+
     flash('Template Deleted from S3 Bucket')
 
     return redirect(url_for('showallpages'))

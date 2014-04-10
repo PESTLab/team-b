@@ -84,7 +84,7 @@ def addpage():
     newpg = LandingPage(id=request.json['id'], page_name=request.json['name'], page_type=request.json['pgtype'], product=request.json['prod'], visibility= request.json['vis'])
     db.session.add(newpg)
     db.session.commit()
-    return jsonify(msg = newpg.product + ' ' + newpg.page_type)
+    return jsonify(msg = str(newpg.product) + ' ' + str(newpg.page_type))
 
 '''update db records using PUT method'''
 
@@ -133,6 +133,15 @@ def deletecmp(campid):
     db.session.commit()
 
     return jsonify(msg = 'Campaign Deleted')
+
+@app.route('/fmapi/deletepage/<int:pgid>', methods = ['DELETE'])
+@auth.login_required
+def deletepg(pgid):
+    page = LandingPage.query.filter_by(id=pgid).first()
+    db.session.delete(page)
+    db.session.commit()
+
+    return jsonify(msg= 'Page Deleted')
 
 
 '''testing functions for CURL'''
