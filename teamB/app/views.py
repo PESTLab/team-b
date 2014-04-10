@@ -21,6 +21,8 @@ from flask_httpauth import HTTPBasicAuth
 
 googlelogin = GoogleLogin(app)
 
+api_url = "http://54.228.201.142:81"
+
 def findcamp_byname(campname):
     campaign = Campaign.query.filter_by(name=campname).first()
     return campaign
@@ -37,6 +39,14 @@ def findfunnel_byid(funid):
     funnel = Funnel.query.filter_by(id=funid).first()
     return funnel
 
+def findlandpage_byid(pageid):
+    landpage = LandingPage.query.filter_by(id=pageid).first()
+    return landpage
+
+def findlandpage_byname(pagename):
+    landpage = LandingPage.query.filter_by(name = pagename).first()
+    return landpage
+
 def connect_to_bucket():
     keysfile = os.path.join(basedir, 'app')
     keysfile = os.path.join(keysfile, 'amakeys.txt')
@@ -46,35 +56,36 @@ def connect_to_bucket():
     b = conn.get_bucket('broadcast.uniblue')
     return b
 
-
 def upload_to_bucket(file_toupload):
-    filename = secure_filename(file_toupload.filename)
+    filename = secure_filename(file_toupload.name)
     k = Key(connect_to_bucket())
     k.key = filename
     k.set_contents_from_file(file_toupload, {"Content-Type": "text/html"})
     k.set_acl('public-read')
 
+def getall_visiblepages():
+    allfiles = LandingPage.query.all()
+    visible_files = []
+    for f in allfiles:
+        if f.visibility == 2:
+            visible_files.append(f)
+    return visible_files
 
 @app.route('/<campname>/<productname>/<funnelname>/<pagetype>')
 def broadcast(campname, productname, funnelname, pagetype):
-    campaign = Campaign.query.filter_by(name=campname).first()
-    funnel = Funnel.query.filter_by(name=funnelname).first()
+    campaign = findcamp_byname(campname)
+    funnel = findfunnel_byname(funnelname)
     pages = funnel.content_ids.split(",")
     pagename = ''
     mypage = LandingPage()
     for p in pages:
         if p:
-            page = LandingPage.query.filter_by(id=p).first()
+            page = findlandpage_byid(p)
             if (page.page_type == pagetype.lower()):
                 pagename = page.page_name
                 mypage = page
 
-    keysfile = os.path.join(basedir, 'app')
-    keysfile = os.path.join(keysfile, 'amakeys.txt')
-    text_file = open(keysfile, "r")
-    keys = text_file.read().split(',')
-    conn = S3Connection(keys[0], keys[1])
-    b = conn.get_bucket('broadcast.uniblue')
+    b = connect_to_bucket()
 
     k = Key(b)
     k.key = pagename
@@ -94,9 +105,7 @@ def login():
     if form.validate_on_submit():
         session['remember_me'] = form.remember_me.data
         return oid.try_login(app.config['GOOGLE_OPENID'], ask_for=['nickname', 'email'])
-    return render_template('signin.html',
-                           title='Sign In',
-                           form=form, )
+    return render_template('signin.html', title='Sign In', form=form, )
 
 @oid.after_login
 def after_login(resp):
@@ -159,7 +168,9 @@ def addusers():
     if g.user.rights != RIGHT_ADMIN:
         flash('Only Users with Administrator Rights can access this page')
         return redirect(url_for('index'))
+
     form = adduserform();
+
     if form.validate_on_submit():
         nickname = form.useremail.data.split('@')[0]
         if form.userright.data == 'user':
@@ -206,7 +217,7 @@ def uploadpg():
         filerec = LandingPage(uploader_id=g.user.id, visibility=form.visibility.data, product=form.productname.data,
                               page_name=file.filename, page_type=form.page_type.data)
 
-        checkpg = LandingPage.query.filter_by(page_name=file.filename).first()
+        checkpg = findlandpage_byname(file.filename)
 
         if not checkpg:
             if file and allowed_file(file.filename) and (filerec.product != ''):
@@ -238,8 +249,10 @@ def uploadpg():
 
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+    if filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS:
+        return True
+    else:
+        return False
 
 
 @app.route('/fm/showallfiles')
@@ -265,7 +278,7 @@ def editpg():
 
     pgid = request.args.get('pageid')
 
-    landpage = LandingPage.query.filter_by(id=pgid).first()
+    landpage = findlandpage_byid(pgid)
 
     form = uploadlandingpg()
 
@@ -275,7 +288,7 @@ def editpg():
         landpage.visibility = form.visibility.data
         db.session.commit()
 
-        url = 'http://127.0.0.1:5001/fmapi/updatepg/'+ str(landpage.id)
+        url = api_url + '/fmapi/updatepg/'+ str(landpage.id)
         data = {'pgprod': landpage.product, 'pgtype': landpage.page_type, 'pgvis': landpage.visibility}
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         r = requests.put(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
@@ -298,9 +311,7 @@ def deletepg():
         return redirect(url_for('index'))
 
     pgid = request.args.get('pageid')
-    landpage = LandingPage.query.filter_by(id=pgid).first()
-
-
+    landpage = findlandpage_byid(pgid)
 
     b = connect_to_bucket()
     k = Key(b)
@@ -331,14 +342,14 @@ def newcamp():
 
         camp = Campaign(creator_id=g.user.id, name=form.campaignname.data)
 
-        checkcamp = Campaign.query.filter_by(name=camp.name).first()
+        checkcamp = findcamp_byname(camp.name)
 
         if not checkcamp:
 
             db.session.add(camp)
             db.session.commit()
 
-            url = 'http://127.0.0.1:5001/fmapi/addcamp'
+            url = api_url + '/fmapi/addcamp'
             data = {'id': camp.id, 'campname': camp.name, 'funids': 'none'}
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             r = requests.post(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
@@ -361,14 +372,14 @@ def managecamp():
         flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
-    camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
+    camp = findcamp_byid(request.args.get('cid'))
     funnelform = funnelpg()
 
     funnel_ids = camp.funnel_ids.split(",")
     funnels_arr = []
 
     for f_id in funnel_ids:
-        f = Funnel.query.filter_by(id=f_id).first()
+        f = findfunnel_byid(f_id)
         if f:
             funnels_arr.append(f)
 
@@ -394,12 +405,12 @@ def managecamp():
 
             db.session.commit()
 
-            url = 'http://127.0.0.1:5001/fmapi/addfun'
+            url = api_url + '/fmapi/addfun'
             data = {'id': funnelrec.id, 'campid': camp.id, 'funname': funnelrec.name, 'prodname': funnelrec.product, 'contids': 'none'}
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             r = requests.post(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
 
-            url = 'http://127.0.0.1:5001/fmapi/updatecamp/' + str(camp.id)
+            url = api_url + '/fmapi/updatecamp/' + str(camp.id)
             data = {'funids': camp.funnel_ids}
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             r = requests.put(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
@@ -419,9 +430,9 @@ def showallcamps():
         flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
-    AllCamps = Campaign.query.all()
+    allcamps = Campaign.query.all()
 
-    return render_template('showallcamps.html', title='All Campaigns', Camps=AllCamps)
+    return render_template('showallcamps.html', title='All Campaigns', Camps=allcamps)
 
 
 @app.route('/fm/savechanges')
@@ -435,13 +446,13 @@ def setfunids():
     c_id = request.args.get('cid')
     fun_id = request.args.get('fun_id')
 
-    funnel = Funnel.query.filter_by(id=fun_id).first()
+    funnel = findfunnel_byid(fun_id)
 
     funnel.content_ids = pgids
 
     db.session.commit()
 
-    url = 'http://127.0.0.1:5001/fmapi/updatefun/' + str(funnel.id)
+    url = api_url + '/fmapi/updatefun/' + str(funnel.id)
     data = {'content': funnel.content_ids}
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     r = requests.put(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
@@ -459,18 +470,18 @@ def deletecamp():
         flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
-    camp = Campaign.query.filter_by(id=request.args.get('cid')).first()
+    camp = findcamp_byid(request.args.get('cid'))
     if not (camp.funnel_ids in ("NONE", None)):
         funnel_ids = camp.funnel_ids.split(",")
         for f_id in funnel_ids:
             if not (f_id in ('')):
-                f = Funnel.query.filter_by(id=f_id).first()
+                f = findfunnel_byid(f_id)
                 db.session.delete(f)
 
     db.session.delete(camp)
     db.session.commit()
 
-    url = 'http://127.0.0.1:5001/fmapi/deletecamp/' + str(camp.id)
+    url = api_url + '/fmapi/deletecamp/' + str(camp.id)
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     r = requests.delete(url, headers=headers, auth=('unibluefm', '123456789'))
 
