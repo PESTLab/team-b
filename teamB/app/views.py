@@ -44,7 +44,7 @@ def findlandpage_byid(pageid):
     return landpage
 
 def findlandpage_byname(pagename):
-    landpage = LandingPage.query.filter_by(name = pagename).first()
+    landpage = LandingPage.query.filter_by(page_name = pagename).first()
     return landpage
 
 def connect_to_bucket():
