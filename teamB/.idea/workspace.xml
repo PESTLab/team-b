@@ -26,7 +26,7 @@
       <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../teamBapi/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="20" selection-start="692" selection-end="715" vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="2771">
+            <state line="86" column="73" selection-start="2827" selection-end="2827" vertical-scroll-proportion="0.0" vertical-offset="1224" max-vertical-offset="2771">
               <folding>
                 <element signature="e#21#77#0" expanded="true" />
               </folding>
@@ -34,85 +34,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="32" selection-start="329" selection-end="361" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="run.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/run.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="20" selection-start="60" selection-end="60" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="136">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tests.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="39" selection-start="604" selection-end="604" vertical-scroll-proportion="0.0" vertical-offset="32" max-vertical-offset="493">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="S3Tests.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/S3Tests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="28" selection-start="896" selection-end="896" vertical-scroll-proportion="0.0" vertical-offset="253" max-vertical-offset="714">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="17" selection-start="1347" selection-end="1347" vertical-scroll-proportion="0.55314535" vertical-offset="408" max-vertical-offset="10302">
+            <state line="229" column="33" selection-start="6957" selection-end="6957" vertical-scroll-proportion="-8.770065" vertical-offset="7936" max-vertical-offset="10302">
               <folding>
                 <element signature="e#20#29#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="forms.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/forms.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="138" selection-start="825" selection-end="825" vertical-scroll-proportion="0.0" vertical-offset="100" max-vertical-offset="561">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="showallusers.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/showallusers.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="39" selection-start="1149" selection-end="1149" vertical-scroll-proportion="-8.461538" vertical-offset="392" max-vertical-offset="1071">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="14" selection-start="122" selection-end="122" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="1037">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="showallfiles.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/showallfiles.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="39" selection-start="1486" selection-end="1486" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1377">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -175,8 +103,8 @@
         <option value="$PROJECT_DIR$/tests.py" />
         <option value="$PROJECT_DIR$/test.html" />
         <option value="$PROJECT_DIR$/S3Tests.py" />
-        <option value="$PROJECT_DIR$/../teamBapi/app/views.py" />
         <option value="$PROJECT_DIR$/run.py" />
+        <option value="$PROJECT_DIR$/../teamBapi/app/views.py" />
         <option value="$PROJECT_DIR$/app/views.py" />
       </list>
     </option>
@@ -839,13 +767,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/showallfiles.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="39" selection-start="1486" selection-end="1486" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1377">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="8" selection-start="8" selection-end="8" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493" />
@@ -865,43 +786,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/S3Tests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="28" selection-start="896" selection-end="896" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../teamBapi/app/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="20" selection-start="692" selection-end="715" vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="2771">
-          <folding>
-            <element signature="e#21#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="32" selection-start="329" selection-end="361" vertical-scroll-proportion="0.0" vertical-offset="83" max-vertical-offset="544">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/showallusers.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="39" selection-start="1149" selection-end="1149" vertical-scroll-proportion="-8.461538" vertical-offset="392" max-vertical-offset="1071">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="138" selection-start="825" selection-end="825" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="14" selection-start="122" selection-end="122" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1037">
@@ -909,9 +793,53 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="32" selection-start="329" selection-end="361" vertical-scroll-proportion="0.33188722" vertical-offset="0" max-vertical-offset="544">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/S3Tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="28" selection-start="896" selection-end="896" vertical-scroll-proportion="0.5943601" vertical-offset="253" max-vertical-offset="714">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="138" selection-start="825" selection-end="825" vertical-scroll-proportion="0.2624729" vertical-offset="100" max-vertical-offset="561">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/showallusers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="39" selection-start="1149" selection-end="1149" vertical-scroll-proportion="0.50574714" vertical-offset="392" max-vertical-offset="1071">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/showallfiles.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="39" selection-start="1486" selection-end="1486" vertical-scroll-proportion="1.1724138" vertical-offset="204" max-vertical-offset="1377">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../teamBapi/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="86" column="73" selection-start="2827" selection-end="2827" vertical-scroll-proportion="0.0" vertical-offset="1224" max-vertical-offset="2771">
+          <folding>
+            <element signature="e#21#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="17" selection-start="1347" selection-end="1347" vertical-scroll-proportion="0.55314535" vertical-offset="408" max-vertical-offset="10302">
+        <state line="229" column="33" selection-start="6957" selection-end="6957" vertical-scroll-proportion="-8.770065" vertical-offset="7936" max-vertical-offset="10302">
           <folding>
             <element signature="e#20#29#0" expanded="true" />
           </folding>

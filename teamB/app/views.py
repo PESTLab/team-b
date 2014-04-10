@@ -227,7 +227,7 @@ def uploadpg():
 
                 upload_to_bucket(file)
 
-                url = 'http://127.0.0.1:5001/fmapi/addpg'
+                url = api_url + '/fmapi/addpg'
                 data = {'id': filerec.id, 'name': filerec.page_name, 'pgtype': filerec.page_type, 'prod': filerec.product, 'vis': filerec.visibility}
                 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
                 r = requests.post(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
