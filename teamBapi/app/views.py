@@ -26,8 +26,7 @@ def unauthorized():
 @app.route('/fmapi/getnext/<int:funid>/<int:pgid>', methods=['GET'])
 def getnexturl(funid,pgid):
 
-    source_origin = str(request.remote_addr)
-    source_origin = "http://" + source_origin
+    source_origin = "http://54.228.201.142"
 
     if source_origin in Allowed_Origins:
 
@@ -49,7 +48,7 @@ def getnexturl(funid,pgid):
 
         if x == (len(pgs_arr)-1):
             resp = make_response(jsonify(nextpg = url))
-            resp.headers['Access-Control-Allow-Origin'] = "http://54.228.201.142"
+            resp.headers['Access-Control-Allow-Origin'] = source_origin
             return resp
         else:
             nextpage = pgs_arr[x+1]
@@ -58,7 +57,7 @@ def getnexturl(funid,pgid):
 
         url = Base_URL + '/' + camp.name + '/' + funnel.product + '/' + funnel.name + '/' + nextpage.page_type
         resp = make_response(jsonify(nextpg = url))
-        resp.headers['Access-Control-Allow-Origin'] = "http://54.228.201.142"
+        resp.headers['Access-Control-Allow-Origin'] = source_origin
         return resp
 
 '''add records to db using POST Method'''
