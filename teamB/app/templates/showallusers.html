@@ -25,7 +25,7 @@
                     <tbody>
                     {% for u in Users %}
                     <tr>
-                        <td>{{loop.index}}</td>
+                        <td>{{u.id}}</td>
                         <td>{{u.email}}</td>
                         <td>
                             {% if u.rights == 0 %}
