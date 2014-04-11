@@ -190,6 +190,26 @@ def addusers():
         return render_template('base.html', title='Home')
 
     return render_template('addusrs.html', title="User Management", form=form)
+    
+    
+@app.route('/fm/deleteuser', methods=['GET', 'POST'])
+@login_required
+def deleteusers():
+    if g.user.rights != RIGHT_ADMIN:
+        flash('Only Users with Administrator Rights can access this page')
+        return redirect(url_for('index'))
+
+    userid = request.args.get('uid')
+
+    user = User.query.filter_by(id=userid).first()
+    db.session.delete(user)
+    db.session.commit()
+
+    flash('User Deleted')
+
+    allusers = User.query.all()
+
+    return redirect(url_for('showallusers'))
 
 
 '''landing page management'''
