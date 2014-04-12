@@ -20,7 +20,7 @@ class TestCase(unittest.TestCase):
 
     def test_allowed_file(self):
         assert (views.allowed_file('abc.html')) == True
-        assert (views.allowed_file('abc.txt')) == True
+        assert (views.allowed_file('abc.txt')) == False
 
     if __name__ == '__main__':
         unittest.main()
