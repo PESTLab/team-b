@@ -13,7 +13,6 @@ class TestCase(unittest.TestCase):
         self.app = app.test_client()
         db.create_all()
 
-    def tearDown(self):
 
     def test_allowed_file(self):
         assert (views.allowed_file('abc.html')) == True
