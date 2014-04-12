@@ -15,7 +15,7 @@ class TestCase(unittest.TestCase):
 
 
     def test_allowed_file(self):
-        assert (views.allowed_file('abc.html')) == False
+        assert (views.allowed_file('abc.html')) == True
         
     def test_notallowed_file(self):
         assert (views.allowed_file('abc.txt')) == False
