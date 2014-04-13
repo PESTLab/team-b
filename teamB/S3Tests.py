@@ -28,7 +28,7 @@ class MyTestCase(unittest.TestCase):
         views.upload_to_bucket(testfile, testfile.name)
         b = views.connect_to_bucket()
         k = Key(b)
-        k.key = 'test.html'
+        k.key = 'teamB/test.html'
         b.delete_key(k)
         mykey = b.get_key(testfile.name)
         assert mykey == None
