@@ -1,6 +1,6 @@
 __author__ = 'Nick'
 
-__name = 'Test'
+__name__ = 'Test'
 
 import os
 import unittest
