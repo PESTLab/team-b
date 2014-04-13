@@ -18,13 +18,13 @@ class MyTestCase(unittest.TestCase):
 
     def test_upload_file(self):
         b = views.connect_to_bucket()
-        testfile = open('test.html', "r")
+        testfile = open('teamB/test.html', "r")
         views.upload_to_bucket(testfile)
         mykey = b.get_key(testfile.name)
         assert mykey.name == 'test.html'
 
     def test_delete_file(self):
-        testfile = open('test.html', "r")
+        testfile = open('teamB/test.html', "r")
         views.upload_to_bucket(testfile)
         b = views.connect_to_bucket()
         k = Key(b)
