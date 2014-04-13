@@ -1,5 +1,7 @@
 __author__ = 'Nick'
 
+__name = 'Test'
+
 import os
 import unittest
 
