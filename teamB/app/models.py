@@ -12,6 +12,10 @@ ROLE_ADMIN = 2
 VISIBILE = 0
 HIDDEN = 1
 
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64), unique = True)
+
 class Campaign(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     creator_id = db.Column(db.SmallInteger)

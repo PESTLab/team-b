@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Manage Product List</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">All Products</h3>
+        </div>
+        <div class="panel-body">
+
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for p in prods %}
+                    <tr>
+                        <td>{{p.id}}</td>
+                        <td>{{p.name}}</td>
+                        <td>
+                            <form role="form" action="{{url_for('deleteproduct')}}" method="get" name="deleteproduct">
+                                <input type="hidden" name="pid" value="{{p.id}}">
+                                <button class="btn btn-primary" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <form class="form-horizontal" role="form" action="" method="post" name="adduser"
+                          enctype="multipart/form-data">
+                        {{form.hidden_tag()}}
+                        <td>New Product</td>
+                        <td>{{ form.product_name(placeholder='Enter Product Name', class="form-control")}}</td>
+                        <td>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Add Product
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </form>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

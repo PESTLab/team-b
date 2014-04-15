@@ -6,10 +6,10 @@ from BeautifulSoup import BeautifulSoup
 from werkzeug.utils import secure_filename
 from app import app, db, lm, oid, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 from flask import redirect, render_template, url_for, flash, request, g, session, render_template_string
-from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg
+from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form
 from flask_login import login_user, logout_user, current_user, login_required
 from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage, VISIBILE, HIDDEN, Campaign, \
-    Funnel, ROLE_ADMIN
+    Funnel, ROLE_ADMIN, Product
 from flask_googlelogin import GoogleLogin
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
@@ -190,8 +190,7 @@ def addusers():
         return render_template('base.html', title='Home')
 
     return render_template('addusrs.html', title="User Management", form=form)
-    
-    
+
 @app.route('/fm/deleteuser', methods=['GET', 'POST'])
 @login_required
 def deleteusers():
@@ -514,6 +513,51 @@ def deletecamp():
     flash(msg)
 
     return redirect(url_for('showallcamps'))
+
+'''Product List Management'''
+
+
+@app.route('/fm/products', methods=['GET', 'POST'])
+@login_required
+def manageprodlist():
+    if ((g.user.role != ROLE_WEBDEV) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
+    form = prod_form()
+
+    if form.validate_on_submit():
+        prod = Product(name=str(form.product_name.data))
+        check_prod = Product.query.filter_by(name=prod.name).first()
+        if not check_prod:
+            db.session.add(prod)
+            db.session.commit()
+            all_products = Product.query.all()
+            flash('New Product Added')
+        else:
+            flash('Product with this name already exists')
+
+        return redirect(url_for('manageprodlist'))
+
+    all_products = Product.query.all()
+    return render_template('prodlist.html', title='Product List', prods = all_products, form = form)
+
+@app.route('/fm/deleteprod', methods=['GET', 'POST'])
+@login_required
+def deleteproduct():
+    if ((g.user.role != ROLE_WEBDEV) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
+    prodid = request.args.get('pid')
+    prod = Product.query.filter_by(id=prodid).first()
+    db.session.delete(prod)
+    db.session.commit()
+
+    flash('Product Deleted')
+
+    return redirect(url_for('manageprodlist'))
+
 
 
 '''
