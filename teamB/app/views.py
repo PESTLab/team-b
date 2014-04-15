@@ -261,8 +261,6 @@ def uploadpg():
 
                 AllFiles = LandingPage.query.all()
 
-                msg =  r.json['msg']
-                flash(msg)
 
                 return render_template('showallfiles.html', title='All Files', Files=AllFiles)
             else:
@@ -320,8 +318,6 @@ def editpg():
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         r = requests.put(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
 
-        msg = r.json['msg']
-        flash(msg)
 
         return redirect(url_for('showallpages'))
 
@@ -385,8 +381,6 @@ def newcamp():
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             r = requests.post(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
 
-            msg =  r.json['msg']
-            flash(msg)
 
             return redirect(url_for('managecamp', cid=camp.id))
         else:
@@ -488,8 +482,6 @@ def setfunids():
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     r = requests.put(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
 
-    msg =  r.json['msg']
-    flash(msg)
 
     return redirect(url_for('managecamp', cid=c_id))
 
@@ -516,8 +508,6 @@ def deletecamp():
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     r = requests.delete(url, headers=headers, auth=('unibluefm', '123456789'))
 
-    msg =  r.json['msg']
-    flash(msg)
 
     return redirect(url_for('showallcamps'))
 
