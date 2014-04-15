@@ -1,7 +1,5 @@
 __author__ = 'Nick'
 
-__name__ = 'Test'
-
 import os
 import unittest
 
@@ -13,7 +11,6 @@ class TestCase(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['CSRF_ENABLED'] = False
         self.app = app.test_client()
-        db.create_all()
 
 
     def test_allowed_file(self):

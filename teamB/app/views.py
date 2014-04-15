@@ -23,6 +23,13 @@ googlelogin = GoogleLogin(app)
 
 api_url = "http://54.228.201.142:81"
 
+def get_all_prod_names():
+    product_list = Product.query.all()
+    prodnames = []
+    for prod in product_list:
+        prodnames.append((prod.name, prod.name))
+    return prodnames
+
 def findcamp_byname(campname):
     campaign = Campaign.query.filter_by(name=campname).first()
     return campaign
@@ -223,7 +230,7 @@ def uploadpg():
         return redirect(url_for('index'))
 
     form = uploadlandingpg()
-
+    form.productname.choices = get_all_prod_names()
     if form.validate_on_submit():
         file = request.files['file']
 
