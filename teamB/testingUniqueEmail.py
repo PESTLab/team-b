@@ -29,7 +29,7 @@ class TestingUniqueEmail(unittest.TestCase):
         u = User(id='2', nickname='ali2', email=email)
         db.session.add(u)
         db.session.commit()
-        email2 = User.make_unique_email('ali@test.com')
+        email2 = User.make_unique_email('ali2@test.com')
         assert email2 != 'ali@test.com'
         assert email2 != email
 
