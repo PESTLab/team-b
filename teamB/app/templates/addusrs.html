@@ -17,6 +17,9 @@
                     <div class="col-sm-offset-0.5 col-sm-5">
                         <label for="exampleInputEmail1">Email Address</label>
                         {{ form.useremail(placeholder='Enter Email', class = "form-control") }}
+                        {% for error in form.errors.useremail %}
+                        <br><span style="color: red;">[{{error}}]</span>
+                        {% endfor %}
                     </div>
                 </div>
 
