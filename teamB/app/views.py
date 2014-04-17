@@ -189,7 +189,9 @@ def addusers():
             right = RIGHT_ADMIN
             usrole = ROLE_ADMIN
 
-        user = User(nickname=nickname, email=form.useremail.data, role=usrole, rights=right)
+        email = form.useremail.data
+        email = User.make_unique_email(email)
+        user = User(nickname=nickname, email=email, role=usrole, rights=right)
         db.session.add(user)
         db.session.commit()
         flash(

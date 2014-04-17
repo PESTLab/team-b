@@ -58,3 +58,7 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
+    @staticmethod
+    def make_unique_email(email):
+        if User.query.filter_by(email=email).first() is None:
+            return email
