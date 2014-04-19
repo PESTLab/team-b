@@ -48,6 +48,9 @@ class funnelpg(Form):
 
 class prod_form(Form):
     product_name = TextField('product_name', [validators.Required()])
+    
+class pgtype_form(Form):
+    pg_type = TextField('pg_type', [validators.Required()])
 
 
 

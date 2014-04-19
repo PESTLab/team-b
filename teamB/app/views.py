@@ -6,10 +6,10 @@ from BeautifulSoup import BeautifulSoup
 from werkzeug.utils import secure_filename
 from app import app, db, lm, oid, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 from flask import redirect, render_template, url_for, flash, request, g, session, render_template_string
-from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form
+from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form, pgtype_form
 from flask_login import login_user, logout_user, current_user, login_required
 from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage, VISIBILE, HIDDEN, Campaign, \
-    Funnel, ROLE_ADMIN, Product
+    Funnel, ROLE_ADMIN, Product, Page_Type
 from flask_googlelogin import GoogleLogin
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
@@ -29,6 +29,13 @@ def get_all_prod_names():
     for prod in product_list:
         prodnames.append((prod.name, prod.name))
     return prodnames
+    
+def get_all_page_types():
+    pagetypes_list = Page_Type.query.all()
+    pgtypes = []
+    for ty in pagetypes_list:
+        pgtypes.append((ty.type, ty.type))
+    return pgtypes
 
 def findcamp_byname(campname):
     campaign = Campaign.query.filter_by(name=campname).first()
@@ -233,6 +240,7 @@ def uploadpg():
 
     form = uploadlandingpg()
     form.productname.choices = get_all_prod_names()
+    form.page_type.choices = get_all_page_types()
     if form.validate_on_submit():
         file = request.files['file']
 
@@ -556,6 +564,33 @@ def deleteproduct():
     flash('Product Deleted')
 
     return redirect(url_for('manageprodlist'))
+    
+'''Page Type Management'''
+
+@app.route('/fm/pagetypes', methods=['GET', 'POST'])
+@login_required
+def managepagetypes():
+    if ((g.user.role != ROLE_WEBDEV) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
+    form = pgtype_form()
+
+    if form.validate_on_submit():
+        ptype = Page_Type(type=str(form.pg_type.data))
+        check_type = Page_Type.query.filter_by(type=ptype.type).first()
+        if not check_type:
+            db.session.add(ptype)
+            db.session.commit()
+            all_page_types = Page_Type.query.all()
+            flash('New Page Type Added')
+        else:
+            flash('Page Type already exists')
+
+        return redirect(url_for('managepagetypes'))
+
+    all_page_types = Page_Type.query.all()
+    return render_template('pagetypes.html', title='Landing Page Types', types = all_page_types, form = form)
 
 
 

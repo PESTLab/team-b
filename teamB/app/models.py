@@ -15,6 +15,10 @@ HIDDEN = 1
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), unique = True)
+    
+class Page_Type(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    type = db.Column(db.String(64), unique = True)
 
 class Campaign(db.Model):
     id = db.Column(db.Integer, primary_key = True)
