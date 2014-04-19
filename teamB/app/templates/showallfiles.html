@@ -32,16 +32,7 @@
                         <td>{{loop.index}}</td>
                         <td>{{f.page_name}}</td>
                         <td>{{f.product}}</td>
-                        <td>{% if f.page_type == "download" %}
-                            Download Page
-                            {% elif f.page_type == "product" %}
-                            Product Page
-                            {% elif f.page_type == "purchase" %}
-                            Purchase Page
-                            {% else %}
-                            Not Set
-                            {% endif %}
-                        </td>
+                        <td>{{f.page_type}}</td>
                         <td>
                             {% if f.visibility == "visible" %}
                             Visible
