@@ -19,6 +19,10 @@ import requests
 import json
 from flask_httpauth import HTTPBasicAuth
 
+from jinja2 import Environment, FileSystemLoader
+
+
+
 googlelogin = GoogleLogin(app)
 
 api_url = "http://54.228.201.142:81"
@@ -404,7 +408,7 @@ def newcamp():
 @login_required
 def managecamp():
     if ((g.user.role != ROLE_SALESEXEC) and (g.user.role != ROLE_ADMIN)):
-        flash('Only an Administrator or Users with Web Developer Roles can access this page')
+        flash('Only an Administrator or Users with Sales Executive Roles can access this page')
         return redirect(url_for('index'))
 
     camp = findcamp_byid(request.args.get('cid'))
@@ -419,6 +423,7 @@ def managecamp():
             funnels_arr.append(f)
 
     AllFiles = LandingPage.query.all()
+    alltypes = Page_Type.query.all()
 
     if funnelform.validate_on_submit():
         match = False
@@ -455,7 +460,7 @@ def managecamp():
             flash('Funnel with same name already exists in this Campaign, please enter another name')
             redirect(url_for('managecamp', cid=camp.id))
 
-    return render_template('managecampaign.html', c=camp, form=funnelform, funnels=funnels_arr, allfiles=AllFiles)
+    return render_template('managecampaign.html', c=camp, form=funnelform, funnels=funnels_arr, allfiles=AllFiles, pagetypes = alltypes)
 
 
 @app.route('/fm/showallcampaigns')
@@ -607,6 +612,13 @@ def deletepagetype():
     flash('Page Type Deleted')
 
     return redirect(url_for('managepagetypes'))
+
+def getproductlist():
+    mylist = ['gorg', 'jason', 'toni']
+    return mylist
+
+env = Environment(loader=FileSystemLoader('/templates'))
+env.globals['getproductlist'] = getproductlist()
 
 '''
 

@@ -199,7 +199,7 @@ if (check == "No")
 
                     {% for f in funnels %}
                     <div class="tab-pane" id="{{f.id}}">
-                        <h1>{{f.name}}</h1>
+                        <h1>{{f.name}} -- {{f.product}}</h1>
 
                         <div class="panel panel-default">
                             <div class="panel-body">
@@ -253,42 +253,22 @@ if (check == "No")
                                         <li class="dropdown-submenu">
                                             <a href="#">Landing Page</a>
                                             <ul class="dropdown-menu">
+                                                {% for t in pagetypes %}
                                                 <li class="dropdown-submenu">
-                                                    <a href="#">Download Page</a>
+                                                    <a href="#">{{t.type}}</a>
                                                     <ul class="dropdown-menu">
+                                                        {% set allfiles = clever_function(f.id, t.type|lower) %}
                                                         {% for fi in allfiles %}
-                                                        {% if fi.page_type == "download"%}
+                                                        {% if fi.page_type|lower == t.type|lower and fi.product == f.product %}
                                                         <li id="{{f.id}}menu{{fi.id}}"
                                                             onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
-                                                            <a href="#">{{fi.page_name}}</a></li>
+                                                            <a href="#">{{fi.page_name}} -- {{fi.product}}</a></li>
                                                         {% endif %}
                                                         {% endfor %}
                                                     </ul>
                                                 </li>
-                                                <li class="dropdown-submenu">
-                                                    <a href="#">Purchase Page</a>
-                                                    <ul class="dropdown-menu">
-                                                        {% for fi in allfiles %}
-                                                        {% if fi.page_type == "purchase" %}
-                                                        <li id="{{f.id}}menu{{fi.id}}"
-                                                            onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
-                                                            <a href="#">{{fi.page_name}}</a></li>
-                                                        {% endif %}
-                                                        {% endfor %}
-                                                    </ul>
-                                                </li>
-                                                <li class="dropdown-submenu">
-                                                    <a href="#">Product Page</a>
-                                                    <ul class="dropdown-menu">
-                                                        {% for fi in allfiles %}
-                                                        {% if fi.page_type == "product" %}
-                                                        <li id="{{f.id}}menu{{fi.id}}"
-                                                            onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
-                                                            <a href="#">{{fi.page_name}}</a></li>
-                                                        {% endif %}
-                                                        {% endfor %}
-                                                    </ul>
-                                                </li>
+                                                {% endfor %}
+                                                
                                             </ul>
                                         </li>
                                     </ul>
@@ -341,6 +321,7 @@ if (check == "No")
                                     <button id="singlebutton" name="singlebutton" class="btn btn-primary">Add Funnel
                                     </button>
                                 </div>
+
                             </div>
                         </form>
                     </div>
@@ -352,4 +333,6 @@ if (check == "No")
         </div>
     </div>
 </div>
+
+
 {% endblock %}

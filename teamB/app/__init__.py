@@ -32,3 +32,16 @@ my_loader = jinja2.ChoiceLoader([
 app.jinja_loader = my_loader
 
 from app import views, models
+from models import LandingPage, Funnel
+
+def clever_function(funnel_id, page_type):
+    pagelist = []
+    allpages = LandingPage.query.all()
+    f = Funnel.query.filter_by(id = funnel_id).first()
+    for p in allpages:
+        p_prods = p.product.split(',')
+        if f.product.split(',')[0] in p_prods and p.page_type.lower() == page_type:
+            pagelist.append(p)
+    return pagelist
+
+app.jinja_env.globals.update(clever_function=clever_function)

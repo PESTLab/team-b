@@ -26,16 +26,36 @@
       <file leaf-file-name="pagetypes.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/templates/pagetypes.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="81" selection-start="895" selection-end="895" vertical-scroll-proportion="-3.2692308" vertical-offset="408" max-vertical-offset="1088">
+            <state line="29" column="81" selection-start="895" selection-end="895" vertical-scroll-proportion="6.076923" vertical-offset="651" max-vertical-offset="1088">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="612" column="31" selection-start="20373" selection-end="20373" vertical-scroll-proportion="0.92444444" vertical-offset="9682" max-vertical-offset="11985">
+            <state line="462" column="135" selection-start="15361" selection-end="15361" vertical-scroll-proportion="-4.5384617" vertical-offset="7736" max-vertical-offset="12495">
+              <folding>
+                <element signature="e#20#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="managecampaign.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/templates/managecampaign.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="270" column="48" selection-start="8235" selection-end="8235" vertical-scroll-proportion="0.66132724" vertical-offset="4301" max-vertical-offset="5831">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="43" column="29" selection-start="1105" selection-end="1105" vertical-scroll-proportion="0.0" vertical-offset="217" max-vertical-offset="765">
               <folding />
             </state>
           </provider>
@@ -82,9 +102,7 @@
         <option value="$PROJECT_DIR$/uploadfolder/Document1.html" />
         <option value="$PROJECT_DIR$/app/amakeys.txt" />
         <option value="$PROJECT_DIR$/config.py" />
-        <option value="$PROJECT_DIR$/app/__init__.py" />
         <option value="$PROJECT_DIR$/../teamBapi/app/models.py" />
-        <option value="$PROJECT_DIR$/app/templates/managecampaign.html" />
         <option value="$USER_HOME$/Desktop/pagecrisp.html" />
         <option value="$PROJECT_DIR$/app/templates/showallfiles.html" />
         <option value="$USER_HOME$/Desktop/callapi.html" />
@@ -102,6 +120,8 @@
         <option value="$PROJECT_DIR$/app/forms.py" />
         <option value="$PROJECT_DIR$/app/templates/pagetypes.html" />
         <option value="$PROJECT_DIR$/app/views.py" />
+        <option value="$PROJECT_DIR$/app/__init__.py" />
+        <option value="$PROJECT_DIR$/app/templates/managecampaign.html" />
       </list>
     </option>
   </component>
@@ -787,11 +807,6 @@
         <state line="0" column="8" selection-start="8" selection-end="8" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="32" selection-start="329" selection-end="361" vertical-scroll-proportion="0.33188722" vertical-offset="0" max-vertical-offset="544" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/showallusers.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="27" column="34" selection-start="771" selection-end="771" vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="1071" />
@@ -854,11 +869,6 @@
         <state line="24" column="72" selection-start="1426" selection-end="1426" vertical-scroll-proportion="0.30868763" vertical-offset="241" max-vertical-offset="1360" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/managecampaign.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="229" column="81" selection-start="5709" selection-end="5709" vertical-scroll-proportion="-2.598891" vertical-offset="5299" max-vertical-offset="6120" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="567" />
@@ -891,14 +901,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/pagetypes.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="81" selection-start="895" selection-end="895" vertical-scroll-proportion="-3.2692308" vertical-offset="408" max-vertical-offset="1088">
+        <state line="29" column="81" selection-start="895" selection-end="895" vertical-scroll-proportion="6.076923" vertical-offset="651" max-vertical-offset="1088">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="612" column="31" selection-start="20373" selection-end="20373" vertical-scroll-proportion="0.92444444" vertical-offset="9682" max-vertical-offset="11985">
+        <state line="462" column="135" selection-start="15361" selection-end="15361" vertical-scroll-proportion="-4.5384617" vertical-offset="7736" max-vertical-offset="12495">
+          <folding>
+            <element signature="e#20#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="29" selection-start="1105" selection-end="1105" vertical-scroll-proportion="0.0" vertical-offset="217" max-vertical-offset="765">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/managecampaign.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="270" column="48" selection-start="8235" selection-end="8235" vertical-scroll-proportion="0.66132724" vertical-offset="4301" max-vertical-offset="5831">
           <folding />
         </state>
       </provider>
