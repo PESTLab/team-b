@@ -592,7 +592,21 @@ def managepagetypes():
     all_page_types = Page_Type.query.all()
     return render_template('pagetypes.html', title='Landing Page Types', types = all_page_types, form = form)
 
+@app.route('/fm/deletepgtype', methods=['GET', 'POST'])
+@login_required
+def deletepagetype():
+    if ((g.user.role != ROLE_WEBDEV) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
 
+    typeid = request.args.get('tid')
+    ptyp = Page_Type.query.filter_by(id=typeid).first()
+    db.session.delete(ptyp)
+    db.session.commit()
+
+    flash('Page Type Deleted')
+
+    return redirect(url_for('managepagetypes'))
 
 '''
 
