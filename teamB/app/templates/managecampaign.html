@@ -259,16 +259,14 @@ if (check == "No")
                                                     <ul class="dropdown-menu">
                                                         {% set allfiles = clever_function(f.id, t.type|lower) %}
                                                         {% for fi in allfiles %}
-                                                        {% if fi.page_type|lower == t.type|lower and fi.product == f.product %}
                                                         <li id="{{f.id}}menu{{fi.id}}"
                                                             onClick="checkifused('{{fi.page_name}}', {{fi.id}}, {{f.id}})">
                                                             <a href="#">{{fi.page_name}} -- {{fi.product}}</a></li>
-                                                        {% endif %}
                                                         {% endfor %}
                                                     </ul>
                                                 </li>
                                                 {% endfor %}
-                                                
+
                                             </ul>
                                         </li>
                                     </ul>

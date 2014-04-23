@@ -1,7 +1,7 @@
 __author__ = 'Nick'
 
 from flask_wtf import Form
-from wtforms import TextField, BooleanField, RadioField, SelectField, FileField, validators
+from wtforms import TextField, BooleanField, RadioField, SelectField, FileField, validators, SelectMultipleField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import Required, Length, email
 from app.models import User, LandingPage
@@ -35,7 +35,7 @@ class adduserform(Form):
 
 class uploadlandingpg(Form):
     page_type = SelectField('page_type', choices=[('download', 'Download Page'), ('product', 'Product Page'), ('purchase', 'Purchase Page')])
-    productname= SelectField('productname')
+    productname= SelectMultipleField('productname')
     visibility = RadioField('visibilty', choices=[('visible','Visible'), ('hidden', 'Hidden'), ('notset', 'Not Set')], default='visible')
     file = FileField('filename')
 

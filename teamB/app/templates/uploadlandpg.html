@@ -11,12 +11,14 @@
         </div>
         <div class="panel-body">
 
-            <form class="form-horizontal" role="form" action="" method="post" name="adduser" enctype=multipart/form-data>
+            <form class="form-horizontal" role="form" action="" method="post" name="adduser"
+                  enctype=multipart/form-data>
                 {{form.hidden_tag()}}
                 <div class="form-group">
                     <div class="col-sm-offset-0.5 col-sm-5">
                         <label for="inputproductname">Product Name</label>
-                        {{ form.productname(placeholder='Enter Product Name', class = "form-control") }}
+                        <br>
+                        {{ form.productname(placeholder='Enter Product Name', class="multiselect", multiple="multiple") }}
                     </div>
                 </div>
 
@@ -44,6 +46,7 @@
                 </div>
 
                 <br>
+
                 <div class="form-group">
                     <div class="col-sm-offset-0.5 col-sm-5">
                         <label for="inputpagetype">Choose File</label>
@@ -63,4 +66,17 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.multiselect').multiselect({
+			        	enableFiltering: true,
+                        maxHeight: 150
+			        });
+  });
+
+</script>
+
 {% endblock %}
+
+<!-- Initialize the plugin: -->

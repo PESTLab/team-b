@@ -253,7 +253,12 @@ def uploadpg():
         else:
             vis = HIDDEN
 
-        filerec = LandingPage(uploader_id=g.user.id, visibility=form.visibility.data, product=form.productname.data,
+        prodlist = form.productname.data
+        pg_prod = ",".join(prodlist)
+
+
+
+        filerec = LandingPage(uploader_id=g.user.id, visibility=form.visibility.data, product=pg_prod,
                               page_name=file.filename, page_type=form.page_type.data)
 
         checkpg = findlandpage_byname(file.filename)
