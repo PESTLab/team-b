@@ -180,7 +180,6 @@ def showallusers():
 
 
 @app.route('/fm/addusers', methods=['GET', 'POST'])
-'''@login_required'''
 def addusers():
     '''if g.user.rights != RIGHT_ADMIN:
         flash('Only Users with Administrator Rights can access this page')
