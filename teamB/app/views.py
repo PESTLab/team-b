@@ -98,7 +98,7 @@ def broadcast(campname, productname, funnelname, pagetype):
     for p in pages:
         if p:
             page = findlandpage_byid(p)
-            if (page.page_type == pagetype.lower()):
+            if (page.page_type == pagetype):
                 pagename = page.page_name
                 mypage = page
 
