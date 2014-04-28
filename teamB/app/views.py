@@ -326,8 +326,17 @@ def editpg():
 
     form = uploadlandingpg()
 
+    pgtypes = get_all_page_types()
+    old_type = ((landpage.page_type, landpage.page_type))
+    pgtypes.remove(old_type)
+    pgtypes.insert(0, old_type)
+    form.page_type.choices = pgtypes
+
+    form.productname.choices = get_all_prod_names()
+
     if form.validate_on_submit():
-        landpage.product = form.productname.data
+        if form.productname.data != []:
+            landpage.product = form.productname.data
         landpage.page_type = form.page_type.data
         landpage.visibility = form.visibility.data
         db.session.commit()
