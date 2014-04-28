@@ -17,8 +17,11 @@
                 <div class="form-group">
                     <div class="col-sm-offset-0.5 col-sm-5">
                         <label for="inputproductname">Product Name</label>
+
                         <br>
                         {{ form.productname(placeholder='Enter Product Name', class="multiselect", multiple="multiple") }}
+                        <br>
+                        Currently set to : {{f.product}}
 
                     </div>
                 </div>
