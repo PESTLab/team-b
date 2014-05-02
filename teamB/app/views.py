@@ -25,16 +25,6 @@ googlelogin = GoogleLogin(app)
 
 api_url = "http://54.228.201.142:81"
 
-def get_variants(pgid):
-    pagenameslist = []
-    page = LandingPage.query.filter_by(id = pgid).first()
-    varsids = page.variants.split(',')
-    for v_id in varsids:
-        var = LandingPage.query.filter_by(id = v_id).first()
-        if var:
-            pagenameslist.append(var.page_name)
-    return pagenameslist
-
 def get_all_prod_names():
     product_list = Product.query.all()
     prodnames = []
