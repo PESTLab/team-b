@@ -6,7 +6,7 @@ from BeautifulSoup import BeautifulSoup
 from werkzeug.utils import secure_filename
 from app import app, db, lm, oid, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 from flask import redirect, render_template, url_for, flash, request, g, session, render_template_string
-from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form, pgtype_form
+from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form, pgtype_form, add_varient
 from flask_login import login_user, logout_user, current_user, login_required
 from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage, VISIBILE, HIDDEN, Campaign, \
     Funnel, ROLE_ADMIN, Product, Page_Type
@@ -21,11 +21,19 @@ from flask_httpauth import HTTPBasicAuth
 
 from jinja2 import Environment, FileSystemLoader
 
-
-
 googlelogin = GoogleLogin(app)
 
 api_url = "http://54.228.201.142:81"
+
+def get_variants(pgid):
+    pagenameslist = []
+    page = LandingPage.query.filter_by(id = pgid).first()
+    varsids = page.variants.split(',')
+    for v_id in varsids:
+        var = LandingPage.query.filter_by(id = v_id).first()
+        if var:
+            pagenameslist.append(var.page_name)
+    return pagenameslist
 
 def get_all_prod_names():
     product_list = Product.query.all()
@@ -309,7 +317,9 @@ def showallpages():
 
     AllFiles = LandingPage.query.all()
 
-    return render_template('showallfiles.html', title='All Files', Files=AllFiles)
+    form = add_varient();
+
+    return render_template('showallfiles.html', title='All Files', Files=AllFiles, form=form)
 
 
 @app.route('/fm/editpage', methods=['GET', 'POST'])
@@ -633,6 +643,21 @@ def getproductlist():
 
 env = Environment(loader=FileSystemLoader('/templates'))
 env.globals['getproductlist'] = getproductlist()
+
+'''addvariant'''
+@app.route('/fm/addvariant', methods=['GET', 'POST'])
+@login_required
+def addvar():
+    pid = request.args.get('pid')
+    varnametoadd = request.args.get('varname')
+    var = LandingPage.query.filter_by(page_name = varnametoadd).first()
+    page = LandingPage.query.filter_by(id=pid).first()
+    if page.variants == None:
+        page.variants = str(var.id) + ","
+    else:
+        page.variants = page.variants + str(var.id) + ","
+    db.session.commit()
+    return redirect(url_for('showallpages'))
 
 '''
 

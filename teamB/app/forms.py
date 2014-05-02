@@ -52,5 +52,8 @@ class prod_form(Form):
 class pgtype_form(Form):
     pg_type = TextField('pg_type', [validators.Required()])
 
+class add_varient(Form):
+    var_name = SelectField('var_name')
+
 
 

@@ -24,6 +24,7 @@
                         <th>Uploader</th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -44,19 +45,76 @@
                         </td>
                         <td>{{f.uploader_id}}</td>
                         <td>
-                            <form role="form" action="{{ url_for('editpg') }}" method="get" name="adduser">
-                            <input type="hidden" name="pageid" value="{{f.id}}">
-                            <button class="btn btn-primary" type="submit">Edit</button>
+                            <form role="form" action="{{ url_for('editpg') }}" method="get" name="adduser"
+                                  style="margin-bottom:0;">
+                                <input type="hidden" name="pageid" value="{{f.id}}">
+                                <button class="btn btn-primary" type="submit">Edit</button>
                             </form>
                         </td>
 
                         <td>
-                            <form role="form" action="{{ url_for('deletepg') }}" method="get" name="adduser">
-                            <input type="hidden" name="pageid" value="{{f.id}}">
+                            <form role="form" action="{{ url_for('deletepg') }}" method="get" name="adduser" style="margin-bottom:0;">
+                                <input type="hidden" name="pageid" value="{{f.id}}">
                             <button class="btn btn-primary" type="submit">Delete</button>
                             </form>
                         </td>
+                        <td>
+                            {% set possible_vars = variant_pages(f.id) %}
+                            {% set current_vars = get_variants(f.id) %}
+                            {% if possible_vars != [] %}
+                            <img src="/static/split.png" style="cursor:pointer;" alt="Smiley face" height="35"
+                                 width="61" onclick="toggle_visibility('test{{f.id}}');">
+                            {% endif %}
+                        </td>
                     </tr>
+
+                    {% for v in current_vars %}
+                    <tr>
+                        <td style="background-color:#ddd;"></td>
+                        <td style="background-color:#ddd;"></td>
+                        <td>
+                            <b>Variant Page {{loop.index}}</b>
+                        </td>
+                        <td style="background-color:#ddd;">{{v}}</td>
+                        <td style="background-color:#ddd;"></td>
+                        <td style="background-color:#ddd;"></td>
+                        <td style="background-color:#ddd;"></td>
+                        <td style="background-color:#ddd;"></td>
+                        <td style="background-color:#ddd;"></td>
+                    </tr>
+                    {%endfor%}
+
+                    <tr id="test{{f.id}}" style="visibility:hidden;">
+                        <td style="background-color:#ddd;"></td>
+                        <td style="background-color:#ddd;"></td>
+                        <td>
+                            <b>Variant Page {{current_vars|length + 1}}</b>
+                        </td>
+                        <td>
+                            <form style="margin-bottom:0;" action="{{url_for('addvar')}}">
+                                <select name="varname"class="selectpicker" style="width:100%">
+
+                                    {% for v in possible_vars %}
+                                    <option>{{v.page_name}}</option>
+                                    {%endfor %}
+                                </select>
+                        </td>
+                        <td>
+                            <input type="hidden" name="pid" value="{{f.id}}">
+                            <input type="image" style="width:30px; height:30px;" src="/static/add.png"
+                                   alt="Submit Form"/>
+
+                            </form>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+
+
+
                     {% endfor %}
                     </tbody>
                 </table>
@@ -64,4 +122,18 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+<!--
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.visibility == 'hidden')
+          e.style.visibility = 'visible';
+       else
+          e.style.visibility = 'hidden';
+    }
+//-->
+
+</script>
+
 {% endblock %}
