@@ -26,7 +26,7 @@ def unauthorized():
 @app.route('/fmapi/getnext/<int:funid>/<int:pgid>', methods=['GET'])
 def getnexturl(funid,pgid):
 
-    source_origin = "http://127.0.0.1:5000/"
+    source_origin = "http://54.228.201.142"
 
     if source_origin in Allowed_Origins:
 
