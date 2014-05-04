@@ -145,7 +145,7 @@ def broadcast(campname, productname, funnelname, pagetype):
     resp = make_response(render_template_string(rendered_page, p=mypage, pif = pinfunnel, tcode = testcode, f=funnel, title='Rendered Page'))
 
     if pinfunnel.test_pos != -1:
-        cookiename = 'variant' + str(mypage.test_id)
+        cookiename = 'variant' + str(pinfunnel.test_id)
         resp.set_cookie(cookiename, str(mypage.id))
 
     return resp
