@@ -107,7 +107,7 @@ def broadcast(campname, productname, funnelname, pagetype):
     else:
         testcode = tst
 
-    cookiename = 'variant' + str(pinfunnel.test_id)
+    cookiename = 'splittest' + str(pinfunnel.test_id)
     already = request.cookies.get(cookiename)
 
 
@@ -149,7 +149,7 @@ def broadcast(campname, productname, funnelname, pagetype):
     resp = make_response(render_template_string(rendered_page, p=mypage, pif = pinfunnel, tcode = testcode, f=funnel, title='Rendered Page'))
 
     if pinfunnel.test_pos != -1 and already == None:
-        cookiename = 'variant' + str(pinfunnel.test_id)
+        cookiename = 'splittest' + str(pinfunnel.test_id)
         resp.set_cookie(cookiename, str(mypage.id))
 
     return resp
