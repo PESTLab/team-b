@@ -111,6 +111,7 @@ def broadcast(campname, productname, funnelname, pagetype):
 
     if mypage.test_pos != -1:
         variants = mypage.variants.split(',')
+
         if mypage.test_pos == -2:
             var_page = mypage
         else:
@@ -131,6 +132,8 @@ def broadcast(campname, productname, funnelname, pagetype):
         if testcode == "notest":
             testcode = newcode
 
+
+
         mypage = var_page
 
     pagename = mypage.page_name
@@ -140,7 +143,11 @@ def broadcast(campname, productname, funnelname, pagetype):
     rendered_page = k.get_contents_as_string()
 
     resp = make_response(render_template_string(rendered_page, p=mypage, pif = pinfunnel, tcode = testcode, f=funnel, title='Rendered Page'))
-    resp.set_cookie('variant', mypage.page_name)
+
+    if pinfunnel.test_pos != -1:
+        cookiename = 'variant' + str(mypage.test_id)
+        resp.set_cookie(cookiename, mypage.id)
+
     return resp
 
 '''user log-in'''
