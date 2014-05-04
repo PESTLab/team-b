@@ -100,11 +100,12 @@ def broadcast(campname, productname, funnelname, pagetype):
 
     pinfunnel = mypage
 
+    tst = request.args.get('TestCode')
+    if tst is None:
+        testcode = "notest"
+    else:
+        testcode = tst
 
-    testcode = "notest"
-
-    if request.method == 'GET' and 'TestCode' in request.GET:
-        testcode = request.args.get('TestCode')
 
     if mypage.test_pos != -1:
         variants = mypage.variants.split(',')
