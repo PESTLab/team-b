@@ -9,7 +9,7 @@ from flask import redirect, render_template, url_for, flash, request, g, session
 from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form, pgtype_form, add_varient
 from flask_login import login_user, logout_user, current_user, login_required
 from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage, VISIBILE, HIDDEN, Campaign, \
-    Funnel, ROLE_ADMIN, Product, Page_Type
+    Funnel, ROLE_ADMIN, Product, Page_Type, SplitTest
 from flask_googlelogin import GoogleLogin
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
@@ -100,12 +100,14 @@ def broadcast(campname, productname, funnelname, pagetype):
 
     pinfunnel = mypage
 
+    testcode = "notest"
+
     if mypage.test_pos != -1:
         variants = mypage.variants.split(',')
         if mypage.test_pos == -2:
             var_page = mypage
         else:
-            var_page = LandingPage.query.filter_by(id = variants[mypage.test_pos]).first();
+            var_page = LandingPage.query.filter_by(id = variants[mypage.test_pos]).first()
         if mypage.test_pos == len(variants)-2:
             mypage.test_pos = -2
         elif mypage.test_pos == -2:
@@ -113,6 +115,11 @@ def broadcast(campname, productname, funnelname, pagetype):
         else:
             mypage.test_pos = mypage.test_pos + 1
         db.session.commit()
+
+        varcode = var_page.id
+        test = SplitTest.query.filter_by(id = mypage.test_id).first()
+        testcode = test.test_code
+        testcode = testcode + "-" + str(varcode)
         mypage = var_page
 
 
@@ -123,7 +130,7 @@ def broadcast(campname, productname, funnelname, pagetype):
     k.key = pagename
     rendered_page = k.get_contents_as_string()
 
-    return render_template_string(rendered_page, p=mypage, pif = pinfunnel, f=funnel, title='Rendered Page')
+    return render_template_string(rendered_page, p=mypage, pif = pinfunnel, tcode = testcode, f=funnel, title='Rendered Page')
 
 '''user log-in'''
 
@@ -674,6 +681,23 @@ def starttest():
     pid = request.args.get('pid')
     page = LandingPage.query.filter_by(id = pid).first()
     page.test_pos = -2
+    new_test = SplitTest(pageid=page.id, variants = page.variants)
+    db.session.add(new_test)
+    db.session.commit()
+
+    currentYear = datetime.now().year
+    year = str(currentYear)
+    y = "" + year[2] + year[3]
+
+    if new_test.id < 10:
+        seq = "00" + str(new_test.id)
+    elif new_test.id < 100:
+        seq = "0" + str(new_test.id)
+    else:
+        seq = str(new_test.id)
+
+    new_test.test_code = y + "-" + seq
+    page.test_id = new_test.id
     db.session.commit()
     flash('Test for Page ' + page.page_name + ' started' )
     return redirect(url_for('showallpages'))

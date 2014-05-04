@@ -72,7 +72,7 @@
                             <a href="{{url_for('starttest')}}?pid={{f.id}}"><img src="/static/start_test.png" style="cursor:pointer;" alt="Smiley face" height="35"
                                  width="35"></a>
                             {% elif f.test_pos != -1 and current_vars != []%}
-                            <a href="{{url_for('stoptest')}}?pid={{f.id}}"><img src="/static/stop_test.png" style="cursor:pointer;" alt="Smiley face" height="35"
+                            {{f.test_id}}<a href="{{url_for('stoptest')}}?pid={{f.id}}"><img src="/static/stop_test.png" style="cursor:pointer;" alt="Smiley face" height="35"
                                  width="35"></a>
                             {%endif%}
                         </td>
