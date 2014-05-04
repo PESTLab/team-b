@@ -129,7 +129,7 @@ def broadcast(campname, productname, funnelname, pagetype):
         if testcode == "notest":
             testcode = newcode
         else:
-            testcode = testcode + "&TestCode="
+            testcode = testcode + "&TestCode=" + newcode
 
 
         mypage = var_page
