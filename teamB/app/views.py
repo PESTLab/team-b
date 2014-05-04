@@ -140,6 +140,7 @@ def broadcast(campname, productname, funnelname, pagetype):
     rendered_page = k.get_contents_as_string()
 
     resp = make_response(render_template_string(rendered_page, p=mypage, pif = pinfunnel, tcode = testcode, f=funnel, title='Rendered Page'))
+    resp.set_cookie('variant', mypage.page_name)
     return resp
 
 '''user log-in'''
