@@ -107,22 +107,28 @@ def broadcast(campname, productname, funnelname, pagetype):
     else:
         testcode = tst
 
+    cookiename = 'variant' + str(pinfunnel.test_id)
+    already = request.cookies.get(cookiename)
 
 
     if mypage.test_pos != -1:
-        variants = mypage.variants.split(',')
 
-        if mypage.test_pos == -2:
-            var_page = mypage
+        if already != None:
+            var_page = LandingPage.query.filter_by(id = int(already))
         else:
-            var_page = LandingPage.query.filter_by(id = variants[mypage.test_pos]).first()
-        if mypage.test_pos == len(variants)-2:
-            mypage.test_pos = -2
-        elif mypage.test_pos == -2:
-            mypage.test_pos = 0
-        else:
-            mypage.test_pos = mypage.test_pos + 1
-        db.session.commit()
+            variants = mypage.variants.split(',')
+
+            if mypage.test_pos == -2:
+                var_page = mypage
+            else:
+                var_page = LandingPage.query.filter_by(id = variants[mypage.test_pos]).first()
+            if mypage.test_pos == len(variants)-2:
+                mypage.test_pos = -2
+            elif mypage.test_pos == -2:
+                mypage.test_pos = 0
+            else:
+                mypage.test_pos = mypage.test_pos + 1
+            db.session.commit()
 
         varcode = var_page.id
         test = SplitTest.query.filter_by(id = mypage.test_id).first()
@@ -131,8 +137,6 @@ def broadcast(campname, productname, funnelname, pagetype):
 
         if testcode == "notest":
             testcode = newcode
-
-
 
         mypage = var_page
 
@@ -144,7 +148,7 @@ def broadcast(campname, productname, funnelname, pagetype):
 
     resp = make_response(render_template_string(rendered_page, p=mypage, pif = pinfunnel, tcode = testcode, f=funnel, title='Rendered Page'))
 
-    if pinfunnel.test_pos != -1:
+    if pinfunnel.test_pos != -1 and already == None:
         cookiename = 'variant' + str(pinfunnel.test_id)
         resp.set_cookie(cookiename, str(mypage.id))
 
