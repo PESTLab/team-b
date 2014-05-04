@@ -100,7 +100,11 @@ def broadcast(campname, productname, funnelname, pagetype):
 
     pinfunnel = mypage
 
+
     testcode = "notest"
+
+    if 'TestCode' in request.GET:
+        testcode = request.args.get('TestCode')
 
     if mypage.test_pos != -1:
         variants = mypage.variants.split(',')
@@ -118,8 +122,15 @@ def broadcast(campname, productname, funnelname, pagetype):
 
         varcode = var_page.id
         test = SplitTest.query.filter_by(id = mypage.test_id).first()
-        testcode = test.test_code
-        testcode = testcode + "-" + str(varcode)
+        newcode = test.test_code
+        newcode = newcode + "-" + str(varcode)
+
+        if testcode == "notest":
+            testcode = newcode
+        else:
+            testcode = testcode + "&TestCode="
+
+
         mypage = var_page
 
 
