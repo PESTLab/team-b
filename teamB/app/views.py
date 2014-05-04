@@ -98,6 +98,8 @@ def broadcast(campname, productname, funnelname, pagetype):
             if (page.page_type == pagetype):
                 mypage = page
 
+    pinfunnel = mypage
+
     if mypage.test_pos != -1:
         variants = mypage.variants.split(',')
         if mypage.test_pos == -2:
@@ -121,7 +123,7 @@ def broadcast(campname, productname, funnelname, pagetype):
     k.key = pagename
     rendered_page = k.get_contents_as_string()
 
-    return render_template_string(rendered_page, p=mypage, f=funnel, title='Rendered Page')
+    return render_template_string(rendered_page, p=mypage, pif = pinfunnel, f=funnel, title='Rendered Page')
 
 '''user log-in'''
 
@@ -321,6 +323,7 @@ def showallpages():
         return redirect(url_for('index'))
 
     AllFiles = LandingPage.query.all()
+
 
     form = add_varient();
 
