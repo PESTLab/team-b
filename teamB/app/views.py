@@ -106,6 +106,7 @@ def broadcast(campname, productname, funnelname, pagetype):
         return 'notests'
     else:
         testcode = tst
+        return tst
 
 
     if mypage.test_pos != -1:
