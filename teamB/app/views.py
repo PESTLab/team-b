@@ -114,7 +114,7 @@ def broadcast(campname, productname, funnelname, pagetype):
     if mypage.test_pos != -1:
 
         if already != None:
-            var_page = LandingPage.query.filter_by(id = int(already))
+            var_page = LandingPage.query.filter_by(id = int(already)).first()
         else:
             variants = mypage.variants.split(',')
 
