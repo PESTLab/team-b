@@ -62,7 +62,7 @@
                         <td>
                             {% set possible_vars = variant_pages(f.id) %}
                             {% set current_vars = get_variants(f.id) %}
-                            {% if possible_vars != [] %}
+                            {% if possible_vars != [] and f.test_pos != -1%}
                             <img src="/static/split.png" style="cursor:pointer;" alt="Smiley face" height="35"
                                  width="61" onclick="toggle_visibility('test{{f.id}}');">
                             {% endif %}
