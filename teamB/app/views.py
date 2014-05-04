@@ -321,11 +321,6 @@ def showallpages():
         return redirect(url_for('index'))
 
     AllFiles = LandingPage.query.all()
-    
-    for f in AllFiles:
-    	f.test_pos = -1
-            
-    db.session.commit()
 
     form = add_varient();
 
