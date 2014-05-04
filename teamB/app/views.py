@@ -88,25 +88,40 @@ def getall_visiblepages():
 
 @app.route('/<campname>/<productname>/<funnelname>/<pagetype>')
 def broadcast(campname, productname, funnelname, pagetype):
-    campaign = findcamp_byname(campname)
     funnel = findfunnel_byname(funnelname)
-    pages = funnel.content_ids.split(",")
+    fun_pages = funnel.content_ids.split(",")
     pagename = ''
     mypage = LandingPage()
-    for p in pages:
+    for p in fun_pages:
         if p:
             page = findlandpage_byid(p)
             if (page.page_type == pagetype):
-                pagename = page.page_name
                 mypage = page
 
-    b = connect_to_bucket()
+    if mypage.test_pos != -1:
+        variants = mypage.variants.split(',')
+        if mypage.test_pos == -2:
+            var_page = mypage
+        else:
+            var_page = LandingPage.query.filter_by(id = variants[mypage.test_pos]).first();
+        if mypage.test_pos == len(variants)-2:
+            mypage.test_pos = -2
+        elif mypage.test_pos == -2:
+            mypage.test_pos = 0
+        else:
+            mypage.test_pos = mypage.test_pos + 1
+        db.session.commit()
+        mypage = var_page
 
+
+
+    pagename = mypage.page_name
+    b = connect_to_bucket()
     k = Key(b)
     k.key = pagename
-    tst = k.get_contents_as_string()
+    rendered_page = k.get_contents_as_string()
 
-    return render_template_string(tst, p=mypage, f=funnel, title='Rendered Page')
+    return render_template_string(rendered_page, p=mypage, f=funnel, title='Rendered Page')
 
 '''user log-in'''
 
@@ -655,7 +670,7 @@ def addvar():
 def starttest():
     pid = request.args.get('pid')
     page = LandingPage.query.filter_by(id = pid).first()
-    page.test_pos = 0
+    page.test_pos = -2
     db.session.commit()
     flash('Test for Page ' + page.page_name + ' started' )
     return redirect(url_for('showallpages'))
