@@ -5,7 +5,7 @@ import shutil
 from BeautifulSoup import BeautifulSoup
 from werkzeug.utils import secure_filename
 from app import app, db, lm, oid, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
-from flask import redirect, render_template, url_for, flash, request, g, session, render_template_string
+from flask import redirect, render_template, url_for, flash, request, g, session, render_template_string, make_response
 from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form, pgtype_form, add_varient
 from flask_login import login_user, logout_user, current_user, login_required
 from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage, VISIBILE, HIDDEN, Campaign, \
@@ -133,15 +133,14 @@ def broadcast(campname, productname, funnelname, pagetype):
 
         mypage = var_page
 
-
-
     pagename = mypage.page_name
     b = connect_to_bucket()
     k = Key(b)
     k.key = pagename
     rendered_page = k.get_contents_as_string()
 
-    return render_template_string(rendered_page, p=mypage, pif = pinfunnel, tcode = testcode, f=funnel, title='Rendered Page')
+    resp = make_response(render_template_string(rendered_page, p=mypage, pif = pinfunnel, tcode = testcode, f=funnel, title='Rendered Page'))
+    return resp
 
 '''user log-in'''
 
