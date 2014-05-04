@@ -86,7 +86,7 @@ def getall_visiblepages():
             visible_files.append(f)
     return visible_files
 
-@app.route('/<campname>/<productname>/<funnelname>/<pagetype>')
+@app.route('/<campname>/<productname>/<funnelname>/<pagetype>', methods=['GET'])
 def broadcast(campname, productname, funnelname, pagetype):
     funnel = findfunnel_byname(funnelname)
     fun_pages = funnel.content_ids.split(",")
@@ -103,7 +103,7 @@ def broadcast(campname, productname, funnelname, pagetype):
 
     testcode = "notest"
 
-    if 'TestCode' in request.GET:
+    if request.method == 'GET' and 'TestCode' in request.GET:
         testcode = request.args.get('TestCode')
 
     if mypage.test_pos != -1:
