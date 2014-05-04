@@ -634,7 +634,8 @@ def getproductlist():
 env = Environment(loader=FileSystemLoader('/templates'))
 env.globals['getproductlist'] = getproductlist()
 
-'''addvariant'''
+'''split testing management'''
+
 @app.route('/fm/addvariant', methods=['GET', 'POST'])
 @login_required
 def addvar():
@@ -648,6 +649,29 @@ def addvar():
         page.variants = page.variants + str(var.id) + ","
     db.session.commit()
     return redirect(url_for('showallpages'))
+
+@app.route('/fm/startsplittest', methods=['GET', 'POST'])
+@login_required
+def starttest():
+    pid = request.args.get('pid')
+    page = LandingPage.query.filter_by(id = pid).first()
+    page.test_pos = 0
+    db.session.commit()
+    flash('Test for Page ' + page.page_name + ' started' )
+    return redirect(url_for('showallpages'))
+
+@app.route('/fm/stopsplittest', methods=['GET', 'POST'])
+@login_required
+def stoptest():
+    pid = request.args.get('pid')
+    page = LandingPage.query.filter_by(id = pid).first()
+    page.test_pos = -1
+    db.session.commit()
+    flash('Test for Page ' + page.page_name + ' stopped' )
+    return redirect(url_for('showallpages'))
+
+
+
 
 '''
 

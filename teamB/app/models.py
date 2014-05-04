@@ -41,7 +41,7 @@ class LandingPage(db.Model):
     visibility = db.Column(db.SmallInteger, default = VISIBILE)
     product = db.Column(db.String(120))
     variants = db.Column(db.String(120))
-    test_pos = db.Column(db.Integer)
+    test_pos = db.Column(db.Integer, default =-1)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)

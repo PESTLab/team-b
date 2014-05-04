@@ -25,6 +25,7 @@
                         <th></th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -66,6 +67,15 @@
                                  width="61" onclick="toggle_visibility('test{{f.id}}');">
                             {% endif %}
                         </td>
+                        <td>
+                            {% if f.test_pos == -1 and current_vars != []%}
+                            <a href="{{url_for('starttest')}}?pid={{f.id}}"><img src="/static/start_test.png" style="cursor:pointer;" alt="Smiley face" height="35"
+                                 width="35"></a>
+                            {% elif f.test_pos != -1 and current_vars != []%}
+                            <a href="{{url_for('stoptest')}}?pid={{f.id}}"><img src="/static/stop_test.png" style="cursor:pointer;" alt="Smiley face" height="35"
+                                 width="35"></a>
+                            {%endif%}
+                        </td>
                     </tr>
 
                     {% for v in current_vars %}
@@ -76,6 +86,7 @@
                             <b>Variant Page {{loop.index}}</b>
                         </td>
                         <td style="background-color:#ddd;">{{v}}</td>
+                        <td style="background-color:#ddd;"></td>
                         <td style="background-color:#ddd;"></td>
                         <td style="background-color:#ddd;"></td>
                         <td style="background-color:#ddd;"></td>
@@ -106,6 +117,7 @@
 
                             </form>
                         </td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
