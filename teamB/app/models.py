@@ -42,6 +42,13 @@ class LandingPage(db.Model):
     product = db.Column(db.String(120))
     variants = db.Column(db.String(120))
     test_pos = db.Column(db.Integer, default =-1)
+    test_id = db.Column(db.Integer)
+
+class SplitTest(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    pageid = db.Column(db.Integer)
+    variants = db.Column(db.String(120))
+    test_code = db.Column(db.String(8))
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
