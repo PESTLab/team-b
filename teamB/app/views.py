@@ -146,6 +146,7 @@ def broadcast(campname, productname, funnelname, pagetype):
 
     if pinfunnel.test_pos != -1:
         resp.set_cookie('variant', mypage.id)
+        return 'hello'
 
     return resp
 
