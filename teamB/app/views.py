@@ -103,6 +103,7 @@ def broadcast(campname, productname, funnelname, pagetype):
     tst = request.args.get('TestCode')
     if tst is None:
         testcode = "notest"
+        return 'notests'
     else:
         testcode = tst
 
