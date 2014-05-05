@@ -62,7 +62,12 @@ function addtext(pgname, id, fid){
     newbtn.setAttribute('style', 'float: right; margin-right:4px;')
     newbtn.setAttribute('id', 'deletepagebtn')
 
-    newbtn.innerHTML = "x";
+    var newimg = document.createElement('img')
+            newimg.setAttribute('src', '/static/cross.png')
+            newimg.setAttribute('alt', 'Smiley face')
+            newimg.setAttribute('height', '20')
+            newimg.setAttribute('width', '20')
+            newimg.setAttribute('style', 'float: right; margin-top: 5px')
 
     var newspan = document.createElement('span')
     newspan.setAttribute('class', 'ui-icon ui-icon-circle-close')
@@ -79,12 +84,12 @@ function addtext(pgname, id, fid){
     newpnlbod.setAttribute('class', 'panel-body')
     newpnlbod.appendChild(newpgid)
 
+    newspan.appendChild(newimg)
     newbtn.appendChild(newspan)
-
+    newpnl.appendChild(newbtn)
     newpnlhead.appendChild(newh3)
     newpnl.appendChild(newpnlhead)
     newpnl.appendChild(newpnlbod)
-    newpg.appendChild(newbtn)
     newpg.appendChild(newpnl)
     document.getElementById(res).appendChild(newpg)
 
@@ -210,13 +215,17 @@ if (check == "No")
 
                             {% if p.id == x|int %}
                             <li class="ui-state-default t" id="{{x}}">
-                                <a href="#" id="deletepagebtn"><span
-                                        class="ui-icon ui-icon-circle-close"><img src="/static/cross.png"
-                                                                                  alt="Smiley face" height="20"
-                                                                                  width="20"></span></a>
+
 
                                 <div class="panel panel-default">
-                                    <div class="panel-heading"><h3 class="panel-title"><b>{{p.page_name}}</b>
+                                    <a href="#" id="deletepagebtn"><span
+                                        class="ui-icon ui-icon-circle-close"><img src="/static/cross.png"
+                                                                                  alt="Smiley face" height="20"
+                                                                                  width="20" style="float: right; margin-top: 5px;"></span></a>
+                                    <div class="panel-heading">
+
+                                        <h3 class="panel-title"><b>{{p.page_name}}</b>
+
                                     </h3>
                                     </div>
                                     <div class="panel-body">ID:{{p.id}}, {{p.page_type}}</div>
