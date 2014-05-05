@@ -486,6 +486,7 @@ def managecamp():
     AllFiles = LandingPage.query.all()
     alltypes = Page_Type.query.all()
 
+    funnelform.product_name.choices=get_all_prod_names()
     if funnelform.validate_on_submit():
         match = False
         for fun in funnels_arr:

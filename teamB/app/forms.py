@@ -44,7 +44,7 @@ class newcampaign(Form):
 
 class funnelpg(Form):
     funnel_name = TextField('funnel_name', [validators.Required()])
-    product_name = TextField('product_name', [validators.Required()])
+    product_name = SelectField('product_name', [validators.Required()])
 
 class prod_form(Form):
     product_name = TextField('product_name', [validators.Required()])
