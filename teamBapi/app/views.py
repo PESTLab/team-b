@@ -116,6 +116,19 @@ def updatepage(pgid):
 
 
 '''delete db records using DELETE method'''
+@app.route('/fmapi/deletefun/<int:campid>/<int:funid>', methods = ['DELETE'])
+@auth.login_required
+def deletefunnel(campid,funid):
+    camp = Campaign.query.filter_by(request.args.get('cid'))
+    fun = Funnel.query.filter_by(request.args.get('fid'))
+
+    todel = str(fun.id) + ","
+    camp.funnel_ids = camp.funnel_ids.replace(todel, "")
+    db.session.delete(fun)
+    db.session.commit()
+
+    return jsonify(msg = 'Funnel Deleted')
+
 @app.route('/fmapi/deletecamp/<int:campid>', methods = ['DELETE'])
 @auth.login_required
 def deletecmp(campid):

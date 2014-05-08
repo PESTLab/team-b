@@ -162,7 +162,6 @@ for(var i = 0; i < searchEles.length; i++)
 
 if (check == "No")
 { addtext(pgname, id, fid)}
-
 }
 
 </script>
@@ -173,12 +172,11 @@ if (check == "No")
     <div class="panel-group" id="accordion">
         {% for f in funnels %}
         <div class="panel panel-success">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{f.id}}">
-                        <h4>Funnel {{f.name}}</h4>
-                    </a>
-                </h4>
+            <div class="panel-heading" >
+               <div class="panel-heading" >
+               <b style="font-size:22px; cursor:pointer"data-toggle="collapse" data-parent="#accordion" href="#collapse{{f.id}}">Funnel {{f.name}}</b>
+                   <a href="{{url_for('deletefun')}}?cid={{c.id}}&fid={{f.id}}" style="float:right"><img width="30px" height="30px" style="border:0;" src="/static/delete.png"></a>
+            </div>
             </div>
 
             <div id="collapse{{f.id}}" class="panel-collapse collapse">

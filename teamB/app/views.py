@@ -585,8 +585,30 @@ def deletecamp():
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     r = requests.delete(url, headers=headers, auth=('unibluefm', '123456789'))
 
+    return redirect(url_for('showallcamps'))
+
+@app.route('/fm/deletefunnel')
+@login_required
+def deletefun():
+
+    if ((g.user.role != ROLE_SALESEXEC) and (g.user.role != ROLE_ADMIN)):
+        flash('Only an Administrator or Users with Web Developer Roles can access this page')
+        return redirect(url_for('index'))
+
+    camp = findcamp_byid(request.args.get('cid'))
+    fun = findfunnel_byid(request.args.get('fid'))
+
+    todel = str(fun.id) + ","
+    camp.funnel_ids = camp.funnel_ids.replace(todel, "")
+    db.session.delete(fun)
+    db.session.commit()
+
+    url = api_url + '/fmapi/deletefun/' + str(camp.id) + str(fun.id)
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    r = requests.delete(url, headers=headers, auth=('unibluefm', '123456789'))
 
     return redirect(url_for('showallcamps'))
+
 
 '''Product List Management'''
 
