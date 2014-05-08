@@ -22,7 +22,7 @@ class TestFindCampbyId(unittest.TestCase):
         db.drop_all()
 
 
-    def test_findCampByName(self):
+    def test_findCampById(self):
         c = Campaign(id='1', creator_id='2', name='test', funnel_ids='2')
         db.session.add(c)
         db.session.commit()
