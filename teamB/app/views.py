@@ -103,7 +103,6 @@ def broadcast(campname, productname, funnelname, pagetype):
     tst = request.args.get('TestCode')
     if tst is None:
         testcode = "notest"
-
     else:
         testcode = tst
 
@@ -137,6 +136,8 @@ def broadcast(campname, productname, funnelname, pagetype):
 
         if testcode == "notest":
             testcode = newcode
+        else:
+            testcode = testcode + "_" + newcode
 
         mypage = var_page
 
