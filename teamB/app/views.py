@@ -714,6 +714,16 @@ def addvar():
     varnametoadd = request.args.get('varname')
     var = LandingPage.query.filter_by(page_name = varnametoadd).first()
     page = LandingPage.query.filter_by(id=pid).first()
+
+    if page.product.find(',') != -1:
+
+        allfunnels = Funnel.query.all()
+        for f in allfunnels:
+            if str(page.id) in f.content_ids.split(','):
+                if f.product not in var.product.split(','):
+                    flash('This Variant would cause a conflict with Funnel ' + f.name + ' which has ' + f.product + ' as its product')
+                    return redirect(url_for('showallpages'))
+
     if page.variants == None:
         page.variants = str(var.id) + ","
     else:
