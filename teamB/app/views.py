@@ -324,8 +324,6 @@ def allowed_file(filename):
     else:
         return False
 
-
-
 @app.route('/fm/showallfiles')
 @login_required
 def showallpages():
@@ -389,7 +387,6 @@ def editpg():
         data = {'pgprod': landpage.product, 'pgtype': landpage.page_type, 'pgvis': landpage.visibility}
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         r = requests.put(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
-
 
         return redirect(url_for('showallpages'))
 
@@ -483,8 +480,6 @@ def managecamp():
     AllFiles = get_allfiles()
     alltypes = Page_Type.query.all()
 
-
-
     funnelform.product_name.choices=get_all_prod_names()
     if funnelform.validate_on_submit():
         match = False
@@ -522,6 +517,7 @@ def managecamp():
             redirect(url_for('managecamp', cid=camp.id))
 
     return render_template('managecampaign.html', c=camp, form=funnelform, funnels=funnels_arr, allfiles=AllFiles, pagetypes = alltypes)
+
 
 
 @app.route('/fm/showallcampaigns')
@@ -679,7 +675,6 @@ def managepagetypes():
         if not check_type:
             db.session.add(ptype)
             db.session.commit()
-            all_page_types = Page_Type.query.all()
             flash('New Page Type Added')
         else:
             flash('Page Type already exists')
@@ -738,7 +733,6 @@ def get_seq_no(testid):
         seq = "0" + str(testid)
     else:
         seq = str(testid)
-
     return seq
 
 def get_yr():
@@ -756,11 +750,8 @@ def starttest():
     new_test = SplitTest(pageid=page.id, variants = page.variants)
     db.session.add(new_test)
     db.session.commit()
-
     y = get_yr()
-
     seq = get_seq_no(new_test.id)
-
     new_test.test_code = y + "-" + seq
     page.test_id = new_test.id
     db.session.commit()
