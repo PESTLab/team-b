@@ -83,14 +83,11 @@ def getall_visiblepages():
     return visible_files
 
 def get_testcode(testcode, newcode, varcode):
-
     newcode = newcode + "-" + str(varcode)
-
     if testcode == "notest":
         testcode = newcode
     else:
         testcode = testcode + "_" + newcode
-
     return testcode
 
 @app.route('/<campname>/<productname>/<funnelname>/<pagetype>', methods=['GET'])
@@ -123,7 +120,6 @@ def broadcast(campname, productname, funnelname, pagetype):
             var_page = LandingPage.query.filter_by(id = int(already)).first()
         else:
             variants = mypage.variants.split(',')
-
             if mypage.test_pos == -2:
                 var_page = mypage
             else:
@@ -135,7 +131,6 @@ def broadcast(campname, productname, funnelname, pagetype):
             else:
                 mypage.test_pos = mypage.test_pos + 1
             db.session.commit()
-
         varcode = var_page.id
         test = SplitTest.query.filter_by(id = mypage.test_id).first()
         newcode = test.test_code
@@ -760,6 +755,16 @@ def addvar():
     db.session.commit()
     return redirect(url_for('showallpages'))
 
+def get_seq_no(testid):
+    if testid < 10:
+        seq = "00" + str(testid)
+    elif testid < 100:
+        seq = "0" + str(testid)
+    else:
+        seq = str(testid)
+
+    return seq
+
 @app.route('/fm/startsplittest', methods=['GET', 'POST'])
 @login_required
 def starttest():
@@ -774,12 +779,7 @@ def starttest():
     year = str(currentYear)
     y = "" + year[2] + year[3]
 
-    if new_test.id < 10:
-        seq = "00" + str(new_test.id)
-    elif new_test.id < 100:
-        seq = "0" + str(new_test.id)
-    else:
-        seq = str(new_test.id)
+    seq = get_seq_no(new_test.id)
 
     new_test.test_code = y + "-" + seq
     page.test_id = new_test.id
