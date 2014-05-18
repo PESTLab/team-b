@@ -6,7 +6,7 @@ from BeautifulSoup import BeautifulSoup
 from werkzeug.utils import secure_filename
 from app import app, db, lm, oid, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 from flask import redirect, render_template, url_for, flash, request, g, session, render_template_string, make_response
-from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form, pgtype_form, add_varient
+from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form, pgtype_form, add_varient, SearchForm
 from flask_login import login_user, logout_user, current_user, login_required
 from models import User, RIGHT_USER, RIGHT_ADMIN, ROLE_SALESEXEC, ROLE_WEBDEV, LandingPage, VISIBILE, HIDDEN, Campaign, \
     Funnel, ROLE_ADMIN, Product, Page_Type, SplitTest
@@ -201,6 +201,7 @@ def load_user(id):
 @app.before_request
 def before_request():
     g.user = current_user
+    g.search_form = SearchForm()
 
 
 '''app home page'''
@@ -487,6 +488,8 @@ def managecamp():
     AllFiles = LandingPage.query.all()
     alltypes = Page_Type.query.all()
 
+
+
     funnelform.product_name.choices=get_all_prod_names()
     if funnelform.validate_on_submit():
         match = False
@@ -534,6 +537,7 @@ def showallcamps():
         return redirect(url_for('index'))
 
     allcamps = Campaign.query.all()
+    db.session.close_all()
 
     return render_template('showallcamps.html', title='All Campaigns', Camps=allcamps)
 
@@ -595,6 +599,8 @@ def deletefun():
     if ((g.user.role != ROLE_SALESEXEC) and (g.user.role != ROLE_ADMIN)):
         flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
+
+
 
     camp = findcamp_byid(request.args.get('cid'))
     fun = findfunnel_byid(request.args.get('fid'))
@@ -767,6 +773,20 @@ def stoptest():
     db.session.commit()
     flash('Test for Page ' + page.page_name + ' stopped' )
     return redirect(url_for('showallpages'))
+
+@app.route('/fm/search', methods = ['POST'])
+@login_required
+def search():
+    if not g.search_form.validate_on_submit():
+        return redirect(url_for('index'))
+    return redirect(url_for('search_results', query = g.search_form.search.data))
+
+@app.route('/search_results/<query>')
+@login_required
+def search_results(query):
+    PageResults = LandingPage.query.whoosh_search(query, 10).all()
+    FunnelResults = Funnel.query.whoosh_search(query, 10).all()
+    return render_template('search_results.html',query = query, presults = PageResults, fresults = FunnelResults)
 
 
 

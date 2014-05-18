@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Search Results</h1>
+
+    {% if fresults == [] and presults == []%}
+
+    <h3>No Results Found</h3>
+    {%endif%}
+
+    {% if fresults != [] %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Funnels with Matching Name</h3>
+        </div>
+        <div class="panel-body">
+
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Funnel ID</th>
+                        <th>Funnel Name</th>
+                        <th>Campaign Number</th>
+                        <th>Product Name</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for f in fresults %}
+                    <tr>
+                        <td>{{f.id}}</td>
+                        <td>{{f.name}}</td>
+                        <td>{{f.campaign_id}}</td>
+                        <td>{{f.product}}</td>
+                        <td><a href="{{url_for('managecamp')}}?cid={{f.campaign_id}}#funpan{{f.id}}">Open Campaign</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {%endif%}
+
+    {% if presults != [] %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Pages with Matching Name</h3>
+        </div>
+        <div class="panel-body">
+
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Page ID</th>
+                        <th>Page Name</th>
+                        <th>Page Type</th>
+                        <th>Product</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for p in presults %}
+                    <tr>
+                        <td>{{p.id}}</td>
+                        <td>{{p.page_name}}</td>
+                        <td>{{p.page_type}}</td>
+                        <td>{{p.product}}</td>
+                        <td><a href="{{url_for('editpg')}}?pageid={{p.id}}">Edit Page</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {%endif%}
+
+</div>
+{% endblock %}

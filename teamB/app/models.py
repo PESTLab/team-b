@@ -1,6 +1,7 @@
 __author__ = 'Nick'
 
-from app import db
+from app import db, app
+import flask.ext.whooshalchemy as whooshalchemy
 
 RIGHT_USER = 0
 RIGHT_ADMIN = 1
@@ -27,13 +28,17 @@ class Campaign(db.Model):
     funnel_ids = db.Column(db.String(500), default="NONE")
 
 class Funnel(db.Model):
+    __searchable__ = ['name']
     id = db.Column(db.Integer, primary_key = True)
     campaign_id = db.Column(db.SmallInteger)
     name = db.Column(db.String(64), index = True, unique = True)
     product = db.Column(db.String(120))
     content_ids = db.Column(db.String(500))
 
+whooshalchemy.whoosh_index(app, Funnel)
+
 class LandingPage(db.Model):
+    __searchable__ = ['page_name']
     id = db.Column(db.Integer, primary_key = True)
     uploader_id = db.Column(db.SmallInteger)
     page_name = db.Column(db.String(64), index = True, unique = True)
@@ -43,6 +48,9 @@ class LandingPage(db.Model):
     variants = db.Column(db.String(120))
     test_pos = db.Column(db.Integer, default =-1)
     test_id = db.Column(db.Integer)
+
+whooshalchemy.whoosh_index(app, LandingPage)
+
 
 class SplitTest(db.Model):
     id = db.Column(db.Integer, primary_key = True)

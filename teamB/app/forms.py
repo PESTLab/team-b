@@ -6,6 +6,9 @@ from wtforms.fields.html5 import EmailField
 from wtforms.validators import Required, Length, email
 from app.models import User, LandingPage
 
+class SearchForm(Form):
+    search = TextField('search', validators = [Required()])
+
 class SigninForm(Form):
     remember_me = BooleanField('remember_me', default=False)
 
