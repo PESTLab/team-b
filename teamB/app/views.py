@@ -355,6 +355,20 @@ def showallpages():
 
     AllFiles = LandingPage.query.all()
 
+    s = request.args.get('s')
+
+    if s != None:
+        r = int(request.args.get('r'))
+        if s == 'id':
+            AllFiles.sort(key=lambda x: x.id, reverse=r)
+        elif s == 'name':
+            AllFiles.sort(key=lambda x: x.page_name, reverse=r)
+        elif s == 'pro':
+            AllFiles.sort(key=lambda x: x.product, reverse=r)
+        elif s == 'typ':
+            AllFiles.sort(key=lambda x: x.page_type, reverse=r)
+    db.session.close_all()
+
 
     form = add_varient();
 
@@ -536,7 +550,17 @@ def showallcamps():
         flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
+    s = request.args.get('s')
+
+
     allcamps = Campaign.query.all()
+
+    if s != None:
+        r = int(request.args.get('r'))
+        if s == 'id':
+            allcamps.sort(key=lambda x: x.id, reverse=r)
+        elif s == 'name':
+            allcamps.sort(key=lambda x: x.name, reverse=r)
     db.session.close_all()
 
     return render_template('showallcamps.html', title='All Campaigns', Camps=allcamps)

@@ -16,10 +16,18 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>File Name</th>
-                        <th>Product Name</th>
-                        <th>Page Type</th>
+                        <th>No.
+                        <a href="{{url_for('showallpages')}}?s=id&r={% if request.args.get('s') == 'id' %}{%if request.args.get('r') == '0'%}1{%else%}0{%endif%}{%else%}0{%endif%}"><img src="/static/sort.png" style="cursor:pointer;" alt="Smiley face" height="15" width="15"></a>
+                        </th>
+                        <th>File Name
+                        <a href="{{url_for('showallpages')}}?s=name&r={% if request.args.get('s') == 'name' %}{%if request.args.get('r') == '0'%}1{%else%}0{%endif%}{%else%}0{%endif%}"><img src="/static/sort.png" style="cursor:pointer;" alt="Smiley face" height="15" width="15"></a>
+                        </th>
+                        <th>Product Name
+                        <a href="{{url_for('showallpages')}}?s=pro&r={% if request.args.get('s') == 'pro' %}{%if request.args.get('r') == '0'%}1{%else%}0{%endif%}{%else%}0{%endif%}"><img src="/static/sort.png" style="cursor:pointer;" alt="Smiley face" height="15" width="15"></a>
+                        </th>
+                        <th>Page Type
+                        <a href="{{url_for('showallpages')}}?s=typ&r={% if request.args.get('s') == 'typ' %}{%if request.args.get('r') == '0'%}1{%else%}0{%endif%}{%else%}0{%endif%}"><img src="/static/sort.png" style="cursor:pointer;" alt="Smiley face" height="15" width="15"></a>
+                        </th>
                         <th>Visibility</th>
                         <th>Uploader</th>
                         <th></th>
@@ -31,7 +39,7 @@
                     <tbody>
                     {% for f in Files %}
                     <tr>
-                        <td>{{loop.index}}</td>
+                        <td>{{f.id}}</td>
                         <td>{{f.page_name}}</td>
                         <td>{{f.product}}</td>
                         <td>{{f.page_type}}</td>

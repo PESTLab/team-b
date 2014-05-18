@@ -2,6 +2,8 @@
 
 {% block content %}
 
+
+
 <div class="container">
     <h1>Manage UniBlue FM Campaigns</h1>
 
@@ -16,8 +18,12 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>Campaign ID</th>
-                        <th>Campaign Name</th>
+                        <th>Campaign ID
+                        <a href="{{url_for('showallcamps')}}?s=id&r={% if request.args.get('s') == 'id' %}{%if request.args.get('r') == '0'%}1{%else%}0{%endif%}{%else%}0{%endif%}"><img src="/static/sort.png" style="cursor:pointer;" alt="Smiley face" height="15" width="15"></a>
+                        </th>
+                        <th>Campaign Name
+                        <a href="{{url_for('showallcamps')}}?s=name&r={% if request.args.get('s') == 'name' %}{%if request.args.get('r') == '0'%}1{%else%}0{%endif%}{%else%}0{%endif%}"><img src="/static/sort.png" style="cursor:pointer;" alt="Smiley face" height="15" width="15"></a>
+                        </th>
                         <th>No. of Funnels</th>
                         <th>Creator</th>
                         <th></th>
