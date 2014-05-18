@@ -736,8 +736,8 @@ env.globals['getproductlist'] = getproductlist()
 def addvar():
     pid = request.args.get('pid')
     varnametoadd = request.args.get('varname')
-    var = LandingPage.query.filter_by(page_name = varnametoadd).first()
-    page = LandingPage.query.filter_by(id=pid).first()
+    var = findlandpage_byname(varnametoadd)
+    page = findlandpage_byid(pid)
 
     if page.product.find(',') != -1:
 
