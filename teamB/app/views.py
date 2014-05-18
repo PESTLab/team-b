@@ -1,10 +1,7 @@
 __author__ = 'Nick'
 import os
-import shutil
 
-from BeautifulSoup import BeautifulSoup
-from werkzeug.utils import secure_filename
-from app import app, db, lm, oid, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
+from app import app, db, lm, oid, ALLOWED_EXTENSIONS
 from flask import redirect, render_template, url_for, flash, request, g, session, render_template_string, make_response
 from forms import SigninForm, adduserform, uploadlandingpg, newcampaign, funnelpg, prod_form, pgtype_form, add_varient, SearchForm
 from flask_login import login_user, logout_user, current_user, login_required
@@ -17,7 +14,6 @@ from config import basedir
 from datetime import datetime
 import requests
 import json
-from flask_httpauth import HTTPBasicAuth
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -86,6 +82,17 @@ def getall_visiblepages():
             visible_files.append(f)
     return visible_files
 
+def get_testcode(testcode, newcode, varcode):
+
+    newcode = newcode + "-" + str(varcode)
+
+    if testcode == "notest":
+        testcode = newcode
+    else:
+        testcode = testcode + "_" + newcode
+
+    return testcode
+
 @app.route('/<campname>/<productname>/<funnelname>/<pagetype>', methods=['GET'])
 def broadcast(campname, productname, funnelname, pagetype):
     funnel = findfunnel_byname(funnelname)
@@ -132,12 +139,8 @@ def broadcast(campname, productname, funnelname, pagetype):
         varcode = var_page.id
         test = SplitTest.query.filter_by(id = mypage.test_id).first()
         newcode = test.test_code
-        newcode = newcode + "-" + str(varcode)
 
-        if testcode == "notest":
-            testcode = newcode
-        else:
-            testcode = testcode + "_" + newcode
+        testcode = get_testcode(testcode, newcode, varcode)
 
         mypage = var_page
 
@@ -588,7 +591,6 @@ def setfunids():
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     r = requests.put(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
 
-
     return redirect(url_for('managecamp', cid=c_id))
 
 
@@ -624,8 +626,6 @@ def deletefun():
         flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
-
-
     camp = findcamp_byid(request.args.get('cid'))
     fun = findfunnel_byid(request.args.get('fid'))
 
@@ -639,7 +639,6 @@ def deletefun():
     r = requests.delete(url, headers=headers, auth=('unibluefm', '123456789'))
 
     return redirect(url_for('showallcamps'))
-
 
 '''Product List Management'''
 
@@ -797,6 +796,8 @@ def stoptest():
     db.session.commit()
     flash('Test for Page ' + page.page_name + ' stopped' )
     return redirect(url_for('showallpages'))
+
+''' Searching '''
 
 @app.route('/fm/search', methods = ['POST'])
 @login_required
