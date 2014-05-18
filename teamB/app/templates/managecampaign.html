@@ -126,21 +126,6 @@ document.getElementById(res).value = ids;
 </script>
 
 <script>
-
-function deletemenu(pid, fid){
-
-var str1 = "menu";
-var str2 = String(pid)
-var str3 = str1.concat(str2)
-var str4 = String(fid)
-var res = str4.concat(str3)
-    todel = document.getElementById(res)
-    todel.parentElement.removeChild(todel)
-    }
-
-</script>
-
-<script>
 function checkifused(pgname, id, fid){
 
 var str1 = "funnel";
@@ -171,7 +156,7 @@ if (check == "No")
 
     <div class="panel-group" id="accordion">
         {% for f in funnels %}
-        <div class="panel panel-success">
+        <div class="panel panel-success" id ="funpan{{f.id}}">
             <div class="panel-heading" >
                <div class="panel-heading" >
                <b style="font-size:22px; cursor:pointer"data-toggle="collapse" data-parent="#accordion" href="#collapse{{f.id}}">Funnel {{f.name}}</b>
