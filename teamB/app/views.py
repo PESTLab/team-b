@@ -722,13 +722,6 @@ def deletepagetype():
 
     return redirect(url_for('managepagetypes'))
 
-def getproductlist():
-    mylist = ['gorg', 'jason', 'toni']
-    return mylist
-
-env = Environment(loader=FileSystemLoader('/templates'))
-env.globals['getproductlist'] = getproductlist()
-
 '''split testing management'''
 
 @app.route('/fm/addvariant', methods=['GET', 'POST'])
