@@ -15,11 +15,13 @@ from datetime import datetime
 import requests
 import json
 
-from jinja2 import Environment, FileSystemLoader
-
 googlelogin = GoogleLogin(app)
 
 api_url = "http://54.228.201.142:81"
+
+def get_allfiles():
+    allfiles = LandingPage.query.all()
+    return allfiles
 
 def get_all_prod_names():
     product_list = Product.query.all()
@@ -75,7 +77,7 @@ def upload_to_bucket(file_toupload, filename):
     k.set_acl('public-read')
 
 def getall_visiblepages():
-    allfiles = LandingPage.query.all()
+    allfiles = get_allfiles()
     visible_files = []
     for f in allfiles:
         if f.visibility == 2:
@@ -94,7 +96,6 @@ def get_testcode(testcode, newcode, varcode):
 def broadcast(campname, productname, funnelname, pagetype):
     funnel = findfunnel_byname(funnelname)
     fun_pages = funnel.content_ids.split(",")
-    pagename = ''
     mypage = LandingPage()
     for p in fun_pages:
         if p:
@@ -234,6 +235,7 @@ def addusers():
 
     if form.validate_on_submit():
         nickname = form.useremail.data.split('@')[0]
+
         if form.userright.data == 'user':
             right = RIGHT_USER
             if form.userrole.data == 'webdev':
@@ -249,8 +251,7 @@ def addusers():
         user = User(nickname=nickname, email=email, role=usrole, rights=right)
         db.session.add(user)
         db.session.commit()
-        flash(
-            'Added User with Address: ' + form.useremail.data + ' with ' + form.userright.data + ' rights, as a ' + form.userrole.data)
+        flash('Added User with Address: ' + form.useremail.data + ' with ' + form.userright.data + ' rights, as a ' + form.userrole.data)
         return render_template('base.html', title='Home')
 
     return render_template('addusrs.html', title="User Management", form=form)
@@ -261,17 +262,11 @@ def deleteusers():
     if g.user.rights != RIGHT_ADMIN:
         flash('Only Users with Administrator Rights can access this page')
         return redirect(url_for('index'))
-
     userid = request.args.get('uid')
-
     user = User.query.filter_by(id=userid).first()
     db.session.delete(user)
     db.session.commit()
-
     flash('User Deleted')
-
-    allusers = User.query.all()
-
     return redirect(url_for('showallusers'))
 
 
@@ -290,21 +285,12 @@ def uploadpg():
     form.productname.choices = get_all_prod_names()
     form.page_type.choices = get_all_page_types()
     if form.validate_on_submit():
+
         file = request.files['file']
-
-        if form.visibility.data == 'visible':
-            vis = VISIBILE
-        else:
-            vis = HIDDEN
-
         prodlist = form.productname.data
         pg_prod = ",".join(prodlist)
-
-
-
         filerec = LandingPage(uploader_id=g.user.id, visibility=form.visibility.data, product=pg_prod,
                               page_name=file.filename, page_type=form.page_type.data)
-
         checkpg = findlandpage_byname(file.filename)
 
         if not checkpg:
@@ -312,9 +298,7 @@ def uploadpg():
 
                 db.session.add(filerec)
                 db.session.commit()
-
                 myname = str(file.filename)
-
                 upload_to_bucket(file, myname)
 
                 url = api_url + '/fmapi/addpg'
@@ -322,9 +306,7 @@ def uploadpg():
                 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
                 r = requests.post(url, data=json.dumps(data), headers=headers, auth=('unibluefm', '123456789'))
 
-                AllFiles = LandingPage.query.all()
-
-
+                AllFiles = get_allfiles()
                 return render_template('showallfiles.html', title='All Files', Files=AllFiles)
             else:
                 flash('Either the Extension is not allowed or you left the Product Name Empty')
@@ -343,6 +325,7 @@ def allowed_file(filename):
         return False
 
 
+
 @app.route('/fm/showallfiles')
 @login_required
 def showallpages():
@@ -351,7 +334,7 @@ def showallpages():
         flash('Only an Administrator or Users with Web Developer Roles can access this page')
         return redirect(url_for('index'))
 
-    AllFiles = LandingPage.query.all()
+    AllFiles = get_allfiles()
 
     s = request.args.get('s')
 
@@ -497,7 +480,7 @@ def managecamp():
         if f:
             funnels_arr.append(f)
 
-    AllFiles = LandingPage.query.all()
+    AllFiles = get_allfiles()
     alltypes = Page_Type.query.all()
 
 
