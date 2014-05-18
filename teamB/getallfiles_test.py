@@ -9,7 +9,7 @@ from app.models import LandingPage
 from app import views
 
 
-class TestFindLandPagebyName(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
         app.config['CSRG_ENABLED'] = False
