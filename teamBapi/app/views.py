@@ -157,23 +157,4 @@ def deletepg(pgid):
     return jsonify(msg= 'Page Deleted')
 
 
-'''testing functions for CURL'''
-
-@app.route('/fmapi/showcamp', methods = ['POST'])
-@auth.login_required
-def showcampaign():
-    camp = Campaign.query.filter_by(id=request.json['campname']).first()
-    return jsonify(ID=camp.id, Name=camp.name, Funnels = camp.funnel_ids)
-
-@app.route('/fmapi/showpg', methods = ['POST'])
-def showpage():
-    page = LandingPage.query.filter_by(id=request.json['pgname']).first()
-    return jsonify(ID=page.id, Product = page.product, Visibility = page.visibility, Type = page.page_type)
-
-@app.route('/fmapi/showfun', methods = ['POST'])
-@auth.login_required
-def showfunnel():
-    funnel = Funnel.query.filter_by(name=request.json['funname']).first()
-    return jsonify(ID=funnel.id, Pages = funnel.content_ids)
-
 
