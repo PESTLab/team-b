@@ -765,6 +765,12 @@ def get_seq_no(testid):
 
     return seq
 
+def get_yr():
+    currentYear = datetime.now().year
+    year = str(currentYear)
+    y = "" + year[2] + year[3]
+    return y
+
 @app.route('/fm/startsplittest', methods=['GET', 'POST'])
 @login_required
 def starttest():
@@ -775,9 +781,7 @@ def starttest():
     db.session.add(new_test)
     db.session.commit()
 
-    currentYear = datetime.now().year
-    year = str(currentYear)
-    y = "" + year[2] + year[3]
+    y = get_yr()
 
     seq = get_seq_no(new_test.id)
 
